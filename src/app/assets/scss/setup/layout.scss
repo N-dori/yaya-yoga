@@ -1,0 +1,23 @@
+.main-layout {
+    display: grid;
+    position: relative;
+
+    grid-template-columns: minmax(10px,1fr) minmax(auto, 500px) minmax(10px,1fr ) ;
+    grid-template-rows:  auto auto auto;
+    direction: rtl;
+    background-color: white ;
+    // background-image: radial-gradient( circle 815px at 23.4% -21.8%,  rgba(9,29,85,1) 0.2%, rgba(0,0,0,1) 100.2% );
+    // background-image: url('../../../../public/sexy-image.jpg');
+    
+    // @include for-normal-layout {
+    //  grid-template-columns: minmax(10px, 1fr) minmax(auto, 900px) minmax(10px, 1fr)!important ;
+    // }
+    // @include for-mobile-layout {
+    //  grid-template-columns: minmax(10px, 1fr) minmax(auto, 400px) minmax(10px, 1fr)!important ;
+    // //  min-height: 62em;
+    // }
+}
+
+
+
+
