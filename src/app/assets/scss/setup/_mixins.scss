@@ -1,0 +1,138 @@
+// בס"ד
+
+/* Breakpoint mixins */
+@mixin for-1030px {
+    @media (max-width: calc($for-1030px)) {
+        @content;
+    }
+}
+
+@mixin for-narrow-layout {
+    @media (max-width: calc($narrow-breakpoint )) {
+        @content;
+    }
+}
+@mixin for-tablet-breakpoint {
+    @media (max-width: calc($tablet-breakpoint)) {
+        @content;
+    }
+}
+
+@mixin for-940px {
+    @media (max-width: calc($for-940px )) {
+        @content;
+    }
+}
+@mixin for-633px {
+    @media (max-width: calc($for-633px )) {
+        @content;
+    }
+}
+@mixin for-530px {
+    @media (max-width: calc($for-530px )) {
+        @content;
+    }
+}
+@mixin for-mobile-layout {
+    @media (max-width: calc($mobile-breakpoint + 10px)) {
+        @content;
+    }
+}
+@mixin for-430px {
+    @media (max-width: calc($for-430px + 10px)) {
+        @content;
+    }
+}
+@mixin for-370px  {
+    @media (max-width: calc($for-370px  + 10px)) {
+        @content;
+    }
+}
+@mixin for-325px  {
+    @media (max-width: calc($for-325px  + 10px)) {
+        @content;
+    }
+}
+@mixin for-270px   {
+    @media (max-width: calc($for-270px )) {
+        @content;
+    }
+}
+@mixin for-245px   {
+    @media (max-width: calc($for-245px )) {
+        @content;
+    }
+}
+
+@mixin for-normal-layout {
+    @media (max-width: calc($normal-breakpoint)) {
+        @content;
+    }
+}
+
+// @mixin for-mobile5-layout {
+    //     @media (min-width:calc($mobile5-breakpoint + 40px) ) {
+        //         @content;
+        //     }
+        // }
+        // @mixin for-mobile4-layout {
+            //     @media (min-width:calc($mobile4-breakpoint + 20px) ) {
+                //         @content;
+                //     }
+                // }
+                // @mixin for-mobile3-layout {
+                    //     @media (min-width:calc($mobile3-breakpoint + 40px) ) {
+                        //         @content;
+                        //     }
+                        // }
+                        // @mixin for-mobile2-layout {
+//     @media (min-width: calc($mobile2-breakpoint + 40px)) {
+//         @content;
+//     }
+// }
+
+
+
+
+// @mixin for-wide-layout {
+//     @media (min-width: calc($wide-breakpoint)) {
+       
+
+//         @content;
+//     }
+// }
+
+/* Media  Mixins */
+@mixin aspect-ratio($width, $height) {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: calc(($height / $width) * 100%);
+    }
+
+    >* {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    >img {
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+// Mixin for removing hover efects on iphone screen
+@mixin hover-supported {
+    @media not all and (pointer: coarse) {
+        &:hover {
+            @content;
+        }
+    }
+}

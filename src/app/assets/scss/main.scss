@@ -1,0 +1,24 @@
+// ## setup
+@import '../scss/setup/vars.scss';
+@import '../scss/setup/mixins';
+@import '../scss/setup/basic.scss';
+@import '../scss/setup/layout.scss';
+@import '../scss/setup/typography.scss';
+@import '../scss/setup/helpers.scss';
+
+// ## cmps
+// nav-bar
+@import '../scss/cmps/NavBar.scss';
+// week-schedule
+@import '../scss/cmps/week-schedule/DaysWeek.scss';
+@import '../scss/cmps/week-schedule/WeeklySchedule.scss';
+
+
+// @import '../scss/cmps/AppFooter.scss';
+
+// ## views 
+
+@import '../scss/views/Home.scss';
+// @import '../scss/views/Signup.scss';
+
+

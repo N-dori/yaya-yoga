@@ -1,0 +1,10 @@
+.weekly-schedule-warpper{
+    .days-container{
+        grid-template-columns: repeat(7, minmax(auto,100px ));
+        
+        .day{
+            
+        }
+     
+    }
+}
