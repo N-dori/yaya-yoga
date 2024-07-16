@@ -1,0 +1,12 @@
+.dashboard-menu-container{
+    padding: 2em;
+    gap:1em
+
+}
+.dashboard-menu-container>*{
+    width: 100%;
+    padding: 1em;
+    border: 1px solid #222;
+    border-radius: 20px;
+    cursor: pointer;
+}

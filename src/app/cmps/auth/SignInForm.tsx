@@ -74,7 +74,7 @@ export default function SignInForm({}: Props) {
         body: JSON.stringify({ email })
       })
       const { user } = await res.json()
-      console.log(' userExists', user);
+      // console.log(' userExists', user);
       return user
     }
   

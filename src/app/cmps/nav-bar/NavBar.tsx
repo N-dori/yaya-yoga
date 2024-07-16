@@ -12,7 +12,7 @@ export default function NavBar({ }: Props) {
 
   useEffect(() => {
     getUserFirstLetter()
-    console.log('currnt user : ',session?.user );
+    // console.log('currnt user : ',session?.user );
    
 
   }, [session?.user?.name])

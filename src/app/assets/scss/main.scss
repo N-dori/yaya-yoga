@@ -7,17 +7,22 @@
 @import '../scss/setup/helpers.scss';
 
 // ## cmps
+
 // nav-bar
 @import '../scss/cmps/NavBar.scss';
 // week-schedule
 @import '../scss/cmps/week-schedule/DaysWeek.scss';
 @import '../scss/cmps/week-schedule/WeeklySchedule.scss';
+//dashboard 
+@import '../scss/cmps/dashboard/DashboardMenu.scss';
+@import '../scss/cmps/dashboard/CreactePeriodicAgenda/CreactePeriodicAgenda.scss';
 
 
 // @import '../scss/cmps/AppFooter.scss';
 
 // ## views 
 
+@import '../scss/views/Home.scss';
 @import '../scss/views/Home.scss';
 // @import '../scss/views/Signup.scss';
 
