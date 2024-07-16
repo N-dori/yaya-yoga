@@ -18,7 +18,7 @@ export const authOptions  = {
                if(!user){
                 return null
                }
-               console.log('user in authOptions :', user);
+            //    console.log('user in authOptions :', user);
               const passwordMatch =  await bcrypt.compare(password ,user.password)
                if(!passwordMatch){
                 return null 
@@ -47,7 +47,7 @@ export const authOptions  = {
                     const {name, email } = user
                     await connectMongoDB() 
                     const userExist = await User.findOne({email})
-                    console.log('userExist : ',userExist);
+                    // console.log('userExist : ',userExist);
                 if(userExist){
                  return user
              } 

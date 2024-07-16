@@ -4,6 +4,9 @@
 .m-0{
     margin: 0;
 }
+.mb-1{
+    margin-bottom: 1em;
+}
 .tac{
     text-align: center;
 }
@@ -14,6 +17,9 @@
     display: flex;
     justify-content: center;
 }
+.flex-start{
+    display: flex;
+    align-items: flex-start;}
 .flex-ac{
     display: flex;
     align-items: center;

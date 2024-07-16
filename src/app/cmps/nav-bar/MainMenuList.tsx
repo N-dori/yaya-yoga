@@ -35,7 +35,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
         <li className='pointer' onClick={()=> handelClick('signup')}  >התחברות </li>
           </div>}
         <li  onClick={()=> handelClick('weekly_schedule')} >מערכת שיעורים שבועית</li>
-        <li>consectetur </li>
+        <li onClick={()=> handelClick('dashboard')}>dashboard </li>
         <li className='pointer' onClick={handleSignOut}>יציאה מהחשבון </li>
         </ul></section>
   )

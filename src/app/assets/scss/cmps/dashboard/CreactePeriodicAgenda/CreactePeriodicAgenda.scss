@@ -1,0 +1,35 @@
+.create-periodic-agenda-container{
+
+    .headline{
+
+        .sub-headilne{
+
+        }
+
+    }
+    .react-datepicker__day-name{
+        width: 1.2rem;
+
+    }
+    .react-datepicker__day{
+        width: 1.2rem;
+    }
+    .react-datepicker-time__header{
+        font-size: 0.8em;
+    }
+    .react-datepicker__current-month{
+        font-size: 1.1em;
+    }
+    .react-datepicker__time-box{
+        width: 73px;
+    }
+    .react-datepicker{
+        font-size: 0.7rem;
+    }
+    .react-datepicker__calendar-icon{
+        right: auto;
+    }
+    .date-picker-values{
+        display: none;
+    }
+}

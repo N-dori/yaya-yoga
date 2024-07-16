@@ -8,11 +8,11 @@ export async function POST (request) {
  try {
 
      const {  email  } = await request.json()
-     console.log('chacking if this email',email+' '+"exists");
+   //   console.log('chacking if this email',email+' '+"exists");
     await connectMongoDB ()
     const user =  await User.findOne({ email }).select('_id')
 
-    console.log('user', user  );
+   //  console.log('user', user  );
  
   return NextResponse.json({user}, {status: 201 } )
 
