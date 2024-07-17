@@ -10,6 +10,7 @@ export type Tactivity = {
 
 
 export type TperiodicAgenda=  {
+    _id?:string
     date:{start:string, end:string },
     activities:Tactivity[]
     }  

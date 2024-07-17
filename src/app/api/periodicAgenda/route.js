@@ -14,8 +14,8 @@ export async function POST (request) {
             
             }
          console.log('going to new Periodic Agenda :', newPeriodicAgenda );
-        const user =  await PeriodicAgenda.create({...newPeriodicAgenda})
-        return NextResponse.json({message: "PeriodicAgenda creacted" }, {status: 201 } )
+        const periodicAgenda =  await PeriodicAgenda.create({...newPeriodicAgenda})
+        return NextResponse.json({periodicAgenda} , {status: 201 } )
     }catch(err){
         console.log('had problem to create a Periodic Agenda ');
       }
