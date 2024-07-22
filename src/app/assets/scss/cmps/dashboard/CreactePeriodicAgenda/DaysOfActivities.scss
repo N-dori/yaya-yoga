@@ -1,0 +1,31 @@
+.days-activities-container {
+    .days-container {
+
+        .date-info {
+            border: 1px solid #9a9796;
+            background: #ffffff;
+            cursor: pointer;
+            height: 85px;
+            margin: 0 5px;
+            outline: none;
+            position: relative;
+            flex-grow: 1;
+            min-width: 50px;
+            text-align: center;
+            border-radius: 8px;
+
+            .day {
+                font-size: 12px;
+            }
+
+            .number {
+                font-size: 1em;
+            }
+
+            .month {
+                font-size: 12px;
+            }
+
+        }
+    }
+}

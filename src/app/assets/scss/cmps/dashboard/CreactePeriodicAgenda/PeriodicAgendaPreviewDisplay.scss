@@ -1,0 +1,33 @@
+.preview-display-container {
+    position: relative;
+
+    .back-svg-wrapper {
+        width: 3em;
+        margin-inline-start: auto;
+        margin-bottom: 1em;
+        margin-top: 1em;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        border: 2px solid black;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 13px;
+        line-height: 1.2;
+
+        .back-svg {
+            transform: translate(20%);
+        }
+    }
+    .headline{
+
+
+    }
+    .studio-address{
+        max-width: 11em;
+        color: var(--clr2);
+    }
+    .studio-phone{
+        color: var(--clr2);
+    }
+}

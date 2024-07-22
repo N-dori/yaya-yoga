@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Fredoka } from "next/font/google";
+import { Varela_Round } from "next/font/google";
 import "../app/assets/scss/main.scss"
 // import "./globals.css";
 import { AuthProvider } from "./Providers";
 import NavBar from "./cmps/nav-bar/NavBar";
-const fredoka = Fredoka({ subsets: ["latin"] });
+const varelaRound = Varela_Round ({ weight:'400',subsets: ["hebrew"] });
 
 export const metadata: Metadata = {
   title: "יאיא יוגה",
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fredoka.className} main-layout`}>
+      <body className={`${varelaRound.className} main-layout`}>
         <AuthProvider>
           <NavBar />
           {children}
