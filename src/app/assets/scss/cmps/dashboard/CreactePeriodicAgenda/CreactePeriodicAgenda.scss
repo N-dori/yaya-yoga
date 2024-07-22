@@ -1,35 +1,81 @@
-.create-periodic-agenda-container{
-
+.periodic-agenga-dates-container{
     .headline{
+        margin-top: 8em;
+    }
+}
+.create-periodic-agenda-container {
 
-        .sub-headilne{
+    .headline {
+        margin-top: 1em;
+    }
 
+    .range-dates {
+        margin-bottom: 2em;
+        margin-top: 2em;
+        .progress-bar{
+            width: 200px;
         }
-
     }
-    .react-datepicker__day-name{
+
+    .form-input {
+        background-color: white;
+        padding: .4em .9em .4em .9em;
+        border: 1px solid #b3b3bd;
+        color: #747474;
+    }
+
+    .circle {
+        padding: 10px;
+        border-radius: 50%;
+        border: 2px solid black;
+        text-align: center;
+        white-space: nowrap;
+        /* Prevent the words from breaking to a new line */
+        font-size: 16px;
+        /* Adjust the font size as needed */
+        line-height: 1.2;
+    }
+
+.form-btn{
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    padding: 15px 10px;
+    line-height: 1.5;
+    border-radius: 1px;
+    background-color: white;
+    box-shadow: 0 8px 8px -8px #222;   
+    cursor: pointer;
+}
+
+    .react-datepicker__day-name {
         width: 1.2rem;
 
     }
-    .react-datepicker__day{
+
+    .react-datepicker__day {
         width: 1.2rem;
     }
-    .react-datepicker-time__header{
+
+    .react-datepicker-time__header {
         font-size: 0.8em;
     }
-    .react-datepicker__current-month{
+
+    .react-datepicker__current-month {
         font-size: 1.1em;
     }
-    .react-datepicker__time-box{
+
+    .react-datepicker__time-box {
         width: 73px;
     }
-    .react-datepicker{
+
+    .react-datepicker {
         font-size: 0.7rem;
     }
-    .react-datepicker__calendar-icon{
+
+    .react-datepicker__calendar-icon {
         right: 10em;
     }
-    .date-picker-values{
+
+    .date-picker-values {
         display: none;
     }
 }

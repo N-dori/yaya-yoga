@@ -1,7 +1,8 @@
 export type Tactivity = {
-    date:string ,
+    id:string,
+    date:Date | null | undefined ,
     name:string,
-    hoursRange:{start:string,end:string},
+    hoursRange:{start:Date,end:Date},
     classOrWorkshop:string,
     teacher:string,
     location:string,
