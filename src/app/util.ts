@@ -6,3 +6,9 @@ export function makeId(length = 6) {
     }
     return txt
   }
+
+    export const stripTime = (date: Date | string): Date => {
+      const d = new Date(date);
+      const strippedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      return strippedDate;
+    };

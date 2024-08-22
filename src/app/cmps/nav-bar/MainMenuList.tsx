@@ -16,7 +16,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
   
   const handelClick = (route:string) => {
     setIsShown(!isShown)
-    router.push(route)
+    router.replace(route)
   }
   const handleSignOut = async () => {
     await signOut({ redirect: false, callbackUrl: '/' }); // Example of how to use signOut properly
@@ -34,7 +34,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
         <li className='pointer' onClick={()=> handelClick('login')}  >הרשמה </li>
         <li className='pointer' onClick={()=> handelClick('signup')}  >התחברות </li>
           </div>}
-        <li  onClick={()=> handelClick('weekly_schedule')} >מערכת שיעורים שבועית</li>
+        <li  onClick={()=> handelClick('periodic_agenda')} >מערכת שיעורים</li>
         <li onClick={()=> handelClick('dashboard')}>dashboard </li>
         <li className='pointer' onClick={handleSignOut}>יציאה מהחשבון </li>
         </ul></section>

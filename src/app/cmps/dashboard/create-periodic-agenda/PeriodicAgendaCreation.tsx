@@ -1,34 +1,32 @@
 "use client"
 
-import { handelPeriodicAgendaForm } from '@/app/actions/actions'
 import React, { useEffect, useState } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import PeriodDates from './PeriodDates'
-import { Tactivity, TperiodicAgenda } from '@/app/types/types'
-import UserMsg from '../../UserMsg'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
-import { StartEndTimePickers } from './StartEndTimePickers'
-import { he } from 'date-fns/locale';
-import { strict } from 'assert'
-import CheckSvg from '@/app/assets/svgs/CheckSvg'
-import { makeId } from '@/app/util'
-type selectedDateInputProps = {
+import PeriodDates from './PeriodDates'
+import { Tactivity, TperiodicAgenda, TuserMsgProps } from '@/app/types/types'
+import PeriodicAgendaFrom from './PeriodicAgendaFrom'
+import { makeId, stripTime } from '@/app/util'
 
-}
 
-export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
-    //first 4 states realted to PeriodDates
+
+
+export default function PeriodicAgendaForm() {
+    // this state contains all the info regarding the period-a quoter  
+    const [periodicAgenda, setPeriodicAgenda] = useState<TperiodicAgenda>()
+    //first 4 states realted to Dates of period
     const [startPeriodicAgendaDate, setStartPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [endPeriodicAgendaDate, setEndPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [periodicAgendaDates, setPeriodicAgendaDates] = useState<{ start: string, end: string }>({ start: '', end: '' })
     const [isPeriodicAgendaDates, setIsPeriodicAgendaDates] = useState<boolean>(false)
 
     const [allDaysOfPeriod, setAllDaysOfPeriod] = useState<Date[]>()
+    const [copyOfAllDaysOfPeriod, setCopyOfAllDaysOfPeriod] = useState<Date[]>()
     const [periodLength, setPeriodLength] = useState<number>()
     const [datesCounter, setDatesCounter] = useState<number>(0)
+    // avtivities Repeations section
+    const [isActivityRepeating, setIsActivityRepeating] = useState<boolean>(false)
+    const [repeationNumber, setRrepeationNumber] = useState<number>(-1)
 
-    const [periodicAgenda, setPeriodicAgenda] = useState<TperiodicAgenda>()
 
     const [activityDate, setActivityDate] = useState<Date | null | undefined>(null)
 
@@ -41,9 +39,10 @@ export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
 
     const [isPreviewDisplayShown, setIsPreviewDisplayShown] = useState<boolean>(false)
     const [isMsgShown, setIsMsgShown] = useState<boolean>(false)
-    const [userMsg, setUserMsg] = useState('')
+    const [userMsg, setUserMsg] = useState<TuserMsgProps>()
 
     const [error, setError] = useState<string>('')
+
     useEffect(() => {
 
     }, [datesCounter])
@@ -80,16 +79,11 @@ export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
         console.log('all Days Of Period length', dates.length);
 
         setAllDaysOfPeriod(dates)
+        setCopyOfAllDaysOfPeriod(dates)
         setPeriodLength(dates.length)
 
     }
 
-    const stripTime = (date: Date) => {
-        const date1 = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-        // console.log('stripTime', date1);
-
-        return date1;
-    };
     const chackDateInPeriod = (dateToChack: Date) => {
         if (allDaysOfPeriod) {
             console.log('chacking if Date is part of Period', allDaysOfPeriod);
@@ -162,16 +156,110 @@ export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
         setPeriodicAgenda({ ...newPeriodicAgenda })
     }
     const addActivity = () => {
-        let UpdatedPeriodicAgenda = { ...periodicAgenda }
+        let updatedPeriodicAgenda :TperiodicAgenda= { ...periodicAgenda }
         if (!activityDate || !activityStartTime || !activityEndTime) {
             setError('חיב למלא את כל השדות ')
-            callUserMsg('הוספת פעילות נכשלה')
+            callUserMsg({ sucsses: false, msg: 'הוספת פעילות נכשלה' })
             setTimeout(() => { setError('') }, 5500);
             return
         }
-        const newActivity: Tactivity = {
-            id:makeId(),
-            date: activityDate,
+        //TODO: get number of repeations options are n>0  n<0
+        // if smaller than 0 add this activity for all days of period
+        // if 0 no repeation 
+        // if n>0 add this DAY activity n times
+        if (isActivityRepeating ) {
+            const day = activityDate.getDay()
+            const allOccurences = allDaysOfPeriod?.filter(date => date.getDay() === day) //all of sundays foe example
+            const allOccurences1 = copyOfAllDaysOfPeriod?.filter(date => date.getDay() === day)
+            if (repeationNumber < 0) {// in this case find the day of week and find all occurences and push them to activity 
+                if(allOccurences?.length){//this state keep an array of all the dates of the period and later it will splice it until noting is left , to let user know in if all the days we wanted were added-displayed at the top of the page
+                    allOccurences?.forEach(date => {
+                        const newActivity: Tactivity = createActivity(date)
+                        updatedPeriodicAgenda.activities?.push({ ...newActivity })
+                    })                    
+                }else{// when there is nothing left in the allDaysOfPeriod we start using the copyOfAllDaysOfPeriod
+                    allOccurences1?.forEach(date => {
+                        const newActivity: Tactivity = createActivity(date)
+                        updatedPeriodicAgenda.activities?.push({ ...newActivity })
+                        
+                    })
+                    setPeriodicAgenda({...updatedPeriodicAgenda})
+                    resetDateTime()
+                    callUserMsg({ sucsses: true, msg: `פעיליות נוספו בהצלחה ${allOccurences1?.length}` })
+                    return 
+                }
+                console.log('allOccurences', allOccurences);
+                console.log('periodicAgenda', periodicAgenda);
+                updateDateCounter(null, allOccurences)
+                resetDateTime()
+                callUserMsg({ sucsses: true, msg: `פעילות נוספה בהצלחה${allOccurences?.length}` })
+                setPeriodicAgenda({...updatedPeriodicAgenda})
+                return
+            }
+            if (repeationNumber > 0) {
+                let nOccurences = allOccurences?.slice(0, repeationNumber)
+                if(nOccurences?.length){
+                    nOccurences?.forEach(date => {
+                        const newActivity: Tactivity = createActivity(date)
+                        updatedPeriodicAgenda.activities?.push({ ...newActivity }) 
+                    })
+                }else {
+                  const nOccurences1 = allOccurences1?.slice(0, repeationNumber)
+                  nOccurences1?.forEach(date => {
+                      const newActivity: Tactivity = createActivity(date)
+                      updatedPeriodicAgenda.activities?.push({ ...newActivity })
+                    })
+                    setPeriodicAgenda({...updatedPeriodicAgenda})
+                    resetDateTime()
+                    callUserMsg({ sucsses: true, msg: `פעיליות נוספו בהצלחה ${nOccurences1?.length}` })
+                    return 
+                   
+                }
+                console.log('periodicAgenda', periodicAgenda);
+                setPeriodicAgenda({...updatedPeriodicAgenda})
+                updateDateCounter(null, nOccurences)
+                callUserMsg({ sucsses: true, msg: `פעיליות נוספו בהצלחה${nOccurences?.length}` })
+                resetDateTime()
+                return 
+            }
+        }
+        const newActivity: Tactivity = createActivity(activityDate)
+        updatedPeriodicAgenda.activities?.push({ ...newActivity })
+        setPeriodicAgenda({...updatedPeriodicAgenda})
+        resetDateTime()
+        callUserMsg({ sucsses: true, msg: 'פעילות נוספה בהצלחה' })
+        const isFound = chackDateInPeriod(activityDate)
+        if (isFound) {
+            updateDateCounter(activityDate, null)      
+        }
+    }
+    const updateDateCounter = (date: Date | null, dates: Date[] | null | undefined) => {
+        if (date) {
+            setDatesCounter(datesCounter + 1)
+            const index = allDaysOfPeriod?.findIndex(currDate => stripTime(currDate).getTime() === stripTime(date).getTime())
+            if (index || index === 0){
+                if (index !== undefined && index >= 0) {
+                    if(allDaysOfPeriod){
+                        const updatedDays = [...allDaysOfPeriod];
+                        updatedDays.splice(index, 1);
+                        setAllDaysOfPeriod(updatedDays);
+                    }
+                }
+            }
+        }
+        if (dates) {
+            setDatesCounter(datesCounter + dates.length)
+            const updatedDays = allDaysOfPeriod?.filter(currDate => 
+                !dates.some(d => stripTime(d).getTime() === stripTime(currDate).getTime())
+            );
+            setAllDaysOfPeriod(updatedDays || []);
+      
+        }
+    }
+    const createActivity = (date: any) => {
+        return {
+            id: makeId(),
+            date: date,
             name: activityName,
             hoursRange: {
                 start: activityStartTime,
@@ -181,27 +269,12 @@ export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
             teacher: activityTeacher,
             location: activityLocation,
             practitioners: []
-
         }
-        UpdatedPeriodicAgenda.activities?.push({ ...newActivity })
-        resetDateTime()
-        callUserMsg('פעילות נוספה בהצלחה')
-        const isFound = chackDateInPeriod(activityDate)
-        console.log(`is ${activityDate} found in dates range of curr period`, isFound);
-
-        if (isFound) {
-            setDatesCounter(datesCounter + 1)
-            const index = allDaysOfPeriod?.findIndex(date => stripTime(date).getTime() === stripTime(activityDate).getTime())
-            if (index || index === 0) allDaysOfPeriod?.splice(index, 1)
-        }
-        console.log('UpdatedPeriodicAgenda', UpdatedPeriodicAgenda);
-        console.log('all Days Of Period after reducing', allDaysOfPeriod?.length);
-
     }
-    const callUserMsg = (msg: string) => {
+    const callUserMsg = (userMsg: TuserMsgProps) => {
         window.scroll(0, 0)
         setIsMsgShown(true)
-        setUserMsg(msg)
+        setUserMsg(userMsg)
     }
     const resetDateTime = () => {
         setActivityDate(null)
@@ -210,14 +283,16 @@ export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
     }
     const createNewPeriodicAgenda = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/periodicAgenda', {
+            console.log('sending to mongo : ', periodicAgenda);
+
+            const res = await fetch('http://localhost:3000/api/periodicAgenda/createPeriodicAgenda', {
                 method: 'POST',
                 headers: { "Content-type": "application/json" },
-                body: JSON.stringify(periodicAgendaDates)
+                body: JSON.stringify({ periodicAgenda })
             })
             if (res.ok) {
                 const { periodicAgenda } = await res.json()
-
+                callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
                 console.log('created a new Periodic Agenda', periodicAgenda)
 
             } else {
@@ -241,19 +316,45 @@ export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
         setIsPreviewDisplayShown,
         periodicAgenda,
         isPreview: true
-    }
-    const userMsgProps = {
-        userMsg,
-        setIsMsgShown,
-        isMsgShown
-    }
-    const StartEndTimePickersProps = {
-        activityEndTime,
-        handelTimeChange,
-        activityStartTime,
-        error,
 
     }
+    const PeriodicAgendaFromProps = {
+        isMsgShown,
+        userMsg,
+        setIsMsgShown,
+        error,
+        activityEndTime,
+        activityStartTime,
+        handelTimeChange,
+
+        activityDate,
+
+        isActivityRepeating,
+        repeationNumber,
+        handelDateChange,
+        setIsActivityRepeating,
+        setRrepeationNumber,
+        activityName,
+        setActivityName,
+        activityType,
+        setActivityType,
+        activityTeacher,
+        setActivityTeacher,
+        activityLocation,
+        setActivityLocation,
+
+        setIsPreviewDisplayShown,
+        createNewPeriodicAgenda,
+        addActivity,
+
+        periodicAgendaDates,
+        startPeriodicAgendaDate,
+        endPeriodicAgendaDate,
+        datesCounter,
+        periodLength,
+        allDaysOfPeriod,
+    }
+
     return (
         !isPeriodicAgendaDates ?
             <PeriodDates {...PeriodDatesProps} />
@@ -261,67 +362,8 @@ export default function PeriodicAgendaForm({ }: selectedDateInputProps) {
             isPreviewDisplayShown ?
                 <PeriodicAgendaPreviewDisplay {...PreviewDisplayProps} />
                 :
-                <main className='periodic-agenda-form-container'>
-                    <div className='range-dates flex-jc-ac flex-col gap1 '>
-                        <h4 >  <span className='circle mb-1'> שלב 2</span> יצירת פעילויות לתקופה </h4>
-                        <h4>{periodicAgendaDates.start + " עד " + periodicAgendaDates.end}</h4>
-                        <progress className='progress-bar' value={datesCounter} max={periodLength}>  </progress>
-                        {
-                            allDaysOfPeriod ? allDaysOfPeriod.length ?  <span>נשארו  {allDaysOfPeriod ? allDaysOfPeriod.length : ''} תאריכים למלא מתוך {periodLength}</span>
-                                            :<span className='all-dates-checked flex-jc-ac'> <CheckSvg/> פעילויות הוזנו לכל תקופת הפעילות</span>:""
-                        }
+                <PeriodicAgendaFrom {...PeriodicAgendaFromProps} />
 
-                    </div>
-                    <form className='periodic-agenda-form flex-col gap1' action={handelPeriodicAgendaForm}>
-                        <div className='flex-col gap1 flex-jc-ac'>
-                            <DatePicker
-                                selected={activityDate}
-                                onChange={(currDate) => handelDateChange(currDate)}
-                                dateFormat={'dd/MM/yyyy'}
-                                minDate={startPeriodicAgendaDate ? startPeriodicAgendaDate : undefined}
-                                maxDate={endPeriodicAgendaDate ? endPeriodicAgendaDate : undefined}
-                                placeholderText="בחר את תאריך הפעילות"
-                                showIcon
-                                locale={he}
-
-                            />
-                            <StartEndTimePickers {...StartEndTimePickersProps} />
-
-                        </div>
-                        <label htmlFor={'name'} className='flex-col'>
-                            שם הפעילות:
-
-                            <select className='form-input' name='name' onChange={(e) => setActivityName(e.target.value)} value={activityName} >
-                                <option value={'אשטנגה'}>אשטנגה</option>
-                                <option value={'יסודות'}>יסודות</option>
-                                <option value={'108 ברכות שמש'}>108 ברכות שמש</option>
-                            </select>
-
-                        </label>
-
-                        <label htmlFor='activity-type' className='flex-col'>
-                            סוג הפעילות:
-                            <select className='form-input' name='activity-type' onChange={(e) => setActivityType(e.target.value)} value={activityType} >
-                                <option value={'שיעור'}>שיעור</option>
-                                <option value={'סדנא'}>סדנא</option>
-                            </select>
-                        </label>
-
-                        <label className='flex-col'>
-                            מורה :
-                            <input className='form-input' name='teacher' onChange={(e) => setActivityTeacher(e.target.value)} value={activityTeacher} />
-                        </label>
-                        <label className='flex-col'>
-                            מיקום :
-                            <input className='form-input' name='location' onChange={(e) => setActivityLocation(e.target.value)} value={activityLocation} />
-                        </label>
-
-                        <button className='form-btn flex-jc-ac' type='button' onClick={addActivity}>הוסף פעילות </button>
-                        <button className='form-btn flex-jc-ac' type='button' onClick={() => setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
-                        <button className='form-btn flex-jc-ac' type='submit'>סיים ופרסם לוז תקופתי</button>
-                    </form>
-                    <UserMsg {...userMsgProps} />
-                </main>
 
     )
 }
