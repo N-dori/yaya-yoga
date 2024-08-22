@@ -23,6 +23,9 @@ const hoursRangeSchema = new Schema({
 
 })
 const activitySchema =  new Schema ({
+    id :  {
+        type: String,
+    }  ,
     date :  {
         type: String,
         required:[true , " please provide valid email"],

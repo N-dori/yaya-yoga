@@ -1,9 +1,12 @@
 .days-activities-container {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-bottom: 2px solid #222;
+    padding-bottom: 1em;
+
     .days-container {
 
         .date-info {
-            border: 1px solid #9a9796;
-            background: #ffffff;
             cursor: pointer;
             height: 85px;
             margin: 0 5px;
@@ -26,6 +29,72 @@
                 font-size: 12px;
             }
 
+        }
+
+        .date-info:hover {
+            background-color: #ebebeb;
+        }
+    }
+}
+
+.actitity-card-container {
+    .hours-range {
+        align-items: end;
+    }
+
+    .hours-range>* {
+        font-weight: 600;
+
+    }
+
+    .activity-info-container {
+        .activity-info {
+            grid-template-columns: minmax(50px, 50px) minmax(auto, 11em);
+
+            .activity-teacher-img {
+                border-radius: 50%;
+                align-self: self-start;
+            }
+        }
+
+        .activity-name {
+            grid-row: 1;
+            margin: 0;
+            color: var(--clr5);
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .activity-teacher-name {
+            grid-row: 1;
+            color: var(--clr4);
+            font-size: 14px;
+        }
+
+        .activity-location {
+            grid-row: 1;
+            color: var(--clr4);
+            font-size: 14px;
+
+
+        }
+    }
+
+    .check-in-container {
+        .drop-in {
+            color: var(--clr4);
+            font-size: 14px;
+        }
+
+        .check-in-button {
+            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+            color: #fffef8;
+            background-color: #9a9796;
+            border-radius: 8px;
+            text-transform: none;
+            padding: 8px 22px;
+            font-size: .9em;
+            cursor: pointer;
         }
     }
 }

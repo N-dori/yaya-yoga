@@ -1,5 +1,5 @@
 import React from 'react'
-import PeriodicAgendaForm from '@/app/cmps/dashboard/create-periodic-agenda/PeriodicAgendaForm'
+import PeriodicAgendaCreation from '../../cmps/dashboard/create-periodic-agenda/PeriodicAgendaCreation'
 type Props = {}
 
 export default function createPeriodicAgenda(props:any, searchParams:any) {
@@ -10,7 +10,7 @@ export default function createPeriodicAgenda(props:any, searchParams:any) {
     <main className='create-periodic-agenda-container gc2 '>
 
 
-     <PeriodicAgendaForm/>
+     <PeriodicAgendaCreation/>
     
       </main>
   )

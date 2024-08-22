@@ -10,7 +10,8 @@ export default function DashboardMenu({ }: Props) {
     return (
         <section className='dashboard-menu-container flex-col flex-jc-ac'>
             <p>דף נוכחות</p>
-            <p  onClick={()=>{router.push('/dashboard/create_periodic_agenda')}}>עריכת לוז שבועי</p>
+            <p  onClick={()=>{router.push('/dashboard/create_periodic_agenda')}}>יצירת לוז תקופתי</p>
+            <p  >עריכת לוז נוכחי</p>
             <p>פרסום של ארוע/סדנא חדשה</p>
             <p>סיכום רכישות </p>
             <p>הזנת תקבולים</p>
