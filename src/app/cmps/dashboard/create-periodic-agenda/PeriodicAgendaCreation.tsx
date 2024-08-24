@@ -4,13 +4,11 @@ import React, { useEffect, useState } from 'react'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
 import PeriodDates from './PeriodDates'
 import { Tactivity, TperiodicAgenda, TuserMsgProps } from '@/app/types/types'
-import PeriodicAgendaFrom from './PeriodicAgendaFrom'
 import { makeId, stripTime } from '@/app/util'
+import PeriodicAgendaForm from './PeriodicAgendaForm'
 
 
-
-
-export default function PeriodicAgendaForm() {
+export default function PeriodicAgendaCreation() {
     // this state contains all the info regarding the period-a quoter  
     const [periodicAgenda, setPeriodicAgenda] = useState<TperiodicAgenda>()
     //first 4 states realted to Dates of period
@@ -20,7 +18,7 @@ export default function PeriodicAgendaForm() {
     const [isPeriodicAgendaDates, setIsPeriodicAgendaDates] = useState<boolean>(false)
 
     const [allDaysOfPeriod, setAllDaysOfPeriod] = useState<Date[]>()
-    const [copyOfAllDaysOfPeriod, setCopyOfAllDaysOfPeriod] = useState<Date[]>()
+    const [copyOfAllDaysOfPeriod, setCopyOfAllDaysOfPeriod] = useState<Date[]>([])
     const [periodLength, setPeriodLength] = useState<number>()
     const [datesCounter, setDatesCounter] = useState<number>(0)
     // avtivities Repeations section
@@ -158,81 +156,88 @@ export default function PeriodicAgendaForm() {
     const addActivity = () => {
         let updatedPeriodicAgenda :TperiodicAgenda= { ...periodicAgenda }
         if (!activityDate || !activityStartTime || !activityEndTime) {
-            setError('חיב למלא את כל השדות ')
+            setError('יש למלא תאריך ושעות פעילות')
             callUserMsg({ sucsses: false, msg: 'הוספת פעילות נכשלה' })
             setTimeout(() => { setError('') }, 5500);
             return
         }
         //TODO: get number of repeations options are n>0  n<0
-        // if smaller than 0 add this activity for all days of period
-        // if 0 no repeation 
+        // if number of repeations smaller than 0 add this activity for all days of period
+        // ifnumber of repeations is 0 no repeation 
         // if n>0 add this DAY activity n times
         if (isActivityRepeating ) {
             const day = activityDate.getDay()
             const allOccurences = allDaysOfPeriod?.filter(date => date.getDay() === day) //all of sundays foe example
             const allOccurences1 = copyOfAllDaysOfPeriod?.filter(date => date.getDay() === day)
             if (repeationNumber < 0) {// in this case find the day of week and find all occurences and push them to activity 
-                if(allOccurences?.length){//this state keep an array of all the dates of the period and later it will splice it until noting is left , to let user know in if all the days we wanted were added-displayed at the top of the page
-                    allOccurences?.forEach(date => {
-                        const newActivity: Tactivity = createActivity(date)
-                        updatedPeriodicAgenda.activities?.push({ ...newActivity })
-                    })                    
+                if(allOccurences?.length){//this state keep an array of all the dates of the period and later updateDateCounter function  will splice it until noting is left , to let user know in if all the days we wanted were added-displayed at the top of the page
+                    updatePeriodicAgenda(allOccurences,updatedPeriodicAgenda,null)
+                                 
                 }else{// when there is nothing left in the allDaysOfPeriod we start using the copyOfAllDaysOfPeriod
-                    allOccurences1?.forEach(date => {
-                        const newActivity: Tactivity = createActivity(date)
-                        updatedPeriodicAgenda.activities?.push({ ...newActivity })
-                        
-                    })
-                    setPeriodicAgenda({...updatedPeriodicAgenda})
-                    resetDateTime()
-                    callUserMsg({ sucsses: true, msg: `פעיליות נוספו בהצלחה ${allOccurences1?.length}` })
+                    updatePeriodicAgenda(allOccurences1,updatedPeriodicAgenda,null)   
                     return 
                 }
                 console.log('allOccurences', allOccurences);
-                console.log('periodicAgenda', periodicAgenda);
                 updateDateCounter(null, allOccurences)
-                resetDateTime()
-                callUserMsg({ sucsses: true, msg: `פעילות נוספה בהצלחה${allOccurences?.length}` })
-                setPeriodicAgenda({...updatedPeriodicAgenda})
                 return
             }
             if (repeationNumber > 0) {
-                let nOccurences = allOccurences?.slice(0, repeationNumber)
-                if(nOccurences?.length){
-                    nOccurences?.forEach(date => {
-                        const newActivity: Tactivity = createActivity(date)
-                        updatedPeriodicAgenda.activities?.push({ ...newActivity }) 
-                    })
-                }else {
-                  const nOccurences1 = allOccurences1?.slice(0, repeationNumber)
-                  nOccurences1?.forEach(date => {
-                      const newActivity: Tactivity = createActivity(date)
-                      updatedPeriodicAgenda.activities?.push({ ...newActivity })
-                    })
-                    setPeriodicAgenda({...updatedPeriodicAgenda})
-                    resetDateTime()
-                    callUserMsg({ sucsses: true, msg: `פעיליות נוספו בהצלחה ${nOccurences1?.length}` })
-                    return 
-                   
+                // looping throgh all Occurences to understand if user selected the first sunday or secound sunday and so on -(for exp) 
+                const indexOfStartDate = allOccurences1.findIndex(date=>  stripTime(date).getTime() === stripTime(activityDate).getTime() )
+                
+                if(indexOfStartDate ){
+                    if(indexOfStartDate>0){//if it is bigger than 0 it means that our day is not the first one in period, might be the secound 
+                        const arrayOfTheSameDayOfWeekStartingFromAspecificDate:Date[] = []
+                        //here I find the index of selected dated , and than looping throgh allOccurences(sundays (for exp) of all the time period) and than taking days from the selected date util we reach to the end
+                        allOccurences1?.forEach(currDate=> {
+                            const index= allOccurences1.findIndex(date=>stripTime(date).getTime() === stripTime(currDate).getTime())
+                                index>=indexOfStartDate&&
+                                arrayOfTheSameDayOfWeekStartingFromAspecificDate.push(currDate)
+                            }
+                        )
+                        console.log('arrayOfTheSameDayOfWeekStartingFromAspecificDate',arrayOfTheSameDayOfWeekStartingFromAspecificDate);
+                        let nOfOccurences=arrayOfTheSameDayOfWeekStartingFromAspecificDate.slice(0,repeationNumber)
+                        updatePeriodicAgenda(nOfOccurences,updatedPeriodicAgenda,null)   
+                        return 
+                    }
                 }
-                console.log('periodicAgenda', periodicAgenda);
-                setPeriodicAgenda({...updatedPeriodicAgenda})
+                let nOccurences = allOccurences?.slice(0, repeationNumber)
+                if(nOccurences?.length){//whene not all of the dates of period where pushed to periodic Agenda
+                    updatePeriodicAgenda(nOccurences,updatedPeriodicAgenda,null)   
+
+                }else {//whene all of the dates of the period got pushed into priodic Agenda
+                  const nOccurences1 = allOccurences1?.slice(0, repeationNumber)
+                  updatePeriodicAgenda(nOccurences1,updatedPeriodicAgenda,null)   
+                    return          
+                }
                 updateDateCounter(null, nOccurences)
-                callUserMsg({ sucsses: true, msg: `פעיליות נוספו בהצלחה${nOccurences?.length}` })
-                resetDateTime()
                 return 
             }
         }
-        const newActivity: Tactivity = createActivity(activityDate)
-        updatedPeriodicAgenda.activities?.push({ ...newActivity })
-        setPeriodicAgenda({...updatedPeriodicAgenda})
-        resetDateTime()
-        callUserMsg({ sucsses: true, msg: 'פעילות נוספה בהצלחה' })
+        updatePeriodicAgenda(null, updatedPeriodicAgenda,activityDate)
         const isFound = chackDateInPeriod(activityDate)
         if (isFound) {
             updateDateCounter(activityDate, null)      
         }
     }
+    const updatePeriodicAgenda = (dates:Date[]|null,updatedPeriodicAgenda:TperiodicAgenda,singelDate:Date|null) => {
+       if(singelDate){
+        const newActivity: Tactivity = createActivity(activityDate)
+        updatedPeriodicAgenda.activities?.push({ ...newActivity })
+        
+       }else{
+           dates?.forEach(date => {
+               const newActivity: Tactivity = createActivity(date)
+               updatedPeriodicAgenda.activities?.push({ ...newActivity })
+             })
+       }
+          setPeriodicAgenda({...updatedPeriodicAgenda})
+          resetDateTime()
+          callUserMsg({ sucsses: true, msg: `פעיליות נוספו בהצלחה ${singelDate?1:dates?.length}` })
+          console.log('periodicAgenda', periodicAgenda);
+
+        }
+
     const updateDateCounter = (date: Date | null, dates: Date[] | null | undefined) => {
         if (date) {
             setDatesCounter(datesCounter + 1)
@@ -254,6 +259,15 @@ export default function PeriodicAgendaForm() {
             );
             setAllDaysOfPeriod(updatedDays || []);
       
+        }
+    }
+    const removeSaturdays =() => {
+        if(allDaysOfPeriod){
+            let numberOfSaturdays = 0
+            allDaysOfPeriod.forEach(date=> stripTime(date).getDay() === 6 && numberOfSaturdays++)
+            let withOutSaturdays:Date[] = allDaysOfPeriod.filter(currDate => stripTime(currDate).getDay() !== 6)
+            setDatesCounter(datesCounter + numberOfSaturdays)
+            setAllDaysOfPeriod( [...withOutSaturdays] )
         }
     }
     const createActivity = (date: any) => {
@@ -301,9 +315,10 @@ export default function PeriodicAgendaForm() {
 
         } catch (err) {
             console.log(err);
-
+            
         }
     }
+   
     const PeriodDatesProps = {
         setStartPeriodicAgendaDate,
         setEndPeriodicAgendaDate,
@@ -346,6 +361,7 @@ export default function PeriodicAgendaForm() {
         setIsPreviewDisplayShown,
         createNewPeriodicAgenda,
         addActivity,
+        removeSaturdays,
 
         periodicAgendaDates,
         startPeriodicAgendaDate,
@@ -362,7 +378,7 @@ export default function PeriodicAgendaForm() {
             isPreviewDisplayShown ?
                 <PeriodicAgendaPreviewDisplay {...PreviewDisplayProps} />
                 :
-                <PeriodicAgendaFrom {...PeriodicAgendaFromProps} />
+                <PeriodicAgendaForm {...PeriodicAgendaFromProps} />
 
 
     )

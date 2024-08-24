@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import UserMsg from '../../UserMsg'
@@ -10,40 +10,41 @@ import RepeatingActivityRadioBtns from './RepeatingActivityRadioBtns'
 import { TuserMsgProps } from '@/app/types/types'
 
 type PeriodicAgendaFromProps = {
-    activityEndTime: Date|null|undefined
-    activityStartTime: Date|null|undefined
+    activityEndTime: Date | null | undefined
+    activityStartTime: Date | null | undefined
     handelTimeChange: (currDate: Date | null | undefined, startEnd: string) => void
-    userMsg: TuserMsgProps|undefined,
+    userMsg: TuserMsgProps | undefined,
     setIsMsgShown: (isShown: boolean) => void,
     isMsgShown: boolean
     error: string
 
-    activityDate:Date|null|undefined
-    
+    activityDate: Date | null | undefined
+
     isActivityRepeating: boolean
     repeationNumber: number
-    handelDateChange:(date:Date|null|undefined) => void
+    handelDateChange: (date: Date | null | undefined) => void
     setIsActivityRepeating: (isRepeating: boolean) => void
     setRrepeationNumber: (num: number) => void
-    activityName:string
-    setActivityName:(name:string)=>void
-    activityType:string
-    setActivityType:(type:string)=>void
-    activityTeacher:string
-    setActivityTeacher:(teacher:string)=>void
-    activityLocation:string
-    setActivityLocation:(location:string)=>void
+    activityName: string
+    setActivityName: (name: string) => void
+    activityType: string
+    setActivityType: (type: string) => void
+    activityTeacher: string
+    setActivityTeacher: (teacher: string) => void
+    activityLocation: string
+    setActivityLocation: (location: string) => void
 
-    setIsPreviewDisplayShown:(b:boolean)=>void
-    createNewPeriodicAgenda:() => void
-    addActivity:()=>void
+    setIsPreviewDisplayShown: (b: boolean) => void
+    createNewPeriodicAgenda: () => void
+    addActivity: () => void
+    removeSaturdays: () => void
 
     periodicAgendaDates: { start: string, end: string }
-    startPeriodicAgendaDate:Date|null|undefined
-    endPeriodicAgendaDate:Date|null|undefined
-    datesCounter:number
-    periodLength:number|undefined
-    allDaysOfPeriod:Date[]|undefined
+    startPeriodicAgendaDate: Date | null | undefined
+    endPeriodicAgendaDate: Date | null | undefined
+    datesCounter: number
+    periodLength: number | undefined
+    allDaysOfPeriod: Date[] | undefined
 
 }
 
@@ -69,14 +70,15 @@ export default function PeriodicAgendaFrom({
     setRrepeationNumber,
     handelDateChange,
     handelTimeChange,
-    
+
     setIsPreviewDisplayShown,
     createNewPeriodicAgenda,
     addActivity,
+    removeSaturdays,
     datesCounter,
     periodLength,
     allDaysOfPeriod,
-    
+
     setIsMsgShown,
     userMsg,
     isMsgShown,
@@ -88,7 +90,8 @@ export default function PeriodicAgendaFrom({
         isActivityRepeating,
         setIsActivityRepeating,
         setRrepeationNumber,
-        repeationNumber
+        repeationNumber,
+        removeSaturdays
     }
     const userMsgProps = {
         userMsg,
@@ -102,6 +105,7 @@ export default function PeriodicAgendaFrom({
         error,
 
     }
+
 
     return (
         <main className='periodic-agenda-form-container'>
@@ -132,6 +136,7 @@ export default function PeriodicAgendaFrom({
 
                 </div>
                 <RepeatingActivityRadioBtns {...RepeatingActivityRadioBtnsProps} />
+
                 <label htmlFor={'name'} className='flex-col'>
                     שם הפעילות:
 
@@ -146,7 +151,7 @@ export default function PeriodicAgendaFrom({
                 <label htmlFor='activity-type' className='flex-col'>
                     סוג הפעילות:
                     <select className='form-input' name='activity-type' onChange={(e) =>
-                         setActivityType(e.target.value)} value={activityType} >
+                        setActivityType(e.target.value)} value={activityType} >
                         <option value={'שיעור'}>שיעור</option>
                         <option value={'סדנא'}>סדנא</option>
                     </select>
@@ -160,7 +165,6 @@ export default function PeriodicAgendaFrom({
                     מיקום :
                     <input className='form-input' name='location' onChange={(e) => setActivityLocation(e.target.value)} value={activityLocation} />
                 </label>
-
                 <button className='form-btn flex-jc-ac' type='button' onClick={addActivity}>הוסף פעילות </button>
                 <button className='form-btn flex-jc-ac' type='button' onClick={() => setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
                 <button className='form-btn flex-jc-ac' type='button' onClick={createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
