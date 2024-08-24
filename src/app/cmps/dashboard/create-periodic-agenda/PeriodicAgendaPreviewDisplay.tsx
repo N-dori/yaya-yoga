@@ -15,6 +15,7 @@ type PreviewDisplayProps = {
 export default function PeriodicAgendaPreviewDisplay({ setIsPreviewDisplayShown, periodicAgenda, isPreview }: PreviewDisplayProps) {
   
   const [currDate, setCurrDate] = useState<Date>(new Date())
+  
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);

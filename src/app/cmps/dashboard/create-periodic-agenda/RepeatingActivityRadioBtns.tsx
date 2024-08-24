@@ -1,15 +1,17 @@
+import TrashSvg from '@/app/assets/svgs/TrashSvg'
 import { makeId } from '@/app/util'
 import React, { useEffect, useState } from 'react'
 
 type RepeatingActivityRadioBtnsProps = {
-    setIsActivityRepeating:(isActivityRepeating:boolean) => void
-    isActivityRepeating:boolean
-    repeationNumber:number
-    setRrepeationNumber:(repeationNumber:number)=>void
+    setIsActivityRepeating: (isActivityRepeating: boolean) => void
+    isActivityRepeating: boolean
+    repeationNumber: number
+    setRrepeationNumber: (repeationNumber: number) => void
+    removeSaturdays: () => void
 }
 
 export default function RepeatingActivityRadioBtns({
-    repeationNumber,setRrepeationNumber,isActivityRepeating,setIsActivityRepeating }: RepeatingActivityRadioBtnsProps) {
+    removeSaturdays, setRrepeationNumber, isActivityRepeating, setIsActivityRepeating }: RepeatingActivityRadioBtnsProps) {
     const [selectedRadioBtn, setSelectedRadioBtn] = useState<string>('חד-פעמית')
 
     const [opt, setOpt] = useState([
@@ -21,12 +23,12 @@ export default function RepeatingActivityRadioBtns({
         setIsActivityRepeating(selectedRadioBtn === 'חזרתית')
     }, [selectedRadioBtn])
 
-    const handleIsRepeatingActivity = (ev: React.ChangeEvent<HTMLInputElement>, label: string) => {
+    const handleSelectedActivity = (ev: React.ChangeEvent<HTMLInputElement>, label: string) => {
+        
         setSelectedRadioBtn(label)
     }
-    const handelRepeationNumberChange =(ev:React.ChangeEvent<HTMLInputElement>) => {
-setRrepeationNumber(+ev.target.value)
-console.log('RP-number : ',+ev.target.value);
+    const handelRepeationNumberChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        setRrepeationNumber(+ev.target.value)
 
     }
 
@@ -38,9 +40,9 @@ console.log('RP-number : ',+ev.target.value);
                     <label htmlFor={`repeat-btn-${btn.id}`}>
                         <input
                             className={`repeat-btn`}
-                            onChange={(ev) => handleIsRepeatingActivity(ev, btn.label)}
+                            onChange={(ev) => handleSelectedActivity(ev, btn.label)}
                             type="radio"
-                            checked={btn.label === selectedRadioBtn}
+                            checked={btn.label === selectedRadioBtn }
                             name="repeat-btn"
                             value={btn.label}
                         />
@@ -49,11 +51,11 @@ console.log('RP-number : ',+ev.target.value);
                 </section>
             )}
             {isActivityRepeating &&
-     <>
-         <small>ציין את מספר החזרות או -1 לכל התקופה </small>
-     <input onChange={handelRepeationNumberChange} className='number-input' type="number" defaultValue={-1}/>
-     
-     </>
+                <section className='flex-col gap1'>
+                    <small>ציין את מספר החזרות או -1 לכל התקופה </small>
+                    <input onChange={handelRepeationNumberChange} className='number-input' type="number" defaultValue={-1} />
+                   <p className='flex-ac pointer' onClick={()=>removeSaturdays()}><TrashSvg/>לחץ להסרת שבתות</p>
+                </section>
             }
         </fieldset>
     )

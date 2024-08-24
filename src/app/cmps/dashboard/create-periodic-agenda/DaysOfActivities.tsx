@@ -29,27 +29,38 @@ export default function DaysOfActivities({ setCurrDate, periodicAgenda, currDate
 
     const getPage = (activities: Tactivity[]) => {
         let sortedThreeDays
+        //we dont want to see mulipule time the same day => removing duplicates because there could be same date with to different lessonss, for the display of the days of the week 
         if (activities) {
-            const todayIndex = activities.findIndex(activityDay => {
-                if (activityDay) {
-                    if (activityDay.date) {
-                        if (!isNaN(new Date(activityDay.date).getTime())) {// Check if the date is valid
-                            return (stripTime(activityDay.date).getTime() === stripTime(currDate).getTime()) 
-                                          
-                        }
-                    }
-
-                }
-            })
+            // a way to get new arry with unique resultes : if it is the same date it will return the index but becasue we loop throgth the array two times we if the same date repeats than it wil not be the same index , this way we get only the first Occurnce of a date 
+            let uniqueActivities = activities.filter((activity, index, activities) =>
+                index === activities.findIndex((currActivity) => {
+                    if(currActivity.date && activity.date)
+                   return  currActivity?.date.getTime() === activity.date.getTime()})
+            );
+            const todayIndex = findDateIndex(currDate, activities)
             console.log('today index :',todayIndex);
-            if(todayIndex || todayIndex === 0){
-                sortedThreeDays = activities.slice(todayIndex, todayIndex+PAGE)
+            if(todayIndex !== -1){
+                sortedThreeDays = uniqueActivities.slice(todayIndex, todayIndex+PAGE)
                 setStartIndex(todayIndex)
                 setEndIndex(todayIndex+PAGE)
                 setThreeDays(sortedThreeDays)
 
-            }else{
-                sortedThreeDays = activities.slice(startIndex, endIndex)
+            }
+            if(todayIndex === -1){
+                // -1 because is it probably saturday or a day which is not part of the period so setting current date to be the first date in the array
+                if(activities){
+                    if(activities[0]){
+                        if(activities[0].date){
+                            setCurrDate(activities[0].date)
+                        }
+                    }
+                }
+        
+                console.log('startIndex :',startIndex);
+                console.log('endIndex :',endIndex);
+                sortedThreeDays = uniqueActivities.slice(startIndex, endIndex)
+
+                console.log('sortedThreeDays :',sortedThreeDays);
                 setThreeDays(sortedThreeDays)
 
             }
@@ -76,7 +87,22 @@ export default function DaysOfActivities({ setCurrDate, periodicAgenda, currDate
             // console.log('sortRes', sortRes);
             getPage(sortRes)
         }
-    };
+    }
+
+    const findDateIndex = (date:Date,activities:Tactivity[]) => {
+      const   dateIndex = activities.findIndex(activityDay => {
+            if (activityDay) {
+                if (activityDay.date) {
+                    if (!isNaN(new Date(activityDay.date).getTime())) {// Check if the date is valid
+                        return (stripTime(activityDay.date).getTime() === stripTime(date).getTime()) 
+                                      
+                    }
+                }
+
+            }
+        })
+        return dateIndex
+    }
     const DaysForwordSvgProps = {
         PAGE,
         startIndex,

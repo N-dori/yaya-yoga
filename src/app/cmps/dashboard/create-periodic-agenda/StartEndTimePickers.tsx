@@ -44,6 +44,6 @@ export  function StartEndTimePickers({error,activityEndTime,handelTimeChange,act
     icon={clockSvg}
     timeFormat="HH:mm"
     locale={he} />  
-    <span className='error'>{error}</span>
+    <span style={{color:'red'}}className='error'>{error}</span>
       </>  )
 }

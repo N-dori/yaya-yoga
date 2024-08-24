@@ -35,7 +35,12 @@
         /* Adjust the font size as needed */
         line-height: 1.2;
     }
-
+.remove-saturdays-btn{
+    border: none;
+    background-color: #e9e6e6;
+    color: rgb(15, 164, 214);
+    text-decoration: underline;
+}
 .form-btn{
     border: 1px solid rgba(0, 0, 0, 0.23);
     padding: 15px 10px;
