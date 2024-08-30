@@ -8,30 +8,45 @@ type DaysBackForwordSvgProps = {
   setEndIndex: (num: number) => void
   isRotate: boolean
   totalLength:number|undefined
+  setIsOnCancelMode:(b:boolean)=> void
 
 }
 
-export default function DaysBackForwordSvg({PAGE ,totalLength,isRotate, startIndex, endIndex, setEndIndex, setStartIndex }: DaysBackForwordSvgProps) {
+export default function DaysBackForwordSvg({setIsOnCancelMode,PAGE ,totalLength,isRotate, startIndex, endIndex, setEndIndex, setStartIndex }: DaysBackForwordSvgProps) {
   const handelClick = () => {
-    if (isRotate) {
+    //if we on cancelation mode we want to reverse that so rerender on get page func will get the rigth slice page  
+    setIsOnCancelMode(false)
+    if (!isRotate) {
       //rigth arrow
-      if (startIndex === 0) return
-      if(startIndex!== undefined && endIndex!==undefined){
-        setStartIndex(+startIndex-PAGE)
-        setEndIndex(endIndex-PAGE)
-
+      console.log('left start index is : ',startIndex);
+      // if (startIndex === 0) return
+      if(startIndex!== undefined && endIndex!==undefined && totalLength){
+        if(startIndex+PAGE>=totalLength){
+          console.log('return ');
+          return 
+        }
+        console.log('incrementing start index  : ',+startIndex);
+        console.log('incrementing endIndex index  : ',endIndex);
+        console.log('totalLength  : ',totalLength);
+        
+        setStartIndex(+startIndex+PAGE)
+        setEndIndex(endIndex+PAGE)
+        
       }
       
       
     }else{
       // left arrow
-  if(startIndex!== undefined && endIndex!==undefined && totalLength)
-    if(+startIndex+PAGE>=totalLength){
+      console.log('rigth start index is : ',startIndex);
+      if(startIndex!== undefined && endIndex!==undefined ){
+    if(startIndex <= 0 ){
       return 
-    }else{
-      setStartIndex(+startIndex+PAGE)
-      setEndIndex(endIndex+PAGE)
     }
+      setStartIndex(+startIndex-PAGE)
+      setEndIndex(endIndex-PAGE)
+    
+
+      }
     
     }
     // in this case clicked on rigth arrow 

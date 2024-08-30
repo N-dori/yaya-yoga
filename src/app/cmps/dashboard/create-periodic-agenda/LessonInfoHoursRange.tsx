@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 type Props = {
-    start: Date
-    end: Date;
+    start: Date |undefined|null
+    end: Date |undefined|null;
+    isCanceled:boolean
+
 }
 
-export default function LessonInfoHoursRange({ start, end }: Props) {
+export default function LessonInfoHoursRange({isCanceled, start, end }: Props) {
     const [formattedStartTime, setFormattedStartTime] = useState('');
     const [formattedEndTime, setFormattedEndTime] = useState('');
 
@@ -23,7 +25,7 @@ export default function LessonInfoHoursRange({ start, end }: Props) {
         }
     }, [start, end]);
     return (
-        <section className='hours-range flex '>
+        <section  style={isCanceled?{textDecoration:' line-through'}:{}} className='hours-range flex '>
             <span>{formattedStartTime}</span>
             <span>-</span>
             <span>{formattedEndTime}</span>

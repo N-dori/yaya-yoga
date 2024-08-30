@@ -33,9 +33,7 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
       const monthIndex = activityDate.getMonth()
       setHbMonth(hebrewMonths[monthIndex])
       const today = new Date()
-      if (activityDate.getDate() === today.getDate() &&
-        activityDate.getMonth() === today.getMonth() &&
-        activityDate.getFullYear() === today.getFullYear()) {
+      if (isBothTheSameDate(activityDate,today)) {
         console.log('both days are the same')
         setHbDay('היום')
       } else {
@@ -62,7 +60,11 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
   
     
   }, [activityDay, currDate])
-
+  const isBothTheSameDate = (date1:Date,date2:Date)=> {
+    return date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear()
+  }
   const handelDayClicked = () => {
     if (activityDay?.date) {
       setCurrDate(new Date(activityDay.date))
