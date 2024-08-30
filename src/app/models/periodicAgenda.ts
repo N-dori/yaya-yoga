@@ -1,67 +1,73 @@
 import mongoose, { Schema } from "mongoose";
-const dateTime  = new Schema ({
-    start :  {
+const dateTime = new Schema({
+    start: {
         type: String,
-        required:[true , " please provide start date"],
-    } ,
-    end :  {
+        required: [true, " please provide start date"],
+    },
+    end: {
         type: String,
-        required:[true , " please provide end date"],
-        
-    } 
+        required: [true, " please provide end date"],
+
+    }
 })
 const hoursRangeSchema = new Schema({
-    start :  {
+    start: {
         type: String,
-        required:[true , " please provide start date"],
-    } ,
-    end :  {
+        required: [true, " please provide start date"],
+    },
+    end: {
         type: String,
-        required:[true , " please provide end date"],
-        
-    } 
+        required: [true, " please provide end date"],
+
+    }
 
 })
-const activitySchema =  new Schema ({
-    id :  {
+const activitySchema = new Schema({
+    id: {
         type: String,
-    }  ,
-    date :  {
+    },
+    date: {
         type: String,
-        required:[true , " please provide valid email"],
-    }  ,
-    name :  {
+        required: [true, " please provide valid email"],
+    },
+    name: {
         type: String,
-    }  ,
-    hoursRange :  hoursRangeSchema ,
-    classOrWorkshop :  {
+    },
+    hoursRange: hoursRangeSchema,
+    classOrWorkshop: {
         type: String,
-       
-    }  ,
-    teacher :  {
+
+    },
+    teacher: {
         type: String,
-        
-    }  ,
-    location :  {
+
+    },
+    location: {
         type: String,
-       
-    }  ,
-    practitioners :  [
-      { type: String}
-     ] ,
+
+    },
+    isCanceled: {
+        type: Boolean
+    },
+    reasonOfCancelation: {
+        type: String
+    },
+    practitioners: [
+        { type: String }
+    ],
 
 })
-const periodicAgendaSceama = new Schema ({
-    date:dateTime,
-    activities:[activitySchema]
+const periodicAgendaSceama = new Schema({
+    date: dateTime,
+    activities: [activitySchema]
 
 
 
 },
-{
-    timestamps:true
-})
+    {
+        timestamps: true
+    })
 
-const PeriodicAgenda = mongoose.models.periodic_agenda || mongoose.model('periodic_agenda', periodicAgendaSceama) 
+const PeriodicAgenda = mongoose.models.periodic_agenda || mongoose.model('periodic_agenda', periodicAgendaSceama)
 
 export default PeriodicAgenda
