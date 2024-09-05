@@ -7,6 +7,7 @@ import { LesssonsInfoList } from './LesssonsInfoList'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
+import { getUrl } from '@/app/util'
 
 
 type PreviewDisplayProps = {
@@ -102,8 +103,8 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ca
   const updatePeriocidAgendaAtDataBase = async (activityId: string, currCencelationState: boolean, lastDate: Date | null | undefined) => {
     try {
       setIsOnCancelMode(!isOnCancelMode)
-
-      const res = await fetch('http://localhost:3000/api/periodicAgenda/updatePeriodicAgendaAfterCanceling', {
+      const url = getUrl('periodicAgenda/updatePeriodicAgendaAfterCanceling')
+      const res = await fetch(url, {
         method: 'PUT',
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ periodicAgendaId: periodicAgenda?._id, activityId, currCencelationState })

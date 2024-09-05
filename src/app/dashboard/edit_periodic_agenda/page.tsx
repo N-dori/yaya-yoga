@@ -1,41 +1,42 @@
 import PeriodicAgendaPreviewDisplay from '@/app/cmps/dashboard/create-periodic-agenda/PeriodicAgendaPreviewDisplay'
 import EditWarpper from '@/app/cmps/dashboard/edit-periodic-agenda/EditWarpper'
 import { TperiodicAgenda } from '@/app/types/types'
+import { getUrl } from '@/app/util'
 import React from 'react'
 
 type Props = {}
-const getPeridicAgenda =async () => {
-try {
-    const res = await fetch('http://localhost:3000/api/periodicAgenda/getPeriodicAgenda',{
-        method: 'POST',
-        headers: { "Content-type": "application/json" },
-        
-})
-if(res.ok){
-    return await res.json()
-    
-}else{
-    throw new Error('failed to fetch periodic agenda reason : ')
+const getPeridicAgenda = async () => {
+    try {
+        const url = getUrl('periodicAgenda/getPeriodicAgenda')
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { "Content-type": "application/json" },
+        })
+        if (res.ok) {
+            return await res.json()
+
+        } else {
+            throw new Error('failed to fetch periodic agenda reason : ')
+        }
+
+    } catch (error) {
+        console.log('failed to fetch periodic agenda reason : ', error);
+
+    }
 }
-    
-} catch (error) {
-  console.log('failed to fetch periodic agenda reason : ',error);
-    
-}
-}
-export default async function editperiodicAgenda({}: Props) {
-    const res = await getPeridicAgenda() 
-    let periodicAgenda:TperiodicAgenda
-    if(res){
-        periodicAgenda=res.periodicAgenda
+export default async function editperiodicAgenda({ }: Props) {
+    const res = await getPeridicAgenda()
+    let periodicAgenda: TperiodicAgenda
+    if (res) {
+        periodicAgenda = res.periodicAgenda
     }
 
-const editWarpperProps ={
-    periodicAgenda ,
-}
+    const editWarpperProps = {
+        periodicAgenda,
+    }
     return (
-    <div className='gc2'>
-        <EditWarpper {...editWarpperProps} />  
-    </div>
-  )
+        <div className='gc2'>
+            <EditWarpper {...editWarpperProps} />
+        </div>
+    )
 }

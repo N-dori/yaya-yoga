@@ -1,5 +1,6 @@
 "use client"
 
+import { getUrl } from "@/app/util"
 import { signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -39,7 +40,8 @@ export default function SignInForm({}: Props) {
       }
   
       try {
-        const res = await fetch('http://localhost:3000/api/auth/registration/', {
+        const url = getUrl('auth/registration/')
+        const res = await fetch(url, {
   
           method: 'POST',
           headers: { "Content-type": "appliction/json" },
@@ -66,8 +68,8 @@ export default function SignInForm({}: Props) {
     }
   
     const getUserByEmail = async (email: String) => {
-  
-      const res = await fetch('http://localhost:3000/api/auth/userExists/', {
+      const url = getUrl('auth/userExists/')
+      const res = await fetch(url, {
   
         method: 'POST',
         headers: { "Content-type": "appliction/json" },

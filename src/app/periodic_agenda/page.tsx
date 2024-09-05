@@ -1,12 +1,13 @@
 import React from 'react'
 import PeriodicAgendaPreviewDisplay from '../cmps/dashboard/create-periodic-agenda/PeriodicAgendaPreviewDisplay'
 import { TperiodicAgenda } from '../types/types'
+import { getUrl } from '../util'
 
 type Props = {}
 const getPreiodicAgenda = async ()=> {
   try {
-      
-      const res = await fetch('http://localhost:3000/api/periodicAgenda/getPeriodicAgenda', {
+    const url = getUrl('periodicAgenda/getPeriodicAgenda')
+      const res = await fetch(url, {
           method: 'POST',
           headers: { "Content-type": "application/json" },
       })
