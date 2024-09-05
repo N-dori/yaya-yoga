@@ -1,4 +1,3 @@
-import React, { forwardRef, useRef, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 type PeriodDatesProps = {
@@ -18,12 +17,11 @@ export default function PeriodDates({ periodicAgendaDates
     setStartPeriodicAgendaDate,
      setEndPeriodicAgendaDate}: PeriodDatesProps) {
         
-        const inputRef = useRef()
 
-    const handelDateChange = (currDate: Date | null | undefined, startEnd: string) => {
+    const handelDateChange = (currDate: Date | null , startEnd: "start" | "end") => {
         if (startEnd === 'start') setStartPeriodicAgendaDate(currDate)
         if (startEnd === 'end') setEndPeriodicAgendaDate(currDate)
-        let formatedDate = currDate?.toLocaleString().split(',')[0] || ''
+        let formatedDate = currDate?.toLocaleString("he-IL").split(',')[0] || ''
 
         let newPeriodicAgendaDates = { ...periodicAgendaDates }
         if (startEnd === 'start') newPeriodicAgendaDates.start = formatedDate
@@ -40,10 +38,11 @@ export default function PeriodDates({ periodicAgendaDates
                 תאריך תחילת תקופה :       </label>
                 <DatePicker
                     selected={startPeriodicAgendaDate}
-                    onChange={(currDate) => handelDateChange(currDate, 'start')}
+                    onChange={(currDate:Date|null) => handelDateChange(currDate, 'start')}
                     dateFormat={'dd/MM/yyyy'}
                     showIcon
                     locale={he}
+                   
                 />
 
      
@@ -51,7 +50,7 @@ export default function PeriodDates({ periodicAgendaDates
                 תאריך סוף תקופה : </label>
                 <DatePicker
                     selected={endPeriodicAgendaDate}
-                    onChange={(currDate) => handelDateChange(currDate, 'end')}
+                    onChange={(currDate:Date|null) => handelDateChange(currDate, 'end')}
                     dateFormat={'dd/MM/yyyy'}
                     showIcon
                     locale={he}

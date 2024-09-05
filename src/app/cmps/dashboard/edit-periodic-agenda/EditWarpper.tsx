@@ -18,6 +18,6 @@ const periodicAgendaPreviewDisplayProps ={
     
 }
   return (
-<PeriodicAgendaPreviewDisplay {...periodicAgendaPreviewDisplayProps}/>
+    periodicAgenda&&<PeriodicAgendaPreviewDisplay {...periodicAgendaPreviewDisplayProps}/>
 )
 }
