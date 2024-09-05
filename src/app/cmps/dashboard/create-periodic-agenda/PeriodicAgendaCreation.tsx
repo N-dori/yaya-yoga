@@ -304,13 +304,14 @@ export default function PeriodicAgendaCreation() {
     const createNewPeriodicAgenda = async () => {
         try {
             const url = getUrl('periodicAgenda/createPeriodicAgenda/')
-
+            console.log('url',url);
+            
             const res = await fetch(url, {
                 method: 'POST',
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({ periodicAgenda })
             })
-            
+
             if (res.ok) {
                 const { newPeriodicAgenda } = await res.json()
                 callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })

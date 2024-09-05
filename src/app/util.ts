@@ -15,10 +15,10 @@ export function makeId(length = 6) {
     export const getUrl = (endPoint: string) => {
 
       const baseUrl = process.env.NODE_ENV === 'development' ? 
-      process.env.DEV_URL : process.env.PRUD_URL 
+      process.env.NEXT_PUBLIC_DEV_URL : process.env.NEXT_PUBLIC_PRUD_URL 
 
       if(endPoint === "")return baseUrl
-      
+
       const url = `${baseUrl}/api/${endPoint}`;
       // console.log(`Constructed URL: ${url}`);
       return url;

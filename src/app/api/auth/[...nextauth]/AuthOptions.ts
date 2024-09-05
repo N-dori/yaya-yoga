@@ -5,17 +5,19 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GooglePovider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
 import { getUrl } from "@/app/util";
+
 type Tcredentials = {
     email: string
     password: string
 }
+
 export const authOptions: NextAuthOptions = {
     providers: [CredentialsProvider(
         {
             name: 'Credentials',
             credentials: {},
             async authorize(credentials) {
-
+                console.log('credentials******',credentials);
                 const { email, password } = credentials as Tcredentials
 
 
@@ -77,6 +79,8 @@ export const authOptions: NextAuthOptions = {
                     return false; // Sign-in failure
                 }
             }
+            //if user signed up not via google but localy
+            return true
         },
         async jwt({ token, user }) {
             if (user) {
