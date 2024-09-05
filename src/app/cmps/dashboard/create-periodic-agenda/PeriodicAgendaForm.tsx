@@ -13,9 +13,6 @@ type PeriodicAgendaFromProps = {
     activityEndTime: Date | null | undefined
     activityStartTime: Date | null | undefined
     handelTimeChange: (currDate: Date | null | undefined, startEnd: string) => void
-    userMsg: TuserMsgProps | undefined,
-    setIsMsgShown: (isShown: boolean) => void,
-    isMsgShown: boolean
     error: string
 
     activityDate: Date | null | undefined
@@ -45,6 +42,7 @@ type PeriodicAgendaFromProps = {
     datesCounter: number
     periodLength: number | undefined
     allDaysOfPeriod: Date[] | undefined
+   
 
 }
 
@@ -79,10 +77,9 @@ export default function PeriodicAgendaFrom({
     periodLength,
     allDaysOfPeriod,
 
-    setIsMsgShown,
-    userMsg,
-    isMsgShown,
+ 
     error,
+
 
 
 }: PeriodicAgendaFromProps) {
@@ -93,11 +90,7 @@ export default function PeriodicAgendaFrom({
         repeationNumber,
         removeSaturdays
     }
-    const userMsgProps = {
-        userMsg,
-        setIsMsgShown,
-        isMsgShown
-    }
+ 
     const StartEndTimePickersProps = {
         activityEndTime,
         handelTimeChange,
@@ -169,6 +162,6 @@ export default function PeriodicAgendaFrom({
                 <button className='form-btn flex-jc-ac' type='button' onClick={() => setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
                 <button className='form-btn flex-jc-ac' type='button' onClick={createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
             </form>
-            <UserMsg {...userMsgProps} />
+          
         </main>)
 }

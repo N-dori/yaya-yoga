@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import msgSlice from './features/msgSlice'
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {}
+    reducer: {
+      userMsgSlice:msgSlice,
+    }
   })
 }
 

@@ -4,6 +4,8 @@ import "../app/assets/scss/main.scss"
 // import "./globals.css";
 import { AuthProvider } from "./Providers";
 import NavBar from "./cmps/nav-bar/NavBar";
+import StoreProvider from "./StoreProvider";
+import { UserMsg2 } from "./cmps/UserMsg2";
 const varelaRound = Varela_Round ({ weight:'400',subsets: ["hebrew"] });
 
 export const metadata: Metadata = {
@@ -23,13 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    
+    <StoreProvider >
     <html lang="en">
       <body className={`${varelaRound.className} main-layout`}>
         <AuthProvider>
           <NavBar />
           {children}
         </AuthProvider>
+                      <UserMsg2/>
       </body>
     </html>
+  
+    </StoreProvider>
   );
 }

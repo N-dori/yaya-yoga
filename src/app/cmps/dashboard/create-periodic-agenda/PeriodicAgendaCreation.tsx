@@ -7,8 +7,8 @@ import { Tactivity, TperiodicAgenda, TuserMsgProps } from '@/app/types/types'
 import { getUrl, makeId, stripTime } from '@/app/util'
 import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
-
-
+import { callUserMsg, hideUserMsg,  } from '@/app/store/features/msgSlice'
+import { useDispatch } from 'react-redux'
 export default function PeriodicAgendaCreation() {
     // this state contains all the info regarding the period-a quoter  
     const [periodicAgenda, setPeriodicAgenda] = useState<TperiodicAgenda>()
@@ -17,7 +17,7 @@ export default function PeriodicAgendaCreation() {
     const [endPeriodicAgendaDate, setEndPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [periodicAgendaDates, setPeriodicAgendaDates] = useState<{ start: string, end: string }>({ start: '', end: '' })
     const [isPeriodicAgendaDates, setIsPeriodicAgendaDates] = useState<boolean>(false)
-
+    
     const [allDaysOfPeriod, setAllDaysOfPeriod] = useState<Date[]>()
     const [copyOfAllDaysOfPeriod, setCopyOfAllDaysOfPeriod] = useState<Date[]>([])
     const [periodLength, setPeriodLength] = useState<number>()
@@ -25,26 +25,27 @@ export default function PeriodicAgendaCreation() {
     // avtivities Repeations section
     const [isActivityRepeating, setIsActivityRepeating] = useState<boolean>(false)
     const [repeationNumber, setRrepeationNumber] = useState<number>(-1)
-
-
+    
+    
     const [activityDate, setActivityDate] = useState<Date | null | undefined>(null)
-
+    
     const [activityStartTime, setActivityStartTime] = useState<Date | null | undefined>(null)
     const [activityEndTime, setActivityEndTime] = useState<Date | null | undefined>(null)
     const [activityName, setActivityName] = useState<string>('אשטנגה')
     const [activityType, setActivityType] = useState<string>('שיעור')
     const [activityTeacher, setActivityTeacher] = useState<string>('יאיר שוורץ')
     const [activityLocation, setActivityLocation] = useState<string>('בית פעם רחוב הדקלים 92, פרדס חנה-כרכור')
-
+    
     const [isPreviewDisplayShown, setIsPreviewDisplayShown] = useState<boolean>(false)
     const [isMsgShown, setIsMsgShown] = useState<boolean>(false)
     const [userMsg, setUserMsg] = useState<TuserMsgProps>()
-
+    
     const [error, setError] = useState<string>('')
     
     const [isWorkInProgress, setIsWorkInProgress] = useState<boolean>(true)
-   const router = useRouter()
-
+    const router = useRouter()
+    const dispatch = useDispatch()
+    
     useEffect(() => {
         if (startPeriodicAgendaDate && endPeriodicAgendaDate) {
             getAllDaysOfPeriod(startPeriodicAgendaDate, endPeriodicAgendaDate)
@@ -85,19 +86,7 @@ export default function PeriodicAgendaCreation() {
 
     }
 
-    const chackDateInPeriod = (dateToChack: Date) => {
-        if (allDaysOfPeriod) {
-            console.log('chacking if Date is part of Period', allDaysOfPeriod);
 
-            const index = allDaysOfPeriod.findIndex(date => stripTime(date).getTime() === stripTime(dateToChack).getTime());
-            if (index !== -1) {
-                return true
-            } else {
-                return false
-            }
-        }
-
-    }
     const handelDateChange = (currDate: Date | null | undefined) => {
         setActivityDate(currDate);
     };
@@ -234,7 +223,8 @@ export default function PeriodicAgendaCreation() {
         }
         setPeriodicAgenda({ ...updatedPeriodicAgenda })
         resetDateTime()
-        callUserMsg({ sucsses: true, msg: singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה ` })
+        // callUserMsg({ sucsses: true, msg: singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה ` })
+        getUserMsg({msg:singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה `, isSucsses:true })
         console.log('periodicAgenda', periodicAgenda);
 
     }
@@ -269,7 +259,7 @@ export default function PeriodicAgendaCreation() {
             let withOutSaturdays: Date[] = allDaysOfPeriod.filter(currDate => stripTime(currDate).getDay() !== 6)
             setDatesCounter(datesCounter + numberOfSaturdays)
             setAllDaysOfPeriod([...withOutSaturdays])
-            callUserMsg({ sucsses: true, msg: `שבתות הוסרו בהצלחה ${numberOfSaturdays}` })
+            getUserMsg({msg:`שבתות הוסרו בהצלחה ${numberOfSaturdays}`, isSucsses:true })
 
         }
     }
@@ -290,11 +280,8 @@ export default function PeriodicAgendaCreation() {
             practitioners: []
         }
     }
-    const callUserMsg = (userMsg: TuserMsgProps) => {
-        window.scroll(0, 0)
-        setIsMsgShown(true)
-        setUserMsg(userMsg)
-    }
+   
+
     const resetDateTime = () => {
         setActivityDate(null)
         setActivityStartTime(null)
@@ -314,7 +301,9 @@ export default function PeriodicAgendaCreation() {
 
             if (res.ok) {
                 const { newPeriodicAgenda } = await res.json()
-                callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
+                // callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
+                getUserMsg({msg:'לוח זמנים פורסם בהצלחה', isSucsses:true })
+
                 setTimeout(() => {
                     router.replace('/dashboard')
                 }, 1000);
@@ -329,7 +318,13 @@ export default function PeriodicAgendaCreation() {
 
         }
     }
-
+    const getUserMsg = (userMsg: TuserMsgProps) => {
+        window.scroll(0,0)
+        dispatch(callUserMsg({msg:userMsg.msg, isSucsess:userMsg.isSucsses}))
+        setTimeout(() => {
+          dispatch(hideUserMsg())
+        }, 3500);
+    }
     const PeriodDatesProps = {
         setStartPeriodicAgendaDate,
         setEndPeriodicAgendaDate,
@@ -347,7 +342,7 @@ export default function PeriodicAgendaCreation() {
         isWorkInProgress,
         setPeriodicAgenda,
         isPreviewDisplayShown  ,
-        callUserMsg      
+        getUserMsg      
 
     }
     const PeriodicAgendaFromProps = {
@@ -386,6 +381,8 @@ export default function PeriodicAgendaCreation() {
         datesCounter,
         periodLength,
         allDaysOfPeriod,
+
+        getUserMsg
     }
 
     return (
@@ -396,7 +393,5 @@ export default function PeriodicAgendaCreation() {
                 <PeriodicAgendaPreviewDisplay {...PreviewDisplayProps} />
                 :
                 <PeriodicAgendaForm {...PeriodicAgendaFromProps} />
-
-
     )
 }
