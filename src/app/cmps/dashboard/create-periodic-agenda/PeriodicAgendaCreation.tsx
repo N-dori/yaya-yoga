@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
 import PeriodDates from './PeriodDates'
 import { Tactivity, TperiodicAgenda, TuserMsgProps } from '@/app/types/types'
-import { makeId, stripTime } from '@/app/util'
+import { getUrl, makeId, stripTime } from '@/app/util'
 import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
 
@@ -303,13 +303,14 @@ export default function PeriodicAgendaCreation() {
 
     const createNewPeriodicAgenda = async () => {
         try {
-            console.log('sending to mongo : ', periodicAgenda);
+            const url = getUrl('periodicAgenda/createPeriodicAgenda/')
 
-            const res = await fetch('http://localhost:3000/api/periodicAgenda/createPeriodicAgenda', {
+            const res = await fetch(url, {
                 method: 'POST',
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({ periodicAgenda })
             })
+            
             if (res.ok) {
                 const { newPeriodicAgenda } = await res.json()
                 callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
