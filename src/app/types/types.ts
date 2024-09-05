@@ -20,6 +20,6 @@ export type TperiodicAgenda = {
 
 
 export type TuserMsgProps = {
-    sucsses: boolean
+    isSucsses: boolean
     msg: string
 }

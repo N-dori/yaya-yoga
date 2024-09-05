@@ -18,12 +18,12 @@ type PreviewDisplayProps = {
   isWorkInProgress: boolean,
   isPreviewDisplayShown?: boolean
   setIsPreviewDisplayShown?: (b: boolean) => void
-  callUserMsg?: (userMsg: TuserMsgProps) => void
+  getUserMsg?:(userMsg:{msg:string,isSucsses:boolean})=> void
   setCurrPeriodicAgenda?: (periodicAgenda: TperiodicAgenda) => void
 
 }
 
-export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, callUserMsg, isPreviewDisplayShown, setPeriodicAgenda, isWorkInProgress, setIsPreviewDisplayShown,
+export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, getUserMsg, isPreviewDisplayShown, setPeriodicAgenda, isWorkInProgress, setIsPreviewDisplayShown,
   periodicAgenda }: PreviewDisplayProps) {
 
   const [currDate, setCurrDate] = useState<Date>(new Date())
@@ -86,10 +86,8 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ca
 
             // Set the new state
             if (setPeriodicAgenda) setPeriodicAgenda(updatedPeriodicAgenda);
-            if (setIsPreviewDisplayShown) setIsPreviewDisplayShown(!isPreviewDisplayShown)
-
-            if (callUserMsg) callUserMsg({ sucsses: true, msg: currCencelationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
-
+            getUserMsg({ isSucsses: true, msg: currCencelationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
+            if (lastDate) setCurrDate(new Date(lastDate)) 
           }
         }
       }
