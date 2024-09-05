@@ -41,6 +41,8 @@ export default function SignInForm({}: Props) {
   
       try {
         const url = getUrl('auth/registration/')
+     
+        
         const res = await fetch(url, {
   
           method: 'POST',
@@ -52,10 +54,15 @@ export default function SignInForm({}: Props) {
         if (res.ok) {
           const form = e.target
           form.reset()
-          const res =  await signIn('credentials', {
-            email, password , redirect:false
-                                                   })
-          router.push('/')
+          signUserIn()
+          
+         if(res.ok){
+           router.push('/')
+
+         }else{
+          //trying agian?
+          signUserIn()
+         }                                           
         } else {
           throw new Error('faild to create new user')
         }
@@ -66,9 +73,14 @@ export default function SignInForm({}: Props) {
       }
   
     }
-  
+    const signUserIn = async () => {
+      const res =  await signIn('credentials', {
+        email, password , redirect:false
+                                               })
+    }
     const getUserByEmail = async (email: String) => {
       const url = getUrl('auth/userExists/')
+
       const res = await fetch(url, {
   
         method: 'POST',
