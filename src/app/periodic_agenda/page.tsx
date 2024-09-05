@@ -18,18 +18,21 @@ const getPreiodicAgenda = async ()=> {
           throw new Error('faild to get a new periodic Agenda')
       }
   } catch (err) {
-      console.log(err);
+      console.log('failed to fetch a periodic agenda reason: ',err);
   }
 }
 
 export default async function page({}: Props) {
-
-  const {periodicAgenda} = await getPreiodicAgenda()
+  const res= await getPreiodicAgenda()
+  let periodicAgenda:TperiodicAgenda
+  if(res){
+    periodicAgenda = res.periodicAgenda
+  }
   const isPreview:boolean =false
 
  const PeriodicAgendaPreviewDisplayProps = {
    periodicAgenda,
-  isPreview,
+   isWorkInProgress:false,
  }
 
   return (

@@ -123,7 +123,7 @@ export default function PeriodicAgendaFrom({
                 <div className='flex-col gap1 flex-jc-ac'>
                     <DatePicker
                         selected={activityDate}
-                        onChange={(currDate) => handelDateChange(currDate)}
+                        onChange={(currDate:Date|null) => handelDateChange(currDate)}
                         dateFormat={'dd/MM/yyyy'}
                         minDate={startPeriodicAgendaDate ? startPeriodicAgendaDate : undefined}
                         maxDate={endPeriodicAgendaDate ? endPeriodicAgendaDate : undefined}

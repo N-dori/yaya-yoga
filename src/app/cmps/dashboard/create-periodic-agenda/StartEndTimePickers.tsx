@@ -17,7 +17,7 @@ export  function StartEndTimePickers({error,activityEndTime,handelTimeChange,act
 
     <DatePicker
     selected={activityStartTime}
-    onChange={(curtime) => handelTimeChange(curtime, 'start')}
+    onChange={(curtime:Date|null) => handelTimeChange(curtime, 'start')}
     showTimeSelect
     showTimeSelectOnly
     placeholderText="בחר שעת התחלה"
@@ -33,7 +33,7 @@ export  function StartEndTimePickers({error,activityEndTime,handelTimeChange,act
 
 <DatePicker
     selected={activityEndTime}
-    onChange={(curtime) => handelTimeChange(curtime, 'end')}
+    onChange={(curtime:Date|null) => handelTimeChange(curtime, 'end')}
     showTimeSelect
     showTimeSelectOnly
     timeIntervals={30}

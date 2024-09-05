@@ -5,7 +5,7 @@ import React from 'react'
 
 type Props = {}
 const getPeridicAgenda =async () => {
-
+try {
     const res = await fetch('http://localhost:3000/api/periodicAgenda/getPeriodicAgenda',{
         method: 'POST',
         headers: { "Content-type": "application/json" },
@@ -14,20 +14,28 @@ const getPeridicAgenda =async () => {
 if(res.ok){
     return await res.json()
     
+}else{
+    throw new Error('failed to fetch periodic agenda reason : ')
+}
+    
+} catch (error) {
+  console.log('failed to fetch periodic agenda reason : ',error);
+    
 }
 }
 export default async function editperiodicAgenda({}: Props) {
-    const {periodicAgenda } = await getPeridicAgenda() 
+    const res = await getPeridicAgenda() 
+    let periodicAgenda:TperiodicAgenda
+    if(res){
+        periodicAgenda=res.periodicAgenda
+    }
 
 const editWarpperProps ={
     periodicAgenda ,
 }
     return (
     <div className='gc2'>
-        <EditWarpper {...editWarpperProps} />
-       
-
-        
+        <EditWarpper {...editWarpperProps} />  
     </div>
   )
 }
