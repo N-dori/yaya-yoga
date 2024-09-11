@@ -31,8 +31,8 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
           {session?.user?.name?
           `שלום ${session.user.name}`:
           <div className='signin-login flex-col gap05'>
-        <li className='pointer' onClick={()=> handelClick('login')}  >הרשמה </li>
-        <li className='pointer' onClick={()=> handelClick('signup')}  >התחברות </li>
+        <li className='pointer' onClick={()=> handelClick('login')}  >התחברות </li>
+        <li className='pointer' onClick={()=> handelClick('signup')}  >צור חשבון </li>
           </div>}
         <li  onClick={()=> handelClick('periodic_agenda')} >מערכת שיעורים</li>
         <li onClick={()=> handelClick('dashboard')}>dashboard </li>

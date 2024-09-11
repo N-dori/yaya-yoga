@@ -8,6 +8,7 @@ import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
 import { getUrl } from '@/app/util'
+import { useRouter } from 'next/navigation'
 
 
 type PreviewDisplayProps = {
@@ -18,7 +19,7 @@ type PreviewDisplayProps = {
   isWorkInProgress: boolean,
   isPreviewDisplayShown?: boolean
   setIsPreviewDisplayShown?: (b: boolean) => void
-  getUserMsg?:(userMsg:{msg:string,isSucsses:boolean})=> void
+  getUserMsg?: (userMsg: { msg: string, isSucsses: boolean }) => void
   setCurrPeriodicAgenda?: (periodicAgenda: TperiodicAgenda) => void
 
 }
@@ -30,21 +31,17 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
   const [selectedDate, setSelectedDate] = useState<Date | undefined | null>(undefined)
   const [isOnSearchMode, setIsOnSearchMode] = useState<boolean>(false)
   const [isOnCancelMode, setIsOnCancelMode] = useState<boolean>(false)
-
+  const router = useRouter()
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
-
-      console.log('periodicAgenda - dates of period  : ', periodicAgenda?.date?.start);
-      console.log('periodicAgenda - dates of period  : ', periodicAgenda?.date?.end);
-
     }
   }, []);
   useEffect(() => {
 
   }, [isOnSearchMode])
   const hadelExistSearchMode = () => {
-    setSelectedDate(new Date())
+    setSelectedDate(null)
     setCurrDate(new Date())
     setIsOnSearchMode(!isOnSearchMode)
   }
@@ -87,7 +84,7 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
             // Set the new state
             if (setPeriodicAgenda) setPeriodicAgenda(updatedPeriodicAgenda);
             getUserMsg({ isSucsses: true, msg: currCencelationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
-            if (lastDate) setCurrDate(new Date(lastDate)) 
+            if (lastDate) setCurrDate(new Date(lastDate))
           }
         }
       }
@@ -151,10 +148,14 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
 
 
   }
-
+  const returnToDashboard = () => {
+    router.replace('/')
+    router.replace('/dashboard')
+  }
   return (
     <main className='preview-display-container '>
       {setIsPreviewDisplayShown && <BackSvg setIsPreviewDisplayShown={() => setIsPreviewDisplayShown(false)} />}
+      {!isWorkInProgress && <BackSvg returnToDashboard={returnToDashboard} />}
       {<h1 className='schedule-headline tac'>לוח זמנים</h1>}
       <h4 className='studio-name mb-05'>בית פעם- סטודיו קדם</h4>
       <h6 className='studio-address mb-05'>רחוב הדקלים 92, פרדס חנה-כרכור</h6>

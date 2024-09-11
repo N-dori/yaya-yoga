@@ -9,7 +9,7 @@ type LesssonsInfoListProps = {
   isOnSearchMode: boolean
   hadelExistSearchMode: () => void
   isWorkInProgress: boolean
-  handelLessonCancelation: (id: string,isCanceled:boolean,lastDate:Date| null | undefined) => void
+  handelLessonCancelation: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
 
 }
 
@@ -25,7 +25,7 @@ export function LesssonsInfoList({ handelLessonCancelation, hadelExistSearchMode
       console.log('cu', typeof currDate);
 
       setDay(new Date(currDate).getDate())
-      setMounth(new Date(currDate).getMonth()+1)
+      setMounth(new Date(currDate).getMonth() + 1)
       setYear(new Date(currDate).getFullYear())
 
     }
@@ -56,7 +56,6 @@ export function LesssonsInfoList({ handelLessonCancelation, hadelExistSearchMode
 
     let sortRes = res.sort((a: Tactivity, b: Tactivity) => {
       if (!a.date || !b.date) return 0;
-      // console.log('new Date(a.date).getTime(', new Date(a.date).getDate());
       if (a.hoursRange && b.hoursRange) {
         if (a.hoursRange.start && b.hoursRange.start) {
           if (new Date(a.hoursRange.start).getTime() > new Date(b.hoursRange.start).getTime()) return 1
@@ -80,7 +79,7 @@ export function LesssonsInfoList({ handelLessonCancelation, hadelExistSearchMode
           <p>תוצאות חיפוש בעבור תאריך {`${day}/${mounth}/${year}`}</p>
         </div>}
       {activitiesOfTheDay?.length ? activitiesOfTheDay.map(activity =>
-        <LessonInfoPreview key={activity.id} activity={activity}  handelLessonCancelation={handelLessonCancelation} />) :
+        <LessonInfoPreview key={activity.id} activity={activity} handelLessonCancelation={handelLessonCancelation} />) :
         <p>אין פעילויות בתאריך הנבחר</p>}
 
     </ul>

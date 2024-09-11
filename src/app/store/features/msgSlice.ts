@@ -22,22 +22,15 @@ export const msgSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setColor: (state) => {
-  
-    if(state.userMsg){
-             state.bgColor = (state.sucsses) ? "rgb(18, 199, 57)" : 'red'
 
-    }},
-    callUserMsg:( state , action)=> {
-        console.log('action :',action);
+    callUserMsg: (state, action: PayloadAction<any>) => {
+        console.log('action ',action);
         
-        state.isMsgShown = true
-        state.userMsg = action.payload.msg
-        state.sucsses = action.payload.isSucsses
-        state.bgColor = action.payload ? "rgb(18, 199, 57)" : 'red'
+        state.isMsgShown = true;
+        state.userMsg = action.payload.msg;
+        state.bgColor = action.payload.isSucsses ? 'rgb(18, 199, 57)' : 'red';
+      },
     
-    }
-    ,
 
     hideUserMsg: (state) => {
         state.isMsgShown = false;

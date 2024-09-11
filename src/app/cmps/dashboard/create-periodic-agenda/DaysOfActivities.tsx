@@ -20,6 +20,8 @@ export default function DaysOfActivities({ setIsOnCancelMode, isOnCancelMode, is
     const [startIndex, setStartIndex] = useState<number>(0)
     const [endIndex, setEndIndex] = useState<number>(PAGE)
     const [threeDays, setThreeDays] = useState<Tactivity[] | undefined[]>()
+    // in some cases , there more than one activity on a spcific date
+    // we want to keep a quniue list of dates 
     const [uniqueActivities, setUniqueActivities] = useState<Tactivity[]>([])
 
     const [isDisplayedFirstTime, setIsDisplayedFirstTime] = useState<boolean>(true)
@@ -43,7 +45,7 @@ export default function DaysOfActivities({ setIsOnCancelMode, isOnCancelMode, is
 
             getPage()
         }
-    }, [startIndex, endIndex, activities,])
+    }, [startIndex, endIndex, activities,isOnSearchMode])
 
     const getPage = () => {
         console.log('getPage functuion some', isOnCancelMode);
@@ -65,7 +67,7 @@ export default function DaysOfActivities({ setIsOnCancelMode, isOnCancelMode, is
                     if (threeDays[0].date) {
 
                         setThreeDays(threeDays)
-                        setCurrDate(threeDays[PAGE - 1].date as Date)
+                        setCurrDate(threeDays[0].date as Date)
                     }
                 }
             }
