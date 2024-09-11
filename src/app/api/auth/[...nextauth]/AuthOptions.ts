@@ -64,15 +64,18 @@ export const authOptions: NextAuthOptions = {
 
                             method: 'POST',
                             headers: { "Content-type": "appliction/json" },
-                            body: JSON.stringify({ name, email, isAdmin: false })
+                            body: JSON.stringify({ name, email, isNewUser:true, isAdmin: false })
 
                         })
                         if (res.status === 200 || res.status === 201) {
+                            
                             return true
                         } else {
                             return false
                         }
                     }
+                    // update isNewUser to false
+                     
                     return true;
                 } catch (err) {
                     console.log('had aproblem saving google user to data base', err);
@@ -86,6 +89,7 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token.email = user.email
                 token.name = user.name
+                // token.isNewUser = user.isNewUser
             }
             return token
         },
@@ -96,8 +100,10 @@ export const authOptions: NextAuthOptions = {
             }
             return session
         },
-        async redirect({ baseUrl }) {
-            return baseUrl
+         async redirect({ url, baseUrl }) {
+        
+        
+            return baseUrl // Default to the base URL if the URL is external
         }
 
     },

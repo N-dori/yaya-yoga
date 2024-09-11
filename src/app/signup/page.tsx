@@ -6,12 +6,7 @@ import SignupForm from '../cmps/auth/SignupForm';
 type Props = {}
 
 export default async function Signup({}: Props) {
-    // const session = await  getServerSession(authOptions as any )
-    // console.log('session session',session);
-    
-    //   if(session){
-    //     redirect('/')
-    //   }
+
       return (
          <SignupForm></SignupForm>
       )
