@@ -9,6 +9,7 @@ import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
 import { callUserMsg, hideUserMsg,  } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
+
 export default function PeriodicAgendaCreation() {
     // this state contains all the info regarding the period-a quoter  
     const [periodicAgenda, setPeriodicAgenda] = useState<TperiodicAgenda>()
@@ -147,9 +148,11 @@ export default function PeriodicAgendaCreation() {
     }
     const addActivity = () => {
         let updatedPeriodicAgenda: TperiodicAgenda = { ...periodicAgenda }
-        if (!activityDate || !activityStartTime || !activityEndTime) {
+        console.log('activityName',activityName);
+        
+        if (!activityDate || !activityStartTime || !activityEndTime || !activityName) {
             setError('יש למלא תאריך ושעות פעילות')
-            callUserMsg({ sucsses: false, msg: 'הוספת פעילות נכשלה' })
+            getUserMsg({ msg: 'הוספת פעילות נכשלה', isSucsses: false})
             setTimeout(() => { setError('') }, 5500);
             return
         }
@@ -224,8 +227,8 @@ export default function PeriodicAgendaCreation() {
         setPeriodicAgenda({ ...updatedPeriodicAgenda })
         resetDateTime()
         // callUserMsg({ sucsses: true, msg: singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה ` })
+        console.log('calling user messege', periodicAgenda);
         getUserMsg({msg:singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה `, isSucsses:true })
-        console.log('periodicAgenda', periodicAgenda);
 
     }
 
@@ -259,7 +262,7 @@ export default function PeriodicAgendaCreation() {
             let withOutSaturdays: Date[] = allDaysOfPeriod.filter(currDate => stripTime(currDate).getDay() !== 6)
             setDatesCounter(datesCounter + numberOfSaturdays)
             setAllDaysOfPeriod([...withOutSaturdays])
-            getUserMsg({msg:`שבתות הוסרו בהצלחה ${numberOfSaturdays}`, isSucsses:true })
+            getUserMsg({msg:`${numberOfSaturdays} שבתות הוסרו בהצלחה  `, isSucsses:true })
 
         }
     }
@@ -319,8 +322,10 @@ export default function PeriodicAgendaCreation() {
         }
     }
     const getUserMsg = (userMsg: TuserMsgProps) => {
+        console.log('userMsg',userMsg);
+        
         window.scroll(0,0)
-        dispatch(callUserMsg({msg:userMsg.msg, isSucsess:userMsg.isSucsses}))
+        dispatch(callUserMsg({msg:userMsg.msg, isSucsses:userMsg.isSucsses}))
         setTimeout(() => {
           dispatch(hideUserMsg())
         }, 3500);

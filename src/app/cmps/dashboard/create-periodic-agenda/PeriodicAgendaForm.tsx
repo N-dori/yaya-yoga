@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import UserMsg from '../../UserMsg'
@@ -83,6 +83,7 @@ export default function PeriodicAgendaFrom({
 
 
 }: PeriodicAgendaFromProps) {
+    const [options, setOptions] = useState<string[]>(['אשטנגה','108 ברכות שמש','יסודות'])
     const RepeatingActivityRadioBtnsProps = {
         isActivityRepeating,
         setIsActivityRepeating,
@@ -130,16 +131,23 @@ export default function PeriodicAgendaFrom({
                 </div>
                 <RepeatingActivityRadioBtns {...RepeatingActivityRadioBtnsProps} />
 
-                <label htmlFor={'name'} className='flex-col'>
+                <label htmlFor={'activity-name'} className='flex-col'>
                     שם הפעילות:
+                   <input id={'activity-name'}
+                     type={'text'}
+                     list='options'
+                    
+                     onChange={(ev:any)=>setActivityName(ev.target.value)}
+                   />
+                 
+                    <datalist id="options">
+        {options.map((option, index) => (
+          <option key={index} value={option} />
+        ))}
+      </datalist>
+             
 
-                    <select className='form-input' name='name' onChange={(e) => setActivityName(e.target.value)} value={activityName} >
-                        <option value={'אשטנגה'}>אשטנגה</option>
-                        <option value={'יסודות'}>יסודות</option>
-                        <option value={'108 ברכות שמש'}>108 ברכות שמש</option>
-                    </select>
-
-                </label>
+              </label>
 
                 <label htmlFor='activity-type' className='flex-col'>
                     סוג הפעילות:

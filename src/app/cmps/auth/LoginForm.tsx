@@ -4,9 +4,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import CircleDeroration from './CircleDeroration'
 type Props = {}
 
-export default function LoginForm({}: Props) {
+export default function LoginForm({ }: Props) {
 
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
@@ -14,55 +15,56 @@ export default function LoginForm({}: Props) {
 
   const router = useRouter()
 
-  const handelSubmit = async (e:any) => {
+  const handelSubmit = async (e: any) => {
     e.preventDefault()
     e.stopPropagation()
-    if(e.target.value === 'google') return
-    if ( !password || !email ) {
+    if (e.target.value === 'google') return
+    if (!password || !email) {
       setError('בבקשה למלא את כל השדות')
       setTimeout(() => {
         setError('')
       }, 5000)
       return
     }
-    try{
-    const res =  await signIn('credentials', {
-          email, password , redirect:false
-                                             })
-    if(res?.error){
-    setError("  פרטים אינם נכונים נסה שוב")
-    return 
- }
- router.replace('/')
-}catch( err ){
-  console.log('had a problom...');
-  
-}
-}
+    try {
+      const res = await signIn('credentials', {
+        email, password, redirect: false
+      })
+      if (res?.error) {
+        setError("  פרטים אינם נכונים נסה שוב")
+        return
+      }
+      router.replace('/')
+    } catch (err) {
+      console.log('had a problom...');
 
-const handelGoogleRegistion = async () => {
+    }
+  }
 
-  const res = await signIn('google')
+  const handelGoogleRegistion = async () => {
+
+    const res = await signIn('google')
 
   }
   return (
     <main className='signup-container flex-col flex-jc-ac gc2 gap1'>
-         <form onSubmit={handelSubmit} className='signup-form flex-col flex-jc gap1'>
+      <h2 className='title tac'>התחברות</h2>
+      <Link className='no-signup-yet' href={'/signup'}>לא רשום עדיין? לחץ כאן</Link>
 
-          <h2>התחברות</h2>
+      <form onSubmit={handelSubmit} className='signup-form flex-col flex-jc gap1'>
 
-            <input onChange={(e) => setEmail(e.target.value)} className='form-input' type='text' placeholder='מייל בבקשה' ></input>
 
-            <input onChange={(e) => setPassword(e.target.value)} className='form-input' type='password' placeholder='סיסמא' ></input>
+        <input onChange={(e) => setEmail(e.target.value)} className='form-input' type='text' placeholder='מייל בבקשה' ></input>
 
-            <Link  className='no-signup-yet' href={'/signup'}>לא רשום עדיין? לחץ כאן</Link>
-            <button type='submit' className='login-btn '> התחבר </button>
-            <button type='button' onClick={ handelGoogleRegistion} value={'google'} className='google-btn flex-jc-ac'> התחבר עם גוגל
-              <Image src={'/google_img.jpg'} alt={'G'} width={40} height={40}></Image>  </button>
-            {error&& (
-              <section className='error-box'> {error}</section>
-            )}
-         </form>
+        <input onChange={(e) => setPassword(e.target.value)} className='form-input' type='password' placeholder='סיסמא' ></input>
+        <button type='submit' className='login-btn '> התחבר </button>
+        <button type='button' onClick={handelGoogleRegistion} value={'google'} className='google-btn flex-jc-ac'> התחבר עם גוגל
+          <Image src={'/googleSymbol.png'} alt={'G'} width={40} height={40}></Image>  </button>
+        {error && (
+          <section className='error-box'> {error}</section>
+        )}
+      <CircleDeroration />
+      </form>
 
     </main>
   )

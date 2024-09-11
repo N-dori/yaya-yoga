@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import React from 'react'
-import SignInForm from '../cmps/auth/SignInForm';
+import SignupForm from '../cmps/auth/SignupForm';
 
 type Props = {}
 
@@ -13,6 +13,6 @@ export default async function Signup({}: Props) {
     //     redirect('/')
     //   }
       return (
-         <SignInForm></SignInForm>
+         <SignupForm></SignupForm>
       )
 }
