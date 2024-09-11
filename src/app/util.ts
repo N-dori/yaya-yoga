@@ -24,4 +24,17 @@ export function makeId(length = 6) {
       return url;
   };
 
-  
+  export  const getUserByEmail = async (email: String) => {
+    const url = getUrl('auth/userExists/')
+
+    const res = await fetch(url, {
+
+      method: 'POST',
+      headers: { "Content-type": "appliction/json" },
+      body: JSON.stringify({ email })
+    })
+    const  miniUser = await res.json()
+    // console.log(' userExists', miniUser);
+
+    return miniUser
+  }

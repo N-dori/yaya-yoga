@@ -14,6 +14,9 @@ const userSceama = new Schema ({
         type: String,
         required:[false , " please provide password"]
     } ,
+    isNewUser: {
+        type: Boolean,
+    } ,
     isAdmin : Boolean ,
 
 

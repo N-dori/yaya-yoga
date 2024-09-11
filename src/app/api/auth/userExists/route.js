@@ -10,14 +10,14 @@ export async function POST (request) {
      const {  email  } = await request.json()
    //   console.log('chacking if this email',email+' '+"exists");
     await connectMongoDB ()
-    const user =  await User.findOne({ email }).select('_id')
-
+    const user =  await User.findOne({ email })
+    const minUser = {_id:user._id, isNewUser:user.isNewUser}
    //  console.log('user', user  );
  
-  return NextResponse.json({user}, {status: 201 } )
+  return NextResponse.json(minUser, {status: 201 } )
 
  }catch ( err ) {
     console.log('had a problem finding user', err);
-    return NextResponse.json({message: "had a problem finding user" }, {status: 500 } )
+    return NextResponse.json(null, {status: 500 } )
  }
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { getUrl } from "@/app/util"
+import { getUrl, getUserByEmail } from "@/app/util"
 import { signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -36,13 +36,16 @@ export default function SignupForm({ }: Props) {
       return
     }
     const userExists = await getUserByEmail(email)
+    console.log('userExists',userExists);
+    
     if (userExists) {
-      setError('משתמש קיים במערכת ')
+      let txt = 'משתמש קיים במערכת'
+      dispatch(callUserMsg({ msg: txt, isSucsses: false }))
       const form = e.target
       form.reset()
       setTimeout(() => {
-        setError('')
-      }, 30000)
+        dispatch(hideUserMsg())
+      }, 3500);
       return
     }
 
@@ -54,7 +57,7 @@ export default function SignupForm({ }: Props) {
 
         method: 'POST',
         headers: { "Content-type": "appliction/json" },
-        body: JSON.stringify({ name, email, password, isAdmin: false })
+        body: JSON.stringify({ name, email, password, isNewUser:true, isAdmin: false })
 
       },
       )
@@ -62,14 +65,6 @@ export default function SignupForm({ }: Props) {
         const form = e.target
         form.reset()
         signUserIn()
-
-        if (res.ok) {
-          router.push('/')
-
-        } else {
-          //trying agian?
-          signUserIn()
-        }
       } else {
         throw new Error('faild to create new user')
       }
@@ -81,46 +76,29 @@ export default function SignupForm({ }: Props) {
 
   }
   const signUserIn = async () => {
-    const res = await signIn('credentials', {
+   const res =   await signIn('credentials', {
       email, password, redirect: false
     })
   }
-  const getUserByEmail = async (email: String) => {
-    const url = getUrl('auth/userExists/')
-
-    const res = await fetch(url, {
-
-      method: 'POST',
-      headers: { "Content-type": "appliction/json" },
-      body: JSON.stringify({ email })
-    })
-    const { user } = await res.json()
-    // console.log(' userExists', user);
-    return user
-  }
+ 
 
   const handelGoogleRegistion = async () => {
+    
 
-    const res = await signIn('google')
-
+      const res = await signIn('google')
+ 
   }
 
   const handelOnError = (msg: string, field: string) => {
     if (!name && !password && !email) {
       let txt = 'בבקשה למלא את כל השדות'
-      dispatch(callUserMsg({ msg: txt, isSucsses: false }))
       setError(txt)
       resetErrors()
       return
     }
     commandForError[field]()
-    dispatch(callUserMsg({ msg, isSucsses: false }))
     setError(msg)
     resetErrors()
-    setTimeout(() => {
-      dispatch(hideUserMsg())
-    }, 3500);
-
   }
   const resetErrors = () => {
     setTimeout(() => {

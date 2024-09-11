@@ -3,11 +3,14 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import MainMenu from './MainMenu'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { getUserByEmail } from '@/app/util'
 
 type Props = {}
 export default function NavBar({ }: Props) {
   const [firstLetter, setfirstLetter] = useState("")
   const { data: session } = useSession()
+  const router = useRouter();
   
   useEffect(() => {
     getUserFirstLetter()
@@ -16,7 +19,31 @@ export default function NavBar({ }: Props) {
 
   }, [session?.user?.name])
 
- 
+  useEffect(() => {
+    const checkUserAndRedirect = async () => {
+      if (session?.user?.email) {
+        const isNewUser = await checkIfNewUser(); 
+        if (isNewUser) {
+          router.push(`/welcome/${isNewUser}`);
+        }
+      }
+    };
+  
+    checkUserAndRedirect();
+  }, [session?.user?.email]);
+  
+  const checkIfNewUser = async () => {
+    const miniUser = await getUserByEmail(session?.user?.email);
+    console.log('user in navBar', miniUser);
+    if (miniUser) {
+      if (miniUser.isNewUser) {// here we chack if the user is a new user or not
+        return miniUser._id; 
+      } else {
+        return false; 
+      }
+    }
+    return false; // Return false if no user
+  };
   const getUserFirstLetter = () => {
     setfirstLetter(session?.user?.name ? session?.user?.name[0].toUpperCase() : "")
   }
