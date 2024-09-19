@@ -12,7 +12,7 @@ export async function POST (request) {
       const hasedPassword = await bcrypt.hash( password , 10 )
       await connectMongoDB ()
       // console.log('going to create user :', name , email ,   isAdmin , hasedPassword );
-     const user =  await User.create({ name, email , password:hasedPassword, isAdmin ,isNewUser})
+     const user =  await User.create({ name, email , password:hasedPassword, isAdmin ,isNewUser,})
      return NextResponse.json({message: "User creacted" }, {status: 201 } )
      
    }  else{

@@ -11,15 +11,10 @@ export default function NavBar({ }: Props) {
   const [firstLetter, setfirstLetter] = useState("")
   const { data: session } = useSession()
   const router = useRouter();
+
   
   useEffect(() => {
     getUserFirstLetter()
-    // console.log('currnt user : ',session?.user );
-
-
-  }, [session?.user?.name])
-
-  useEffect(() => {
     const checkUserAndRedirect = async () => {
       if (session?.user?.email) {
         const isNewUser = await checkIfNewUser(); 
