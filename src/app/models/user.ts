@@ -17,6 +17,9 @@ const userSceama = new Schema ({
     isNewUser: {
         type: Boolean,
     } ,
+    isWelcomeEmailSent: {
+        type: Boolean,
+    } ,
     isAdmin : Boolean ,
 
 

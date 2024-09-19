@@ -8,7 +8,11 @@ export async function PUT(request) {
 
         await connectMongoDB();
 
-        const updatedUser =  await User.findByIdAndUpdate(_id, { isNewUser: false })
+        const updatedUser =  await User.findByIdAndUpdate(  _id, 
+            { 
+              isNewUser: false, 
+            },
+            { new: true })
     
         return NextResponse.json(updatedUser, { status: 203 });
 
