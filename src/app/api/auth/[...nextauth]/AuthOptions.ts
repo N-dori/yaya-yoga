@@ -4,7 +4,7 @@ import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GooglePovider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
-import { getUrl } from "@/app/util";
+import { getUrl } from "@/app/utils/util";
 
 type Tcredentials = {
     email: string

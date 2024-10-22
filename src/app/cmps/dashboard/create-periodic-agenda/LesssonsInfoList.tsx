@@ -1,7 +1,7 @@
 import { Tactivity, TperiodicAgenda } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import { LessonInfoPreview } from './LessonInfoPreview'
-import { stripTime } from '@/app/util'
+import { stripTime } from '@/app/utils/util'
 
 type LesssonsInfoListProps = {
   activities: Tactivity[] | undefined

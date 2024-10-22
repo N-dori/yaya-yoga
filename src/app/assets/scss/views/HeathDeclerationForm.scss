@@ -1,0 +1,54 @@
+.health-decleration-form-container {
+  padding: 2em;
+  letter-spacing: .07em;
+
+  .canvas-container {
+    background-color: #ffff;
+    border: none;
+    border-bottom: 1px solid #222;
+  }
+
+  .form-txt-input {
+    direction: rtl;
+    margin-block-end: 1.5em;
+    height: 2.1em;
+    text-align: right;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.33);
+    border-radius: 4px;
+
+  }
+
+  .form-btn {
+    border: 1px solid rgba(0, 0, 0, 0.33);
+    padding: 15px 10px;
+    line-height: 1.5;
+    border-radius: 10px;
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 1.1em;
+    // box-shadow: 0 8px 8px -8px #222;   
+    cursor: pointer;
+  }
+
+  .input-label {
+    color: rgba(0, 0, 0, 0.53);
+    font-size: .8em;
+  }
+
+  .yes-no-radio-btns-container {
+    padding-block: .5em;
+  }
+  .canvas-container{
+    position: relative;
+    border-radius: 10px;
+  }
+  .trash-continer{
+    position: absolute;
+    right: 10px;
+  }
+  fieldset {
+    padding: 0em .5em .5em .5em;
+  }
+
+}

@@ -1,7 +1,7 @@
 import React from 'react'
 import PeriodicAgendaPreviewDisplay from '../cmps/dashboard/create-periodic-agenda/PeriodicAgendaPreviewDisplay'
 import { TperiodicAgenda } from '../types/types'
-import { getUrl } from '../util'
+import { getUrl } from '../utils/util'
 
 type Props = {}
 const getPreiodicAgenda = async ()=> {

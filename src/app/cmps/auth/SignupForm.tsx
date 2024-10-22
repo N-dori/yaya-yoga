@@ -1,6 +1,6 @@
 "use client"
 
-import { getUrl, getUserByEmail } from "@/app/util"
+import { getUrl, getUserByEmail } from "@/app/utils/util"
 import { signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"

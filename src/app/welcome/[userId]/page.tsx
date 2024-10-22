@@ -1,7 +1,7 @@
 import React from 'react'
 import { authOptions } from '../../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
-import { getUrl } from '../../util';
+import { getUrl } from '../../utils/util';
 import Link from 'next/link';
 
 type Props = {}
@@ -37,13 +37,14 @@ export default async function page({ params }) {
     }
     const sendWelcomeEmail = async () => {
         try {
+            await updateNewUser(params.userId);
             const url = getUrl('sendEmail')
             const name = session?.user?.name
             const email = session?.user?.email
             const res = await fetch(url, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ to: email, name })
+                body: JSON.stringify({ to: email, name , _id:params.userId })
             })
             if (res.ok) {
                 console.log('email sent happyly!!!');
@@ -79,7 +80,6 @@ export default async function page({ params }) {
       if(user){
         if(user.isNewUser){
             await sendWelcomeEmail()
-            await updateNewUser(params.userId);
 
         }
       }

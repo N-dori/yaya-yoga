@@ -1,5 +1,5 @@
 import TrashSvg from '@/app/assets/svgs/TrashSvg'
-import { makeId } from '@/app/util'
+import { makeId } from '@/app/utils/util'
 import React, { useEffect, useState } from 'react'
 
 type RepeatingActivityRadioBtnsProps = {

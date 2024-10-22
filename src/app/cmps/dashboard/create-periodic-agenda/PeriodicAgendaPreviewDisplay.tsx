@@ -7,7 +7,7 @@ import { LesssonsInfoList } from './LesssonsInfoList'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
-import { getUrl } from '@/app/util'
+import { getUrl } from '@/app/utils/util'
 import { useRouter } from 'next/navigation'
 
 

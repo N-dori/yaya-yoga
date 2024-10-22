@@ -12,6 +12,12 @@ export const stripTime = (date: Date | string): Date => {
   const strippedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   return strippedDate;
 };
+export const getBaseUrl = () => {
+  
+  const baseUrl = process.env.NODE_ENV === 'development' ?
+    process.env.NEXT_PUBLIC_DEV_URL : process.env.NEXT_PUBLIC_PRUD_URL
+  return baseUrl
+}
 export const getUrl = (endPoint: string) => {
 
   const baseUrl = process.env.NODE_ENV === 'development' ?
@@ -70,4 +76,8 @@ export const createDaysRange = () => {
     currDay++
   }
   return days
+}
+export const scrollUp = () => {
+  window.scrollTo(0,0)
+
 }

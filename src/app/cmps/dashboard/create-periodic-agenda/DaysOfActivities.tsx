@@ -2,7 +2,7 @@ import { Tactivity, TperiodicAgenda } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import DaysOfActivitiesPreview from './DaysOfActivitiesPreview'
 import DaysBackForwordSvg from '@/app/assets/svgs/DaysBackForwordSvg'
-import { stripTime } from '@/app/util'
+import { stripTime } from '@/app/utils/util'
 
 type DaysOfActivitiesProps = {
     activities: Tactivity[] | undefined

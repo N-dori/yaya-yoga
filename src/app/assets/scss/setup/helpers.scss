@@ -104,6 +104,12 @@
 .cp{
     cursor: pointer;
 }
+.bold{
+    font-weight: 600;
+}
+.underline{
+    text-decoration: underline;
+}
 .no-under-line{
     text-decoration: none;
     &:focus, &:hover, &:visited, &:link, &:active {

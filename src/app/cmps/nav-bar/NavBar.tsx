@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import MainMenu from './MainMenu'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { getUserByEmail } from '@/app/util'
+import { getUserByEmail } from '@/app/utils/util'
 
 type Props = {}
 export default function NavBar({ }: Props) {

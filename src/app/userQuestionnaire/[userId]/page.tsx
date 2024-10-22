@@ -1,4 +1,4 @@
-import { createDaysRange, createMonthsRange, createYearsRange } from '@/app/util';
+import { createDaysRange, createMonthsRange, createYearsRange } from '@/app/utils/util';
 import React from 'react'
 
 type Props = {}
@@ -31,7 +31,7 @@ const places:string [] = ['פרדס-כרכור-משמרות-פינס-עין עי
                 <input type='text' name='israeli-id' />
             </label>
             <label className='input-label' htmlFor="gender">
-                
+                מין
                 <select name='gender'  >
                     <option disabled selected>מין</option>
                     <option>זכר</option>
@@ -71,7 +71,7 @@ const places:string [] = ['פרדס-כרכור-משמרות-פינס-עין עי
             <input type='text' name='occupation' />
             </label>
             <label className='input-label' htmlFor="months">
-            מאיפה את/ה?
+          מקום מגורים
                 <select name='months'>
                    {places.map(palce=> 
                     <option>{palce}</option>

@@ -1,5 +1,5 @@
 import { Tactivity } from '@/app/types/types'
-import { stripTime } from '@/app/util'
+import { stripTime } from '@/app/utils/util'
 import React, { useEffect, useState } from 'react'
 import { newDate } from 'react-datepicker/dist/date_utils'
 
