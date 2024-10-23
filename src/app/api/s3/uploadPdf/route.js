@@ -5,15 +5,15 @@ import { NextResponse } from 'next/server';
 const s3Client = new S3Client({
     region: process.env.AWS_REGION,
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+        accessKeyId: process.env.MY_AWS_ACCESS_KEY,
+        secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY
     }
 })
 
 const uploadPdfToS3 = async (file, fileName) => {
     const fileBuffer = file
     const params = {
-        Bucket: 'yayayoga',
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key: `Health_Declerations/${fileName}`,
         Body: fileBuffer,
         ContentType: "Pdf"
