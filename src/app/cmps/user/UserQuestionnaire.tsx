@@ -211,7 +211,7 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                 מקום מגורים
                 <select className='form-select' name='address'
                     style={addressInError ? { border: '1px solid red' } : {}}
-                    value={address} onChange={(e: any) => setOccupation(e.target.value)}>
+                    value={address} onChange={(e: any) => setAddress(e.target.value)}>
                     {places.map(palce =>
                         <option key={palce}>{palce}</option>
                     )}

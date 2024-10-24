@@ -60,7 +60,7 @@ export const createMonthsRange = () => {
   let startMonth = 1
   let currMonth: number = startMonth
   let endMonth = 12
-  while (currMonth < endMonth) {
+  while (currMonth <= endMonth) {
     months.push(currMonth)
     currMonth++
   }
