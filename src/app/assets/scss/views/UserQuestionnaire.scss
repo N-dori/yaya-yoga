@@ -30,5 +30,17 @@
         letter-spacing: .03em;
         font-family: inherit;
     }
+    .submit-questionnaire-btn{
+        border: 1px solid rgba(0, 0, 0, 0.33);
+        padding: 15px 10px;
+        line-height: 1.5;
+        border-radius: 10px;
+        background-color: #fff;
+        font-weight: 500;
+        font-size: 1.1em;
+        margin-bottom: 2em;
+        // box-shadow: 0 8px 8px -8px #222;   
+        cursor: pointer;
+    }
 
 }

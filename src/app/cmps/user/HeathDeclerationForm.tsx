@@ -12,6 +12,7 @@ type HeathDeclerationFormProps = {
 }
 
 export default function HeathDeclerationForm({ userId }: HeathDeclerationFormProps) {
+    
     const medicalHistory = ['לחץ דם', 'סוכרת', 'כאבי ראש, סחרחורות, חולשה', 'אסטמה או בעיות נשימה', 'בעיות בשיווי המשקל', 'בעיות צוואר, עורף וכתפיים', 'בעיות במפרקים', 'בעיות בעמוד השדרה פריצות דיסק, עקמת ', 'בעיות עיכול', 'בעיות אוזניים', 'בעיות אוזניים', 'גלאוקומה או בעיות עיניים אחרות', 'מחלה כרונית כלשהי פעילה או רדומה', 'ניתוחים כירורגיים', 'מעשן?', 'בריחת סידן/אוסטאופורוזיס', 'אחר']
     const [selectedRadioBtn, setSelectedRadioBtn] = useState<string>('לא')
     const [isPregnant] = useState([
@@ -70,7 +71,19 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
             {
                 scrollUp()
                 let txt = `טופס הצהרת בריאות נשלח ונקלט בהצלחה!`
-                dispatch(callUserMsg({ msg: txt, isSucsses: true }))                
+                dispatch(callUserMsg({ msg: txt, isSucsses: true }))    
+                const url = getUrl('user/updateHealthDeclration')
+                let healthDeclaration= `https://yayayoga.s3.eu-north-1.amazonaws.com/Health_Declerations/${userId}.pdf`
+                const res = await fetch(url, {
+                    method: 'PUT',
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({ _id: userId ,healthDeclaration})
+                })
+                if(res.ok){
+                    console.log('user health Declaration created successfuly');
+                    
+                }
+
             }
             setTimeout(() => {
                 dispatch(hideUserMsg())

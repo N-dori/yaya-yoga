@@ -23,3 +23,16 @@ export type TuserMsgProps = {
     isSucsses: boolean
     msg: string
 }
+export type TuserQuestionnaire = {
+    firstName:string,
+    lastName:string,
+    israelid:string,
+    gender:string,
+    dayBirth:string, 
+    monthBirth:string,
+    yearBirth:string,
+    occupation:string,
+    address:string,
+    phone:string,
+    comments:string,
+}
