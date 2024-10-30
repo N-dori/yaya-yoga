@@ -80,7 +80,7 @@ export default function PeriodicAgendaFrom({
 
 
 }: PeriodicAgendaFromProps) {
-    const [options, setOptions] = useState<string[]>(['אשטנגה','108 ברכות שמש','יסודות'])
+    const [options] = useState<string[]>(['אשטנגה','108 ברכות שמש','יסודות','האטה יוגה','פראניאמה'])
     const RepeatingActivityRadioBtnsProps = {
         isActivityRepeating,
         setIsActivityRepeating,
@@ -163,9 +163,9 @@ export default function PeriodicAgendaFrom({
                     מיקום :
                     <input className='form-input' name='location' onChange={(e) => setActivityLocation(e.target.value)} value={activityLocation} />
                 </label>
-                <button className='form-btn flex-jc-ac' type='button' onClick={addActivity}>הוסף פעילות </button>
-                <button className='form-btn flex-jc-ac' type='button' onClick={() => setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
-                <button className='form-btn flex-jc-ac' type='button' onClick={createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
+                <button className='form-btn flex-jc-ac pointer' type='button' onClick={addActivity}>הוסף פעילות </button>
+                <button className='form-btn flex-jc-ac pointer' type='button' onClick={() => setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
+                <button className='form-btn flex-jc-ac pointer' type='button' onClick={createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
             </form>
           
         </main>)

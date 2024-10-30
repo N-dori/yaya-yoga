@@ -22,6 +22,19 @@ const hoursRangeSchema = new Schema({
     }
 
 })
+const presenceSchema = new Schema({
+    email: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
+    hasArrived: {
+        type: Boolean,
+
+    }
+
+})
 const activitySchema = new Schema({
     id: {
         type: String,
@@ -53,7 +66,7 @@ const activitySchema = new Schema({
         type: String
     },
     practitioners: [
-        { type: String }
+         presenceSchema 
     ],
 
 })

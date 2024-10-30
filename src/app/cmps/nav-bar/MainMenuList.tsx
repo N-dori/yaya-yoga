@@ -31,11 +31,12 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
           {session?.user?.name?
           `שלום ${session.user.name}`:
           <div className='signin-login flex-col gap05'>
-        <li className='pointer' onClick={()=> handelClick('login')}  >התחברות </li>
-        <li className='pointer' onClick={()=> handelClick('signup')}  >צור חשבון </li>
+        <li className='pointer' onClick={()=> handelClick('/login')}  >התחברות </li>
+        <li className='pointer' onClick={()=> handelClick('/signup')}  >צור חשבון </li>
           </div>}
-        <li  onClick={()=> handelClick('periodic_agenda')} >מערכת שיעורים</li>
-        <li onClick={()=> handelClick('dashboard')}>dashboard </li>
+        <li  onClick={()=> handelClick('/weekly_schedule')} > מערכת שיעורים שבועית</li>
+        <li onClick={()=> handelClick('/dashboard')}>dashboard </li>
+        <li onClick={()=> handelClick('/pricing')}>מחירים </li>
         <li className='pointer' onClick={handleSignOut}>יציאה מהחשבון </li>
         </ul></section>
   )

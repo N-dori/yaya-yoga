@@ -1,0 +1,49 @@
+.pricing-page-container{
+    padding: 1em;
+    .title{
+        margin-bottom: 1em;
+    }
+}
+.plans-list-container {
+    .plan-card-container {
+        border: 1px solid #e0e0e0;
+        background-color: #fafafa;
+        padding: 15px;
+        min-height: 475px;
+        border-radius: 4px;
+
+
+        .plan-type {}
+
+        .plan-price {}
+
+        .book-plan-btn {
+            background-color: rgb(107, 105, 105);
+            color: #fffef8;
+            padding: 6px 16px;
+            font-size: 0.875rem;
+            min-width: 64px;
+            transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            font-weight: 500;
+            line-height: 1.75;
+            border-radius: 4px;
+            align-self: baseline;
+        }
+
+        .plan-desc {
+            color: rgba(0, 0, 0, 0.54);
+            // margin-block: 1em;
+        }
+
+        .plan-constriants {
+            gap: 1em;
+            .plan-constriant {
+                color: rgba(0, 0, 0, 0.54);
+                font-size: 14px;
+                font-style: inherit;
+                margin-inline-start: 8px;
+            }
+        }
+
+    }
+}

@@ -44,6 +44,24 @@ export const getUserByEmail = async (email: String) => {
 
   return miniUser
 }
+export const getPreiodicAgenda = async ()=> {
+  try {
+    const url = getUrl('periodicAgenda/getPeriodicAgenda')
+      const res = await fetch(url, {
+          method: 'POST',
+          headers: { "Content-type": "application/json" },
+      })
+      if (res.ok) {
+
+         return  await res.json()
+
+      } else {
+          throw new Error('faild to get a new periodic Agenda')
+      }
+  } catch (err) {
+      console.log('failed to fetch a periodic agenda reason: ',err);
+  }
+}
 export const createYearsRange = () => {
   let years: number[] = []
   let startYear = 1900

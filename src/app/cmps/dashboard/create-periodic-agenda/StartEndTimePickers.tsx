@@ -20,7 +20,7 @@ export  function StartEndTimePickers({error,activityEndTime,handelTimeChange,act
     onChange={(curtime:Date|null) => handelTimeChange(curtime, 'start')}
     showTimeSelect
     showTimeSelectOnly
-    placeholderText="בחר שעת התחלה"
+    placeholderText={error?error:"בחר שעת התחלה"}
     dateFormat="hh:mm aaaa"
     showIcon
     icon={clockSvg}                   
@@ -39,7 +39,7 @@ export  function StartEndTimePickers({error,activityEndTime,handelTimeChange,act
     timeIntervals={30}
   timeCaption="זמן"
     dateFormat="h:mm aaaaa"
-    placeholderText="בחר שעת סיום"
+    placeholderText={error?error:"בחר שעת סיום"}
     showIcon
     icon={clockSvg}
     timeFormat="HH:mm"

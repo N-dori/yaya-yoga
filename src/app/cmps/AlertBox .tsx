@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect,} from 'react'
+import React, { useEffect, useState,} from 'react'
 import {  useAppSelector,  } from '../libs/hooks'
 
 type Props = {
@@ -7,34 +7,43 @@ type Props = {
 }
 
 export function UserMsg2({ }: Props) {
-  const bgColor = useAppSelector(state => state.userMsgSlice.bgColor)
-  const userMsg = useAppSelector(state => state.userMsgSlice.userMsg)
-  const isMsgShown = useAppSelector(state => state.userMsgSlice.isMsgShown)
+  const [deg, setDeg] = useState(0)
+  const userMsg = useAppSelector(state => state.alertBoxSlice.userMsg)
+  const isAlertBoxShown = useAppSelector(state => state.alertBoxSlice.isAlertBoxShown)
   const sucsses = useAppSelector(state => state.userMsgSlice.sucsses)
-
+  const countOneToNine= () =>  {
+    let count= 1
+    
+    while(1<=9){
+      setDeg(count)
+      count++
+    }
+  }
+  countOneToNine()
 
   const styles :any = {
     position: 'absolute',
-    top: isMsgShown?`2em`:`-200px`,
+    opcity: `${deg}`,
     left: '50%',
+    width:'250px',
+    
     translate:' -50%',
     transition: 'top .4s ease-in-out',
     padding:' 1em',
     borderRadius: '20px',
     border:sucsses? `2px solid rgb(0, 242, 61)`:`2px solid rgb(199, 165, 165);`,
     textAlign: `center`,
-    background:bgColor
+    backgroundColor:''
   }
 
   useEffect(() => {
 
-    console.log('sucsses', sucsses);
   
-  }, [isMsgShown, userMsg, bgColor, sucsses,styles])
+  }, [isAlertBoxShown, userMsg,styles])
 
 
   return (
-    <div className='user-msg2' style={ styles } >
+    <div className='alert-box' style={ styles } >
       {userMsg ? userMsg : ''}</div>
   )
 }

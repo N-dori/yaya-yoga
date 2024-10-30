@@ -9,6 +9,8 @@ import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
 import { getUrl } from '@/app/utils/util'
 import { useRouter } from 'next/navigation'
+import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
+import { useDispatch } from 'react-redux'
 
 
 type PreviewDisplayProps = {
@@ -24,47 +26,52 @@ type PreviewDisplayProps = {
 
 }
 
-export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, getUserMsg, isPreviewDisplayShown, setPeriodicAgenda, isWorkInProgress, setIsPreviewDisplayShown,
+export default function PeriodicAgendaPreviewDisplay({setCurrPeriodicAgenda, getUserMsg, isPreviewDisplayShown, setPeriodicAgenda, isWorkInProgress, setIsPreviewDisplayShown,
   periodicAgenda }: PreviewDisplayProps) {
 
-  const [currDate, setCurrDate] = useState<Date>(new Date())
+  const [currDate, setCurrDate] = useState<Date>(new Date(periodicAgenda?.date?.start))
+  const [startDate] = useState<Date>(new Date(periodicAgenda?.date?.start))
+  const [endDate] = useState<Date>( new Date(periodicAgenda?.date?.end))
   const [selectedDate, setSelectedDate] = useState<Date | undefined | null>(undefined)
   const [isOnSearchMode, setIsOnSearchMode] = useState<boolean>(false)
   const [isOnCancelMode, setIsOnCancelMode] = useState<boolean>(false)
   const router = useRouter()
+  const dispatch = useDispatch()
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
+    
   }, []);
-  useEffect(() => {
 
-  }, [isOnSearchMode])
+  
+
   const hadelExistSearchMode = () => {
     setSelectedDate(null)
     setCurrDate(new Date())
     setIsOnSearchMode(!isOnSearchMode)
   }
 
-  const handelDateChange = (date: Date | undefined | null) => {
-    console.log(date, 'date');
+  const handelDateChange = (newDate: Date | undefined | null) => {
+    console.log('search date is : ',newDate);
 
-    if (date === null) {
-      setSelectedDate(new Date())
-      setCurrDate(new Date())
+
+    if (newDate === null) {
       setIsOnSearchMode(!isOnSearchMode)
+      setSelectedDate(startDate)
+      setCurrDate(startDate)
+
       return
     }
 
-    setSelectedDate(date)
-    setCurrDate(date as Date)
-
-    setIsOnSearchMode(true)
+    setCurrDate(newDate);  
+    setSelectedDate(newDate)
+    
   }
 
   const handelLessonCancelation = (activityId: string, currCencelationState: boolean, lastDate: Date | null | undefined) => {
     if (isWorkInProgress) {
-
       if (periodicAgenda) {
         if (periodicAgenda.activities) {
           const activityIndex = periodicAgenda.activities.findIndex(activity => activity.id === activityId);
@@ -84,17 +91,18 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
             // Set the new state
             if (setPeriodicAgenda) setPeriodicAgenda(updatedPeriodicAgenda);
             getUserMsg({ isSucsses: true, msg: currCencelationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
-            if (lastDate) setCurrDate(new Date(lastDate))
+            setTimeout(() => {
+              setCurrDate(new Date(lastDate))
+            }, 0.05)
           }
         }
       }
     } else {
       console.log('handel cancelation with mongo ');
       updatePeriocidAgendaAtDataBase(activityId, currCencelationState, lastDate)
-
-
     }
   }
+  
   const updatePeriocidAgendaAtDataBase = async (activityId: string, currCencelationState: boolean, lastDate: Date | null | undefined) => {
     try {
       setIsOnCancelMode(!isOnCancelMode)
@@ -107,15 +115,20 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
       if (res.ok) {
         const updatedPeriodicAgenda = await res.json()
         // callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
-        setTimeout(() => {
-          // router.replace('/dashboard')
-        }, 1000);
+     
         if (setCurrPeriodicAgenda) {
           setCurrPeriodicAgenda({ ...updatedPeriodicAgenda })
-          if (lastDate) setCurrDate(new Date(lastDate))
+          setTimeout(() => {
+        if (lastDate) setCurrDate(new Date(lastDate))
+          },1000)
           setTimeout(() => {
             if (setIsOnCancelMode) setIsOnCancelMode(!isOnCancelMode)
-          }, 2500);
+              
+            dispatch(callUserMsg({ isSucsses: true, msg: currCencelationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' }))
+            setTimeout(() => {
+              dispatch(hideUserMsg())
+            }, 3500);
+          }, 1005)
         }
       } else {
         throw new Error('faild to update periodic Agenda')
@@ -160,15 +173,16 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
       <h4 className='studio-name mb-05'>בית פעם- סטודיו קדם</h4>
       <h6 className='studio-address mb-05'>רחוב הדקלים 92, פרדס חנה-כרכור</h6>
       <h6 className='studio-phone mb-1'>052-437-7820</h6>
-      <div>
+      <div onClick={()=>setIsOnSearchMode(true)}>
         <DatePicker
+
           selected={selectedDate}
           onChange={(currDate: Date | null) => handelDateChange(currDate)}
           dateFormat={'dd/MM/yyyy'}
-          minDate={periodicAgenda ? periodicAgenda.date ? new Date(periodicAgenda?.date?.start) : undefined : undefined}
-          maxDate={periodicAgenda ? periodicAgenda.date ? new Date(periodicAgenda?.date?.end) : undefined : undefined}
+          minDate={startDate ? startDate : undefined}
+          maxDate={endDate ? endDate : undefined}
           placeholderText="חפש פעילות לפי תאריך"
-          // showIcon
+          showIcon
           locale={he}
 
         />

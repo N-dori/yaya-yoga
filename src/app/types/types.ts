@@ -8,14 +8,18 @@ export type Tactivity = {
     location: string,
     isCanceled: boolean,
     reasonOfCancelation:string
-    practitioners: string[],
+    practitioners: {email:string, name:string, hasArrived:boolean}[]| undefined,
 }
-
+export type Tpractitioner = {
+    email: string;
+    name: string;
+    hasArrived: boolean;
+}
 
 export type TperiodicAgenda = {
     _id?: string
     date?: { start: string, end: string } | undefined,
-    activities?: Tactivity[] | undefined
+    activities?: Tactivity[] | undefined,
 }
 
 
@@ -35,4 +39,11 @@ export type TuserQuestionnaire = {
     address:string,
     phone:string,
     comments:string,
+}
+export type Tplan = {
+    _id?:string,
+    type:string,
+    price:number,
+    desc:string,
+    constraints:string[],
 }

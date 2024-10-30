@@ -21,7 +21,7 @@ export default function PeriodDates({ periodicAgendaDates
     const handelDateChange = (currDate: Date | null , startEnd: "start" | "end") => {
         if (startEnd === 'start') setStartPeriodicAgendaDate(currDate)
         if (startEnd === 'end') setEndPeriodicAgendaDate(currDate)
-        let formatedDate = currDate?.toLocaleString("he-IL").split(',')[0] || ''
+        let formatedDate = currDate?.toLocaleString("en-US").split(',')[0] || ''
 
         let newPeriodicAgendaDates = { ...periodicAgendaDates }
         if (startEnd === 'start') newPeriodicAgendaDates.start = formatedDate

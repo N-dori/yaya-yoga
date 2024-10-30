@@ -13,9 +13,13 @@
 @import '../scss/views/Signup.scss';
 // nav-bar
 @import '../scss/cmps/NavBar.scss';
+//presence
+@import '../scss/cmps/presence/PresenceIndex.scss';
 // week-schedule
 @import '../scss/cmps/week-schedule/DaysWeek.scss';
 @import '../scss/cmps/week-schedule/WeeklySchedule.scss';
+@import '../scss/cmps/week-schedule/BookinIndex.scss';
+@import '../scss/cmps/plans/PlansList.scss';
 //dashboard 
 @import '../scss/cmps/dashboard/DashboardMenu.scss';
 

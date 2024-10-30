@@ -6,30 +6,34 @@ import { stripTime } from '@/app/utils/util'
 type LesssonsInfoListProps = {
   activities: Tactivity[] | undefined
   currDate: Date
-  isOnSearchMode: boolean
-  hadelExistSearchMode: () => void
-  isWorkInProgress: boolean
-  handelLessonCancelation: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
+  periodicAgendaId?: string
+  isOnSearchMode?: boolean
+  isOnWeeklyScheduleMode?: boolean
+  hadelExistSearchMode?: () => void
+  onBooking?: () => void
+  handelLessonCancelation?: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
 
 }
 
-export function LesssonsInfoList({ handelLessonCancelation, hadelExistSearchMode, isOnSearchMode, isWorkInProgress, currDate, activities }: LesssonsInfoListProps) {
+export function LesssonsInfoList({ onBooking, periodicAgendaId, handelLessonCancelation, hadelExistSearchMode, isOnSearchMode
+  , isOnWeeklyScheduleMode, currDate, activities }: LesssonsInfoListProps) {
   const [activitiesOfTheDay, setActivitiesOfTheDay] = useState<Tactivity[]>()
   const [day, setDay] = useState<number>()
   const [mounth, setMounth] = useState<number>()
   const [year, setYear] = useState<number>()
 
   useEffect(() => {
+
+    // console.log('currDate whan passing it to lesson in fo list',  currDate);
+    console.log('activities in list of lessons : ', activities);
+
+    setDay(new Date(currDate).getDate())
+    setMounth(new Date(currDate).getMonth() + 1)
+    setYear(new Date(currDate).getFullYear())
     getActivitiesOfTheDay()
-    if (currDate) {
-      console.log('cu', typeof currDate);
 
-      setDay(new Date(currDate).getDate())
-      setMounth(new Date(currDate).getMonth() + 1)
-      setYear(new Date(currDate).getFullYear())
 
-    }
-  }, [currDate])
+  }, [currDate, activities.length])
 
   useEffect(() => {
 
@@ -79,7 +83,12 @@ export function LesssonsInfoList({ handelLessonCancelation, hadelExistSearchMode
           <p>תוצאות חיפוש בעבור תאריך {`${day}/${mounth}/${year}`}</p>
         </div>}
       {activitiesOfTheDay?.length ? activitiesOfTheDay.map(activity =>
-        <LessonInfoPreview key={activity.id} activity={activity} handelLessonCancelation={handelLessonCancelation} />) :
+        <LessonInfoPreview key={activity.id}
+          periodicAgendaId={periodicAgendaId}
+          isOnWeeklyScheduleMode={isOnWeeklyScheduleMode}
+          activity={activity}
+          handelLessonCancelation={handelLessonCancelation}
+          onBooking={onBooking} />) :
         <p>אין פעילויות בתאריך הנבחר</p>}
 
     </ul>

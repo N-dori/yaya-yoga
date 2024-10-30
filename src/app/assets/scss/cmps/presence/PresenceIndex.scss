@@ -1,0 +1,59 @@
+.presence-container {
+
+    .presence-list-container {
+        .healine {
+            margin-block: 1em;
+        }
+
+        .title-date {
+            margin-block: 1em;
+            font-size: 1.1em;
+            // text-decoration: underline;
+
+        }
+
+        .class-name {
+            margin-block: 1em;
+            background-color: var(--clr2);
+            padding: 1em;
+
+        }
+
+        .presence-table {
+            grid-template-columns:  minmax(4em, 10em) 1fr 1fr;
+            gap: .5em;
+            padding-block: 1em;
+            .title {
+                margin-bottom: 1em;
+                font-size: 1.1em;
+                font-weight: 600;
+                text-align: end;
+                text-decoration: underline;
+            }
+            .practitioner-name{
+                border-inline-start: 1px solid var(--clr4);
+                font-weight: 600;
+            }
+
+
+
+        }
+    }
+
+}
+
+.has-arrived-btn {
+    border: none;
+    background-color:var(--clr3);
+    color: #fffef8;
+    padding: 6px 16px;
+    font-size: 0.875rem;
+    min-width: 5em;
+    min-height: 5em;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    
+    font-weight: 600;
+    line-height: 1;
+    border-radius: 4px;
+    align-self: baseline;
+}
