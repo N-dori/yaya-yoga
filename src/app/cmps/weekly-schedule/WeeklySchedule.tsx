@@ -1,14 +1,15 @@
 'use client'
 import { Tactivity, TperiodicAgenda } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
-import DaysOfActivities from './DaysOfActivities'
-import { LesssonsInfoList } from './LesssonsInfoList'
+import DaysOfActivities from '../dashboard/create-periodic-agenda/DaysOfActivities'
+import { LesssonsInfoList } from '../dashboard/create-periodic-agenda/LesssonsInfoList'
 import 'react-datepicker/dist/react-datepicker.css'
 import { getUrl, stripTime } from '@/app/utils/util'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import PeriodicAgenda from '@/app/models/periodicAgenda'
-import BookingIndex from '../../booking/BookingIndex'
+import BookingIndex from '../booking/BookingIndex'
+import DatesOfActivities from './DatesOfActivities'
 
 
 type WeeklyScheduleProps = {
@@ -19,12 +20,16 @@ type WeeklyScheduleProps = {
 export default function WeeklySchedule({
   periodicAgendaId,
   periodicAgenda }: WeeklyScheduleProps) {
-
-  const [currDate, setCurrDate] = useState<Date>(new Date())
+    const today = new Date()
+    if(today.getDay() === 6 )today.setDate(new Date().getDate()+1 )
+      console.log('today is  : ', today);
+      
+  const [currDate, setCurrDate] = useState<Date>(today)
   const [isOnBookingMode, setIsOnBookingMode] = useState<boolean>(false)
 
   const [activities, setActivities] = useState<Tactivity[] | undefined[]>([])
   const [isOnWeeklyScheduleMode, setIsOnWeeklyScheduleMode] = useState<boolean>(true)
+  const [isOnCancelMode, setIsOnCancelMode] = useState<boolean>(false)
 
   const router = useRouter()
   const dispatch = useDispatch()
@@ -34,20 +39,24 @@ export default function WeeklySchedule({
       window.scrollTo(0, 0);
     }
     getWeeklyActivities(periodicAgenda?.activities)
-  }, [])
+  }, [isOnCancelMode ,currDate])
   
   const onBooking = () => {
     setIsOnBookingMode(true)
   }
+
   const getWeeklyActivities = (activities: Tactivity[]) => {
     // get nearst sunday.
+    // if today is Saturday than moving to the next day Sunday and dispalying the next week 
     let currentDate = new Date()
+    if(currentDate.getDay() === 6 )currentDate.setDate(new Date().getDate()+1 )
+
     if (currentDate.getDay() > 0) {
       while (currentDate.getDay() > 0) {
         currentDate.setDate(currentDate.getDate() - 1); // Move to the prev day
 
       }
-      console.log('activities[0].date', new Date(activities[0].date))
+      // console.log('activities[0].date', new Date(activities[0].date))
       const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
       console.log('activitiesOfTheWeek', activitiesOfTheWeek);
       setActivities([...activitiesOfTheWeek])
@@ -83,7 +92,6 @@ export default function WeeklySchedule({
         }
       })
       currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
-      console.log('currentDate.getDay()',currentDate.getDay());
       
     }
     return weeklyActivities
@@ -91,11 +99,11 @@ export default function WeeklySchedule({
   }
 
 
-  const DaysOfActivitiesProps = {
+  const DatesOfActivitiesProps = {
     activities,
     setCurrDate,
     currDate,
-    isOnWeeklyScheduleMode,
+    isOnCancelMode, setIsOnCancelMode
   }
 
   const LesssonsListProps = {
@@ -117,7 +125,8 @@ export default function WeeklySchedule({
 {!isOnBookingMode&&<h3>כדי להרשם לשיעור יש ללחוץ על כפתור  "הרשמה" </h3>}
     {!isOnBookingMode?
     <>
-    <DaysOfActivities {...DaysOfActivitiesProps} />
+    <DatesOfActivities {...DatesOfActivitiesProps}/>
+    {/* <DaysOfActivities {...DaysOfActivitiesProps} /> */}
     <LesssonsInfoList {...LesssonsListProps} />
     </>
     :

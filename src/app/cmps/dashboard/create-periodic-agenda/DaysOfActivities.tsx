@@ -42,7 +42,7 @@ export default function DaysOfActivities({ isOnWeeklyScheduleMode,setIsOnCancelM
 
 
     useEffect(() => {
-        if (!isDisplayedFirstTime||isOnWeeklyScheduleMode) {
+        if (!isDisplayedFirstTime) {
 
             getPage()
         }
@@ -71,7 +71,11 @@ export default function DaysOfActivities({ isOnWeeklyScheduleMode,setIsOnCancelM
         //we dont want to see mulipule time thes same day in activity arrays => 
         //removing duplicates because there could be same date with to different lessonss, for the display of the days of the week 
         if (activities) {
-            // a way to get new arry with unique resultes : if it is the same date it will return the index but becasue we loop throgth the array two times we if the same date repeats than it wil not be the same index , this way we get only the first Occurnce of a date 
+            // a way to get new arry with unique resultes :
+            // if it is the same date it will return the index
+            // but becasue we loop throgth the array two times 
+            // if the same date repeats than it wil NOT be the same index
+            // this way filter take first Occurnce of a date only 
             let uniqueActivities = activities.filter((activity, index, activities) =>
                 index === activities.findIndex((currActivity) => {
                     if (currActivity.date && activity.date) {
@@ -126,7 +130,7 @@ export default function DaysOfActivities({ isOnWeeklyScheduleMode,setIsOnCancelM
             const threeDays = [...uniqueActivities.slice(uniqueActivities.length - PAGE)]
             if (threeDays) {
                 if (threeDays[0]) {
-                    if (threeDays[0].date) {
+                    if (threeDays[0]?.date) {
                         
                         setThreeDays(threeDays)
                         setCurrDate(threeDays[0].date as Date)
@@ -138,9 +142,13 @@ export default function DaysOfActivities({ isOnWeeklyScheduleMode,setIsOnCancelM
         const threeDays = [...uniqueActivities.slice(startIndex, endIndex)]
         if (threeDays) {
             if (threeDays[0]) {
-                if (threeDays[0].date) {
+                if (threeDays[0]?.date) {
                     setThreeDays(threeDays)
+                    
+                    threeDays[startIndex] === undefined? 
                     setCurrDate(threeDays[startIndex].date)
+                    :
+                    setCurrDate(threeDays[0].date)
                 }
             }
         }

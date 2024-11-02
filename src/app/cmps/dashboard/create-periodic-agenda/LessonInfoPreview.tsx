@@ -34,7 +34,6 @@ export function LessonInfoPreview({ onBooking, periodicAgendaId, isOnWeeklySched
     const handelSignInToClass = async () => {
         if (session?.user?.email) {
 
-
             const url = getUrl('periodicAgenda/updatePeriodicAgendaPractitioners')
             const res = await fetch(url, {
                 method: 'PUT',

@@ -9,7 +9,9 @@ type PresenceListProps = {
 }
 
 export default function PresenceList({activities}: PresenceListProps) {
-    const [currDate, setCurrDate] = useState<Date>(new Date())
+    const today = new Date()
+    if(today.getDay() === 6 )today.setDate(new Date().getDate() + 1 ) 
+    const [currDate, setCurrDate] = useState<Date>(today)
     const [activitiesToDisplay, setActivitiesToDisplay] = useState<Tactivity[]>()
 
     useEffect(() => {

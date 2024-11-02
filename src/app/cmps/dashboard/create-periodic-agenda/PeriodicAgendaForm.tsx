@@ -80,7 +80,7 @@ export default function PeriodicAgendaFrom({
 
 
 }: PeriodicAgendaFromProps) {
-    const [options] = useState<string[]>(['אשטנגה','108 ברכות שמש','יסודות','האטה יוגה','פראניאמה'])
+    const [options] = useState<string[]>(['אשטנגה','פראניאמה + אשטנגה','108 ברכות שמש','יסודות','האטה יוגה','פראניאמה'])
     const RepeatingActivityRadioBtnsProps = {
         isActivityRepeating,
         setIsActivityRepeating,

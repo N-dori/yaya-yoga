@@ -1,5 +1,5 @@
 import React from 'react'
-import WeeklySchedule from '../cmps/dashboard/create-periodic-agenda/WeeklySchedule'
+import WeeklySchedule from '../cmps/weekly-schedule/WeeklySchedule'
 import { TperiodicAgenda } from '../types/types'
 import { getPreiodicAgenda } from '../utils/util'
 
