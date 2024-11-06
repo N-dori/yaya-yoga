@@ -21,7 +21,7 @@ export function UserMsg2({ }: Props) {
     transition: 'top .4s ease-in-out',
     padding:' 1em',
     borderRadius: '20px',
-    border:sucsses? `2px solid rgb(0, 242, 61)`:`2px solid rgb(199, 165, 165);`,
+    border:sucsses? `2px solid rgb(0, 242, 61)`:`2px solid rgb(199, 165, 165)`,
     textAlign: `center`,
     background:bgColor
   }

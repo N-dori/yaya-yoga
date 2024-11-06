@@ -4,32 +4,54 @@ import React, { useEffect, useState } from 'react'
 import MainMenu from './MainMenu'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { getUserByEmail } from '@/app/utils/util'
+import { getFullUserByEmail, getUserByEmail } from '@/app/utils/util'
+import { useDispatch } from 'react-redux'
+import { setUser } from '@/app/store/features/userSlice'
+import {  useAppSelector  } from '../../libs/hooks'
 
 type Props = {}
 export default function NavBar({ }: Props) {
   const [firstLetter, setfirstLetter] = useState("")
   const { data: session } = useSession()
   const router = useRouter();
+  const dispatch = useDispatch()
+  const currentUser =  useAppSelector(state => state.currUserSlice.user)
 
-  
   useEffect(() => {
     getUserFirstLetter()
+   
     const checkUserAndRedirect = async () => {
       if (session?.user?.email) {
-        const isNewUser = await checkIfNewUser(); 
-        if (isNewUser) {
-          router.push(`/welcome/${isNewUser}`);
+        const userId = await checkIfNewUser(); 
+        if (userId) {
+          router.push(`/welcome/${userId}`);
         }
       }
     };
-  
     checkUserAndRedirect();
+    
   }, [session?.user?.email]);
-  
+
+  useEffect(() => {
+    console.log('trying CurrUser In Store',currentUser);
+    if(!currentUser||currentUser === null){
+      
+   console.log('setting CurrUser In Store',currentUser);
+    setCurrUserInStore()
+   }
+
+  }, [session?.user?.email]);
+
+  const setCurrUserInStore = async () => 
+    {
+      const user = await getFullUserByEmail(session?.user?.email);
+      console.log('user in navBar', user);
+      
+      dispatch(setUser(user))
+    }
+
   const checkIfNewUser = async () => {
     const miniUser = await getUserByEmail(session?.user?.email);
-    console.log('user in navBar', miniUser);
     if (miniUser) {
       if (miniUser.isNewUser) {// here we chack if the user is a new user or not
         return miniUser._id; 

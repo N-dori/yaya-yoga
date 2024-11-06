@@ -4,7 +4,6 @@ import React from 'react'
 type Props = {}
 
 export default function page({params}) {
-    console.log('params.userIdForQuestionnaire',params.userId);
 
   return (
     <main className='welcome-container gc2 flex-col'>

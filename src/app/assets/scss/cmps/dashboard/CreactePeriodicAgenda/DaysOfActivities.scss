@@ -38,75 +38,81 @@
 }
 
 .actitity-card-container {
-    .hours-range {
-        align-items: end;
-    }
+    border: .3px solid var(--clr2);
+    border-radius: 8px;
+    // padding: 1em;
+}
 
-    .hours-range>* {
-        font-weight: 600;
+.hours-range {
+    align-items: end;
+}
 
-    }
+.hours-range>* {
+    font-weight: 600;
 
-    .activity-info-container {
-        .activity-info {
-            grid-template-columns: minmax(50px, 50px) minmax(auto, 11em);
+}
 
-            .activity-teacher-img {
-                border-radius: 50%;
-                align-self: self-start;
-            }
-        }
+.activity-info-container {
+    .activity-info {
+        grid-template-columns: minmax(50px, 50px) minmax(auto, 11em);
 
-        .activity-name {
-            grid-row: 1;
-            margin: 0;
-            color: var(--clr5);
-            font-size: 14px;
-            text-decoration: underline;
-        }
-
-        .activity-teacher-name {
-            grid-row: 1;
-            color: var(--clr4);
-            font-size: 14px;
-        }
-
-        .activity-location {
-            grid-row: 1;
-            color: var(--clr4);
-            font-size: 14px;
-
-
-        }
-        .sign-in-to-class-btn{
-        
-                border: 1px solid rgba(0, 0, 0, 0.33);
-                padding: 15px 10px;
-                line-height: 1.5;
-                border-radius: 10px;
-                background-color: transparent;
-                font-size: 1.1em;
-                // box-shadow: 0 8px 8px -8px #222;   
-                cursor: pointer;
-              
+        .activity-teacher-img {
+            border-radius: 50%;
+            align-self: self-start;
         }
     }
 
-    .check-in-container {
-        .drop-in {
-            color: var(--clr4);
-            font-size: 14px;
-        }
+    .activity-name {
+        grid-row: 1;
+        margin: 0;
+        color: var(--clr5);
+        font-size: 14px;
+        text-decoration: underline;
+    }
 
-        .check-in-button {
-            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-            color: #fffef8;
-            background-color: #9a9796;
-            border-radius: 8px;
-            text-transform: none;
-            padding: 8px 22px;
-            font-size: .9em;
-            cursor: pointer;
-        }
+    .activity-teacher-name {
+        grid-row: 1;
+        color: var(--clr4);
+        font-size: 14px;
+    }
+
+    .activity-location {
+        grid-row: 1;
+        color: var(--clr4);
+        font-size: 14px;
+
+
+    }
+
+    .sign-in-to-class-btn {
+
+        border: 1px solid rgba(0, 0, 0, 0.33);
+        padding: 15px 10px;
+        line-height: 1.5;
+        border-radius: 10px;
+        background-color: transparent;
+        font-size: 1.1em;
+        // box-shadow: 0 8px 8px -8px #222;   
+        cursor: pointer;
+
+    }
+}
+
+.check-in-container {
+
+    .drop-in {
+        color: var(--clr4);
+        font-size: 14px;
+    }
+
+    .check-in-button {
+        box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+        color: #fffef8;
+        background-color: #9a9796;
+        border-radius: 8px;
+        text-transform: none;
+        padding: 8px 22px;
+        font-size: .9em;
+        cursor: pointer;
     }
 }

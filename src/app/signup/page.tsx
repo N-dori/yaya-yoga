@@ -8,6 +8,6 @@ type Props = {}
 export default async function Signup({}: Props) {
 
       return (
-         <SignupForm></SignupForm>
+         <SignupForm redirectTo='/'></SignupForm>
       )
 }

@@ -3,12 +3,13 @@
     padding: 2em;
 
     .existing-users-login-msg {
+        color: #222;
         grid-template-columns: 0.6fr 1fr;
         border: 1px solid #222;
         border-radius: 6px;
         padding: 1em;
-        gap: 2.5em;
-        font-size: 1.25em;
+        gap: 1em;
+        font-size: 1em;
         line-height: 25px;
 
     }

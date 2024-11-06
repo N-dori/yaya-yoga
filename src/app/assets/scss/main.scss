@@ -8,6 +8,7 @@
 
 // ## global cmps
 @import '../scss/cmps/UserMsg.scss';
+@import '../scss/cmps/AlertBox.scss';
 
 // ## login-signup
 @import '../scss/views/Signup.scss';
@@ -18,8 +19,9 @@
 // week-schedule
 @import '../scss/cmps/week-schedule/DaysWeek.scss';
 @import '../scss/cmps/week-schedule/WeeklySchedule.scss';
-@import '../scss/cmps/week-schedule/BookinIndex.scss';
+@import '../scss/cmps/week-schedule/PlansLogin.scss';
 @import '../scss/cmps/plans/PlansList.scss';
+@import '../scss/cmps/week-schedule/PractitionersIndex.scss';
 //dashboard 
 @import '../scss/cmps/dashboard/DashboardMenu.scss';
 
@@ -38,6 +40,7 @@
 @import '../scss/views/Welcome.scss';
 @import '../scss/views/HeathDeclerationForm.scss';
 @import '../scss/views/UserQuestionnaire.scss';
+@import '../scss/views/Regulations.scss';
 
 
 

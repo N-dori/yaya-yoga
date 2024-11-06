@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { NULL } from "sass";
 
 const userSceama = new Schema ({
     name : {
@@ -23,6 +24,8 @@ const userSceama = new Schema ({
     userQuestionnaireId: {
         type: String,
     } ,
+    memberships: [ { type: Schema.Types.ObjectId, ref: "Membership" } ] 
+     ,
     isAdmin : Boolean ,
 
 

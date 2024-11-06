@@ -9,10 +9,6 @@ export async function PUT(request) {
         await connectMongoDB();
 
         // Find the PeriodicAgenda document
-        console.log('email', email);
-        console.log('email', activityId);
-        console.log('periodicAgendaId', periodicAgendaId);
-        
         
         // Update the a specific activity in the array of the document
         const updatedPeriodicAgenda = await PeriodicAgenda.updateOne(

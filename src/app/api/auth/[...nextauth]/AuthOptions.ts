@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
             name: 'Credentials',
             credentials: {},
             async authorize(credentials) {
-                console.log('credentials******',credentials);
+                console.log('credentials******', credentials);
                 const { email, password } = credentials as Tcredentials
 
 
@@ -64,18 +64,18 @@ export const authOptions: NextAuthOptions = {
 
                             method: 'POST',
                             headers: { "Content-type": "appliction/json" },
-                            body: JSON.stringify({ name, email, isNewUser:true, isAdmin: false })
+                            body: JSON.stringify({ name, email, isNewUser: true, isAdmin: false })
 
                         })
                         if (res.status === 200 || res.status === 201) {
-                            
+
                             return true
                         } else {
                             return false
                         }
                     }
                     // update isNewUser to false
-                     
+
                     return true;
                 } catch (err) {
                     console.log('had aproblem saving google user to data base', err);
@@ -89,6 +89,7 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token.email = user.email
                 token.name = user.name
+                token.id = user.id
                 // token.isNewUser = user.isNewUser
             }
             return token
@@ -97,13 +98,18 @@ export const authOptions: NextAuthOptions = {
             if (session.user) {
                 session.user.email = token.email
                 session.user.name = token.name
+
             }
             return session
         },
-         async redirect({ url, baseUrl }) {
-        
-        
-            return baseUrl // Default to the base URL if the URL is external
+        async redirect({ url, baseUrl }) {
+            console.log('url in redirect is: ', url);
+
+            // Allows relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`
+            // Allows callback URLs on the same origin
+            else if (new URL(url).origin === baseUrl) return url
+            return baseUrl
         }
 
     },

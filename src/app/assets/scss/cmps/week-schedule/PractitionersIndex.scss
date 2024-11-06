@@ -1,0 +1,19 @@
+.practitioners-index-container {
+    grid-template-columns: 1fr 1fr;
+    padding: 5px;
+    border-top:.3px solid var(--clr4);
+    padding: 1em;
+    .practitioner-circle {
+        border-radius: 100px;
+        border: 0.3px solid rgba(34, 34, 34, 0.2);
+        width: 19px;
+        font-size: 9px;
+        padding: 3px;
+        margin-right: -5px;
+        color: #fff;
+        box-shadow: 0 4px 8px rgba(100, 50, 0, 0.30);
+    }
+    .practitioner-circle:first-child{
+        margin-right: 0;
+    }
+}

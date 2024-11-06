@@ -16,6 +16,15 @@
 .mt-05{
     margin-top: .5em;
 }
+.p-0{
+    padding: 0em;
+}
+.p-1{
+    padding: 1em;
+}
+.p-2{
+    padding: 2em;
+}
 .tac{
     text-align: center;
 }
@@ -61,7 +70,15 @@
 .grid{
     display:grid;
 }
-
+.gr1{
+    grid-row: 1;
+}
+.gr2{
+    grid-row: 2;
+}
+.gr3{
+    grid-row: 3;
+}
 .gc1{
     grid-column: 1;
 }
@@ -130,9 +147,7 @@ transition: opacity .8s ease;
 .no-scroll{
     overflow-y: hidden;
 }
-.tac{
-    text-align: center;
-}
+
 
 textarea:focus, input:focus{
     outline: none;
@@ -140,16 +155,7 @@ textarea:focus, input:focus{
 .tc-b{
     color:var(--clr1)
 }
-.loder-container {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    .spinner{
-        position: absolute;
-        top:50%;
-        left:50%
-    }
-}
+
 .flex-rev{
     flex-direction: row-reverse;
 }

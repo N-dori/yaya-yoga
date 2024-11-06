@@ -10,9 +10,11 @@ import CircleDeroration from "./CircleDeroration"
 import { useAppDispatch } from "@/app/libs/hooks"
 import { callUserMsg, hideUserMsg } from "@/app/store/features/msgSlice"
 
-type Props = {}
+type SignupFormProps = {
+  redirectTo?:string
+}
 
-export default function SignupForm({ }: Props) {
+export default function SignupForm({redirectTo }: SignupFormProps) {
 
   const [name, setName] = useState("")
   const [nameInError, setNameInError] = useState(false)
@@ -85,7 +87,7 @@ export default function SignupForm({ }: Props) {
   const handelGoogleRegistion = async () => {
     
 
-      const res = await signIn('google')
+      const res = await signIn('google', { callbackUrl:redirectTo})
  
   }
 
@@ -153,9 +155,9 @@ export default function SignupForm({ }: Props) {
         <button type='submit' className="login-btn"> רשום אותי </button>
         <h2 className="or tac">או</h2>
         <button type='button' onClick={handelGoogleRegistion}
-          className='google-btn flex-jc-ac pointer'>
-          צור חשבון עם גוגל
-          <Image src={'/googleSymbol.png'} alt={'G'} width={40} height={40}></Image>  </button>
+          className='google-btn flex-sb pointer'>
+         <span> צור חשבון עם גוגל</span>
+          <Image src={'/googleSymbol.png'} alt={'G'} width={30} height={30}></Image>  </button>
 
         <CircleDeroration />
       </form>

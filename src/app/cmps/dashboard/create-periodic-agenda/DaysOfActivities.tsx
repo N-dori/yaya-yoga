@@ -15,7 +15,7 @@ type DaysOfActivitiesProps = {
 
 }
 
-export default function DaysOfActivities({ isOnWeeklyScheduleMode,setIsOnCancelMode, isOnCancelMode, isOnSearchMode, setCurrDate, activities, currDate }: DaysOfActivitiesProps) {
+export default function DaysOfActivities({ setIsOnCancelMode, isOnCancelMode, isOnSearchMode, setCurrDate, activities, currDate }: DaysOfActivitiesProps) {
 
     const PAGE = 3
     const [startIndex, setStartIndex] = useState<number>(0)
@@ -146,9 +146,9 @@ export default function DaysOfActivities({ isOnWeeklyScheduleMode,setIsOnCancelM
                     setThreeDays(threeDays)
                     
                     threeDays[startIndex] === undefined? 
-                    setCurrDate(threeDays[startIndex].date)
-                    :
                     setCurrDate(threeDays[0].date)
+                    :
+                    setCurrDate(threeDays[startIndex].date)
                 }
             }
         }

@@ -1,15 +1,11 @@
 'use client'
 import { Tactivity, TperiodicAgenda } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
-import DaysOfActivities from '../dashboard/create-periodic-agenda/DaysOfActivities'
 import { LesssonsInfoList } from '../dashboard/create-periodic-agenda/LesssonsInfoList'
 import 'react-datepicker/dist/react-datepicker.css'
-import { getUrl, stripTime } from '@/app/utils/util'
-import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
-import PeriodicAgenda from '@/app/models/periodicAgenda'
-import BookingIndex from '../booking/BookingIndex'
+import {  stripTime } from '@/app/utils/util'
 import DatesOfActivities from './DatesOfActivities'
+import PlansLogin from '../booking/PlansLogin'
 
 
 type WeeklyScheduleProps = {
@@ -31,8 +27,7 @@ export default function WeeklySchedule({
   const [isOnWeeklyScheduleMode, setIsOnWeeklyScheduleMode] = useState<boolean>(true)
   const [isOnCancelMode, setIsOnCancelMode] = useState<boolean>(false)
 
-  const router = useRouter()
-  const dispatch = useDispatch()
+
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -40,7 +35,10 @@ export default function WeeklySchedule({
     }
     getWeeklyActivities(periodicAgenda?.activities)
   }, [isOnCancelMode ,currDate])
-  
+
+
+
+ 
   const onBooking = () => {
     setIsOnBookingMode(true)
   }
@@ -112,7 +110,7 @@ export default function WeeklySchedule({
     isOnWeeklyScheduleMode,
     periodicAgendaId,
     onBooking,
-
+    setActivities
 
   }
 
@@ -130,7 +128,7 @@ export default function WeeklySchedule({
     <LesssonsInfoList {...LesssonsListProps} />
     </>
     :
-    <BookingIndex/>
+    <PlansLogin/>
     }
     </main>
   )

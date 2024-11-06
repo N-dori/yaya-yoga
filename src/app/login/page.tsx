@@ -5,6 +5,6 @@ type Props = {}
 
 export default function Login({}: Props) {
   return (
-<LoginForm/>
+<LoginForm redirectTo='/'/>
   )
 }

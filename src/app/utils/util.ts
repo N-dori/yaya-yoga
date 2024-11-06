@@ -40,9 +40,37 @@ export const getUserByEmail = async (email: String) => {
     body: JSON.stringify({ email })
   })
   const miniUser = await res.json()
-  // console.log(' userExists', miniUser);
+  // console.log(' my mini user in getUserBYEmail = ', miniUser);
 
   return miniUser
+}
+export const getUser = async (_id: String) => {
+  const url = getUrl('user/getUser/')
+
+  const res = await fetch(url, {
+
+    method: 'POST',
+    headers: { "Content-type": "appliction/json" },
+    body: JSON.stringify({ _id })
+  })
+  const user = await res.json()
+  // console.log(' my user in utils getUserl = ', user);
+
+  return user
+}
+export const getFullUserByEmail = async (email: String) => {
+  const url = getUrl('user/getFullUserByEmail/')
+
+  const res = await fetch(url, {
+
+    method: 'POST',
+    headers: { "Content-type": "appliction/json" },
+    body: JSON.stringify({ email })
+  })
+  const user = await res.json()
+  console.log(' my user in utils getFullUserByEmail = ', user);
+
+  return user
 }
 export const getPreiodicAgenda = async ()=> {
   try {
@@ -98,4 +126,13 @@ export const createDaysRange = () => {
 export const scrollUp = () => {
   window.scrollTo(0,0)
 
+}
+
+export function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }

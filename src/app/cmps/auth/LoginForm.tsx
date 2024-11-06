@@ -7,9 +7,11 @@ import { useState } from 'react'
 import CircleDeroration from './CircleDeroration'
 import { useAppDispatch } from '@/app/libs/hooks'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
-type Props = {}
+type LoginFormProps = {
+  redirectTo?:string
+}
 
-export default function LoginForm({ }: Props) {
+export default function LoginForm({redirectTo }: LoginFormProps) {
   
   const [password, setPassword] = useState("")
   const [passwordInError, setPasswordInError] = useState(false)
@@ -53,7 +55,7 @@ export default function LoginForm({ }: Props) {
 
   const handelGoogleRegistion = async () => {
 
-    const res = await signIn('google')
+    const res = await signIn('google',{ callbackUrl:redirectTo})
 
   }
   const handelOnError = (msg: string, field: string) => {
