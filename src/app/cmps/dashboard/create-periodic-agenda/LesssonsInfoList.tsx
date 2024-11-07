@@ -12,7 +12,7 @@ type LesssonsInfoListProps = {
   hadelExistSearchMode?: () => void
   onBooking?: () => void
   handelLessonCancelation?: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
-  setActivities:(activities:Tactivity[])=>void
+  setActivities?:(activities:Tactivity[])=>void
 }
 
 export function LesssonsInfoList({ onBooking, periodicAgendaId, handelLessonCancelation, hadelExistSearchMode, isOnSearchMode
