@@ -10,17 +10,14 @@ export async function PUT(request) {
     await connectMongoDB();
 
     // Update the user's memberships array
-    const result = await User.updateOne(
+    const user = await User.findByIdAndUpdate(
       { _id },
-      { $push: { memberships: membershipId } }
+      { $push: { memberships: membershipId } },
+      { new: true }
     );
 
-    // Log and inspect the result
-    console.log("Update result:", result);
 
-
-
-    return NextResponse.json({ message: "User's membership was added" }, { status: 200 });
+    return NextResponse.json(user, { status: 200 });
   } catch (err) {
     console.error("Had a problem updating user:", err);
     return NextResponse.json({ message: "Had a problem updating user" }, { status: 500 });

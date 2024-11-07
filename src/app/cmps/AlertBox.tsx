@@ -4,15 +4,18 @@ import { useAppSelector, } from '../libs/hooks'
 import { useDispatch } from 'react-redux'
 import { clearTxts, hideAlertBox } from '@/app/store/features/alertBoxSlice';
 
-type Props = {
-
+type AlertBoxProps = {
+  isAlertBoxShown: boolean
+  userMsg: string
+  btnTxt: string
+  setBtnTxt: (btnTxt: string) => void
+  setUserMsg: (userMsg: string) => void
+  setIsAlertBoxShown: (b: boolean) => void
+  handelChargeUser?:()=>void
+  navigatToPricing?:()=>void
 }
 
-export function AlertBox({ }: Props) {
-  const isAlertBoxShown = useAppSelector(state => state.alertBoxSlice.isAlertBoxShown)
-  const userMsg = useAppSelector(state => state.alertBoxSlice.userMsg)
-  const btnTxt = useAppSelector(state => state.alertBoxSlice.btnTxt)
-  const func = useAppSelector(state => state.alertBoxSlice.func)
+export function AlertBox({navigatToPricing,handelChargeUser,setBtnTxt, setUserMsg, setIsAlertBoxShown, isAlertBoxShown, userMsg, btnTxt }: AlertBoxProps) {
 
   const dispatch = useDispatch()
 
@@ -33,17 +36,21 @@ export function AlertBox({ }: Props) {
   }, [userMsg, btnTxt])
 
   const hideBox = () => {
-    dispatch(hideAlertBox())
+    setIsAlertBoxShown(false)
+    clearTxts()
+
+  }
+  const clearTxts = () => {
     setTimeout(() => {
-      dispatch(clearTxts())
+      setUserMsg('')
+      setBtnTxt('')
       
     }, 500);
   }
-  const handelMyFunc = () => {
-    func()
-    dispatch(hideAlertBox())
-  }
-
+ const handelMyFunction = () => {
+  btnTxt=== 'לרכישת מנוי'?navigatToPricing():handelChargeUser()
+  hideBox()
+ }
   return (
     <section className='backdrop' style={styles} >
 
@@ -52,7 +59,8 @@ export function AlertBox({ }: Props) {
         <span className='txt gr2'>
           {userMsg}
         </span>
-       <button type='button' className='alert-box-btn gr3 pointer'onClick={handelMyFunc}>{btnTxt}</button>
+   <button type='button' className='alert-box-btn gr3 pointer' onClick={handelMyFunction}>{btnTxt}</button>
+
       </div>
     </section>
   )

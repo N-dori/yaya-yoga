@@ -15,10 +15,6 @@ export async function POST(request) {
 **נשים בזמן וסת או הריון צריכות להימנע מתרגילים מסוימים. אנא היוועצי עם המורה לפני תחילת השיעור.
 </p>
  <a style="margin-bottom: 2em; font-size: 20px; direction: rtl;" href="${getBaseUrl()}/healthDecleration/${_id}">למלוי השאלון הרפואי</a> 
-
-
-
-
   `
 
 

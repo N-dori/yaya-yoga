@@ -12,8 +12,8 @@ export default function PractitionersList({ practitioners}: PractitionersListPro
   return (
     <section className='practitioners-list-container flex-ac gc1'>
       {
-        practitioners.map(practitioner =>
-          <PractitionersPreview practitioner={practitioner}  />
+        practitioners.map((practitioner,i) =>
+          <PractitionersPreview key={i} practitioner={practitioner}  />
                          )
       }
 

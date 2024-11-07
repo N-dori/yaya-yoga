@@ -55,7 +55,6 @@ type Tsubscription = {
 export type Tmembership =
     {
         _id?: string,
-        dropIn?: boolean,
         userId: string,
         subscription: Tsubscription,
         start?: Date,
@@ -63,5 +62,18 @@ export type Tmembership =
         isExpired: boolean,
         paid: number,
         dateOfPurchase: Date,
+    }
+export type Tuser =
+    {
+        _id?: string,
+        name : string,
+        email : string ,
+        password?: string ,
+        isNewUser: string,
+        healthDeclaration: string,
+        userQuestionnaireId:string,
+        memberships?: string[] 
+         ,
+        isAdmin : boolean ,
     }
 

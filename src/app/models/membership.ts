@@ -8,7 +8,6 @@ const subscriptionSchema = new Schema({
 const membershipsSchema = new Schema(
     {
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
-        dropIn: Boolean,
         subscription: subscriptionSchema,
         start: Date,
         end: Date,

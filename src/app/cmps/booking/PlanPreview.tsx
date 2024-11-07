@@ -8,6 +8,7 @@ import { getUrl, getUserByEmail } from '@/app/utils/util';
 import { useDispatch } from 'react-redux';
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice';
 import LoginForm from '../auth/LoginForm';
+import { setUser } from '@/app/store/features/userSlice';
 type PlanPreviewProps = {
   planId: string,
   planType: string,
@@ -48,6 +49,8 @@ export default function PlanPreview(props: PlanPreviewProps) {
         body: JSON.stringify({ _id: userId, membershipId: membership._id })
       })
       if (res.ok) {
+        const updatedUser = await res.json() 
+        dispatch(setUser(updatedUser))
           console.log('User was updated with new membership');
           return true
           
@@ -72,7 +75,6 @@ export default function PlanPreview(props: PlanPreviewProps) {
     const dropInMembership: Tmembership =
     {
       userId: user._id,
-      dropIn: true,
       isExpired: false,
       subscription:{type: 'drop-in' , entries: 1},
       paid: 50,
