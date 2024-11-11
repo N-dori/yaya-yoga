@@ -1,23 +1,23 @@
 import { Tpractitioner } from '@/app/types/types'
-import { getRandomColor } from '@/app/utils/util'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-type PractitionersPreviewProps =
- {
-    practitioner: Tpractitioner
-    
- }
+type PractitionersPreviewProps = {
+    practitioner:Tpractitioner
+ 
+}
 
 export default function PractitionersPreview({practitioner}: PractitionersPreviewProps) {
-  return (
-    <>
-    <div className='practitioner-circle flex-jc-ac' 
-          style={{backgroundColor:getRandomColor()}}>
-            
-            {practitioner.name[0].toLocaleUpperCase()}
-            
-    </div>
-   
-    </>
+    const [isShown1, setisShown1] = useState(false)
+useEffect(() => {
+setTimeout(() => {
+    handelOpacity()
+}, 200);
+}, [])
+const handelOpacity = () =>{
+    setisShown1(true)
+}
+
+    return (
+    <li style={isShown1?{opacity:'.9'}:{}} className='practitioner-name'>{practitioner.name}</li>
   )
 }

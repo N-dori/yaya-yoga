@@ -2,21 +2,21 @@ import { Tpractitioner } from '@/app/types/types'
 import React from 'react'
 import PractitionersPreview from './PractitionersPreview'
 
-type PractitionersListProps =
-  {
+type PractitionersListProps = {
     practitioners: Tpractitioner[]
- 
-  }
 
-export default function PractitionersList({ practitioners}: PractitionersListProps) {
+}
+
+export default function PractitionersList({practitioners}: PractitionersListProps) {
   return (
-    <section className='practitioners-list-container flex-ac gc1'>
-      {
-        practitioners.map((practitioner,i) =>
-          <PractitionersPreview key={i} practitioner={practitioner}  />
-                         )
-      }
+    <section className='practitioners-list-container'>
+        <ol  className='clean'>
+       {
+        practitioners.map( practitioner =>
+        <PractitionersPreview practitioner={practitioner} />)
+       }
 
-    </section>
+        </ol>
+        </section>
   )
 }

@@ -100,7 +100,7 @@ export default function PlanPreview(props: PlanPreviewProps) {
     const monthlyPassMembership: Tmembership =
     {
       userId: user._id,
-      subscription:{type:'חופשי חודשי' , entries: 0},
+      subscription:{type:'חופשי חודשי' , entries: 100},
       isExpired: false,
       paid: 350,
       dateOfPurchase: new Date(),

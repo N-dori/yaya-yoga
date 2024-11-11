@@ -32,23 +32,26 @@ export default function NavBar({ }: Props) {
     
   }, [session?.user?.email]);
 
-  useEffect(() => {
-    console.log('trying CurrUser In Store',currentUser);
-    if(!currentUser||currentUser === null){
+  // useEffect(() => {
+    // if(currentUser === null){
       
-   console.log('setting CurrUser In Store',currentUser);
-    setCurrUserInStore()
-   }
+  //  console.log('setting CurrUser In Store',currentUser);
+    // setCurrUserInStore()
+  //  }
 
-  }, [session?.user?.email]);
+  // }, [session?.user?.email]);
 
-  const setCurrUserInStore = async () => 
-    {
-      const user = await getFullUserByEmail(session?.user?.email);
-      console.log('user in navBar', user);
-      
-      dispatch(setUser(user))
-    }
+  // const setCurrUserInStore = async () => 
+  //   {
+  //     const user = await getFullUserByEmail(session?.user?.email);
+  //     console.log('user in navBar', user);
+  //     if(user === null ){
+  //       const user = await getFullUserByEmail(session?.user?.email);
+  //       dispatch(setUser(user))
+
+  //     }    
+  //     dispatch(setUser(user))
+  //   }
 
   const checkIfNewUser = async () => {
     const miniUser = await getUserByEmail(session?.user?.email);

@@ -3,9 +3,10 @@
     padding: 5px;
     border-top:.3px solid var(--clr4);
     padding: 1em;
+    border-radius: 3px;
     .practitioner-circle {
         border-radius: 100px;
-        border: 0.3px solid rgba(34, 34, 34, 0.2);
+        border: 0.3px solid rgb(250, 250, 250);
         width: 19px;
         font-size: 9px;
         padding: 3px;
@@ -15,5 +16,12 @@
     }
     .practitioner-circle:first-child{
         margin-right: 0;
+    }
+    .practitioners-arrow{
+        transition: .4s ease-in-out;
+    }
+    .practitioner-name{
+        opacity: 0;
+        transition: .5s ease-in-out;
     }
 }

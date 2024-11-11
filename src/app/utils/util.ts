@@ -13,7 +13,7 @@ export const stripTime = (date: Date | string): Date => {
   return strippedDate;
 };
 export const getBaseUrl = () => {
-  
+
   const baseUrl = process.env.NODE_ENV === 'development' ?
     process.env.NEXT_PUBLIC_DEV_URL : process.env.NEXT_PUBLIC_PRUD_URL
   return baseUrl
@@ -36,7 +36,7 @@ export const getUserByEmail = async (email: String) => {
   const res = await fetch(url, {
 
     method: 'POST',
-    headers: { "Content-type": "appliction/json" },
+    headers: { "Content-type": "application/json" },
     body: JSON.stringify({ email })
   })
   const miniUser = await res.json()
@@ -50,7 +50,7 @@ export const getUser = async (_id: String) => {
   const res = await fetch(url, {
 
     method: 'POST',
-    headers: { "Content-type": "appliction/json" },
+    headers: { "Content-type": "application/json" },
     body: JSON.stringify({ _id })
   })
   const user = await res.json()
@@ -58,36 +58,68 @@ export const getUser = async (_id: String) => {
 
   return user
 }
+export const getMembership = async (membershipId: String) => {
+  console.log(' fatching with membershipId = ', membershipId);
+  const url = getUrl('membership/getMembership/')
+
+  const res = await fetch(url, {
+
+    method: 'POST',
+    headers: { "Content-type": "application/json","Cache-Control": "no-store"  },
+    body: JSON.stringify({membershipId}),
+    cache: 'no-store' 
+  })
+  const membership = await res.json()
+  console.log(' the fetched membership is = ', membership);
+
+  return membership
+}
+export const removeUserMembership = async (userId: String) => {
+  const url = getUrl('user/removeMembership')
+
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ userId })
+  })
+ 
+  const updatedUser = await res.json()
+
+  return updatedUser
+}
+
 export const getFullUserByEmail = async (email: String) => {
   const url = getUrl('user/getFullUserByEmail/')
 
   const res = await fetch(url, {
 
     method: 'POST',
-    headers: { "Content-type": "appliction/json" },
-    body: JSON.stringify({ email })
-  })
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ email }),
+    cache: 'no-store' 
+    
+  },)
   const user = await res.json()
   console.log(' my user in utils getFullUserByEmail = ', user);
 
   return user
 }
-export const getPreiodicAgenda = async ()=> {
+export const getPreiodicAgenda = async () => {
   try {
     const url = getUrl('periodicAgenda/getPeriodicAgenda')
-      const res = await fetch(url, {
-          method: 'POST',
-          headers: { "Content-type": "application/json" },
-      })
-      if (res.ok) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { "Content-type": "application/json" },
+    })
+    if (res.ok) {
 
-         return  await res.json()
+      return await res.json()
 
-      } else {
-          throw new Error('faild to get a new periodic Agenda')
-      }
+    } else {
+      throw new Error('faild to get a new periodic Agenda')
+    }
   } catch (err) {
-      console.log('failed to fetch a periodic agenda reason: ',err);
+    console.log('failed to fetch a periodic agenda reason: ', err);
   }
 }
 export const createYearsRange = () => {
@@ -124,7 +156,7 @@ export const createDaysRange = () => {
   return days
 }
 export const scrollUp = () => {
-  window.scrollTo(0,0)
+  window.scrollTo(0, 0)
 
 }
 
@@ -132,7 +164,7 @@ export function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';
   for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+    color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
 }

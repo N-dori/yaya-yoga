@@ -14,6 +14,7 @@ export default function PlansList({ }: Props) {
             className='plans-list-container flex-col gap1'>
             {
                 plans.map((plan: Tplan) => <PlanPreview
+                    key={plan._id}
                     planId={plan._id}
                     planType={plan.type}
                     planDesc={plan.desc}

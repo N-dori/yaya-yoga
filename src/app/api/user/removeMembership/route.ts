@@ -8,14 +8,14 @@ export async function PUT(request) {
 
         await connectMongoDB();
    
-                const updatedMembership = await User.findByIdAndUpdate(
+                const updatedUser = await User.findByIdAndUpdate(
                     userId,
                     { $pop: { 'memberships': -1 } },
                     { new: true, useFindAndModify: false }
                 );
             
     
-        return NextResponse.json(updatedMembership, { status: 203 });
+        return NextResponse.json(updatedUser, { status: 203 });
 
     } catch (err) {
         console.error('had a problem removing membership', err);
