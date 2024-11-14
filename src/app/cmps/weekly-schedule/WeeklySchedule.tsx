@@ -18,7 +18,6 @@ export default function WeeklySchedule({
   periodicAgenda }: WeeklyScheduleProps) {
     const today = new Date()
     if(today.getDay() === 6 )today.setDate(new Date().getDate()+1 )
-      console.log('today is  : ', today);
       
   const [currDate, setCurrDate] = useState<Date>(today)
   const [isOnBookingMode, setIsOnBookingMode] = useState<boolean>(false)
@@ -54,9 +53,7 @@ export default function WeeklySchedule({
         currentDate.setDate(currentDate.getDate() - 1); // Move to the prev day
 
       }
-      // console.log('activities[0].date', new Date(activities[0].date))
       const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
-      console.log('activitiesOfTheWeek', activitiesOfTheWeek);
       setActivities([...activitiesOfTheWeek])
     }
 
@@ -70,7 +67,6 @@ export default function WeeklySchedule({
 
   const creactWeeklyActivities = (daysOfActivities: Tactivity[], currentDate: Date) => {
     let weeklyActivities: Tactivity[] = []
-  //currentDate.getDay() === 0
     
     while (currentDate.getDay() < 6) {
 

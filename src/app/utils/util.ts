@@ -65,9 +65,9 @@ export const getMembership = async (membershipId: String) => {
   const res = await fetch(url, {
 
     method: 'POST',
-    headers: { "Content-type": "application/json","Cache-Control": "no-store"  },
-    body: JSON.stringify({membershipId}),
-    cache: 'no-store' 
+    headers: { "Content-type": "application/json", "Cache-Control": "no-store" },
+    body: JSON.stringify({ membershipId }),
+    cache: 'no-store'
   })
   const membership = await res.json()
   console.log(' the fetched membership is = ', membership);
@@ -82,7 +82,7 @@ export const removeUserMembership = async (userId: String) => {
     headers: { "Content-type": "application/json" },
     body: JSON.stringify({ userId })
   })
- 
+
   const updatedUser = await res.json()
 
   return updatedUser
@@ -96,8 +96,8 @@ export const getFullUserByEmail = async (email: String) => {
     method: 'POST',
     headers: { "Content-type": "application/json" },
     body: JSON.stringify({ email }),
-    cache: 'no-store' 
-    
+    cache: 'no-store'
+
   },)
   const user = await res.json()
   console.log(' my user in utils getFullUserByEmail = ', user);
@@ -112,7 +112,7 @@ export const getPreiodicAgenda = async () => {
       headers: { "Content-type": "application/json" },
     })
     if (res.ok) {
-
+      
       return await res.json()
 
     } else {
@@ -122,6 +122,67 @@ export const getPreiodicAgenda = async () => {
     console.log('failed to fetch a periodic agenda reason: ', err);
   }
 }
+export const removePractitionerFromActivityFromDatabase = async ( periodicAgendaId:string,activityId:string,email:string) => {
+  const url = getUrl('periodicAgenda/removePractitionerFromActivity')
+  const res = await fetch(url, {
+      method: 'PUT',
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+          periodicAgendaId,
+          activityId,
+          email,
+          
+      })
+  })
+  if (res.ok) {
+    return true
+
+} else {
+  return false
+
+}
+}
+export const refundPractitionerMembershipAtDatabase = async ( membershipId:string) => {
+  const url = getUrl('membership/refundMembership')
+  const res = await fetch(url, {
+      method: 'PUT',
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        membershipId
+          
+      })
+  })
+  if (res.ok) {
+    return await res.json()
+
+} else {
+  return null
+
+}
+}
+export const updateUserWithNewMembershipAtDatabase = async ( membershipId:string,userId:string) => {
+  try {
+    const url = getUrl('user/updateUserMembership')
+
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ _id: userId, membershipId})
+    })
+    if (res.ok) {
+      const updatedUser = await res.json() 
+
+        console.log('User was updated with new membership',updatedUser);
+        return true
+        
+    }else{
+      return false
+    }
+  } catch (error) {
+    console.log('had a problem updating user with new membership',error)
+  }
+}
+
 export const createYearsRange = () => {
   let years: number[] = []
   let startYear = 1900

@@ -11,8 +11,7 @@ type PractitionersPreviewProps =
 export default function PractitionersCirclePreview({practitioner}: PractitionersPreviewProps) {
   return (
     <>
-    <div className='practitioner-circle flex-jc-ac' 
-          style={{backgroundColor:getRandomColor()}}>
+    <div className='practitioner-circle flex-jc-ac ' >
             
             {practitioner.name[0].toLocaleUpperCase()}
             

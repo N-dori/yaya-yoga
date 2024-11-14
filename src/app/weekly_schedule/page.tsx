@@ -13,11 +13,13 @@ export default async function page({}: Props) {
   
   if(res){
     periodicAgenda = res.periodicAgenda
+    console.log('current periodic agenda : ',periodicAgenda);
+
   }
 
  const WeeklyScheduleProps = {
    periodicAgenda,
-   periodicAgendaId:periodicAgenda._id
+   periodicAgendaId:periodicAgenda?._id
  }
 
   return (

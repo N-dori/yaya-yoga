@@ -76,7 +76,6 @@ export default function DatesOfActivities({ activities, setCurrDate, currDate, }
         let sortedThreeDays: Tactivity[]
         let uniqueDates = getUniqueDates(sortRes)
         let todayIndex = findDateIndex(currDate, activities)
-        console.log('todayIndex', todayIndex);
         if(todayIndex === -1 ){
             todayIndex= 0
         }

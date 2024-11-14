@@ -6,10 +6,9 @@ export async function POST (request) {
 
  try {
     const { membershipId } = await request.json();
-   //  console.log('*****************- membershipId',membershipId);
     
-   await connectMongoDB()
-    const membership = await Membership.findOne( {membershipId})
+    await connectMongoDB()
+    const membership = await Membership.findOne( {_id:membershipId})
   
  
   return NextResponse.json(membership, {status: 200 } )

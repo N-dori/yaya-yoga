@@ -1,5 +1,5 @@
 import { Tpractitioner } from '@/app/types/types'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PractitionersCirclePreview from './PractitionersCirclePreview'
 
 type PractitionersListProps =
@@ -9,13 +9,23 @@ type PractitionersListProps =
   }
 
 export default function PractitionersCircleList({ practitioners}: PractitionersListProps) {
+  const [NPractitioners, setNPractitioners] = useState<Tpractitioner[]>(null)
+  useEffect(() => {
+    getNPractitioners()
+  }, [practitioners.length])
+
+  const getNPractitioners = () => {
+    let res = practitioners.slice(0,7)
+    setNPractitioners([...res])
+  }
   return (
-    <section className='practitioners-list-container flex-ac gc1'>
+    <section className='practitioners-circle-list-container flex-ac gc1'>
       {
-        practitioners.map((practitioner,i) =>
+        NPractitioners?.map((practitioner,i) =>
            <PractitionersCirclePreview key={i} practitioner={practitioner}  />
                          )
-      }
+                        }
+             { practitioners.length > 7  && <span className='dots'>...</span>}
 
     </section>
   )

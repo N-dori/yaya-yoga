@@ -7,13 +7,14 @@ export type Tactivity = {
     teacher: string,
     location: string,
     isCanceled: boolean,
-    reasonOfCancelation: string
+    reasonOfCancelation: string,
     practitioners: Tpractitioner[] | undefined,
 }
 export type Tpractitioner = {
-    email: string;
-    name: string;
-    hasArrived?: boolean;
+    id?: string,
+    email?: string,
+    name?: string,
+    membershipId:string
 }
 
 export type TperiodicAgenda = {

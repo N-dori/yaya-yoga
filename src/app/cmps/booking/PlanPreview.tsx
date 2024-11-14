@@ -51,20 +51,19 @@ export default function PlanPreview(props: PlanPreviewProps) {
       if (res.ok) {
         const updatedUser = await res.json() 
         dispatch(setUser(updatedUser))
-          console.log('User was updated with new membership');
+          // console.log('User was updated with new membership');
           return true
           
       }else{
         return false
       }
     } catch (error) {
-      console.log('',)
+      console.log('had a problem updating user with new membership',error)
     }
 
   }
   const getMembership = async (membershipType: string) => {
     if (!session?.user?.email) {
-      console.log('need to log in first!!', session?.user?.email);
       setNotLogin(true)
       return [null,null]
 

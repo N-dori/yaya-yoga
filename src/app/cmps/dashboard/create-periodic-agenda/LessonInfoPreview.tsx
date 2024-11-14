@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import {  getFullUserByEmail, getMembership, getUrl, removeUserMembership } from '@/app/utils/util'
+import { getFullUserByEmail, getMembership, getUrl, makeId, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { AlertBox } from '../../AlertBox'
-import PractitionersCircleIndex from '../../weekly-schedule/PractitionersIndex'
+import Spinner from '../../Spinner'
+import PractitionersIndex from '../../weekly-schedule/PractitionersIndex'
 
 type LessonInfoPreviewProps = {
     activity: Tactivity
@@ -23,28 +24,29 @@ type LessonInfoPreviewProps = {
 
 export function LessonInfoPreview({ setActivities, activities, onBooking, periodicAgendaId, isOnWeeklyScheduleMode, activity, handelLessonCancelation }: LessonInfoPreviewProps) {
     const [isAlertBoxShown, setIsAlertBoxShown] = useState(false)
+    const [isActivityHasPassed, setIsActivityHasPassed] = useState(false)
     const [userMsg, setUserMsg] = useState('')
     const [btnTxt, setBtnTxt] = useState('')
     const router = useRouter()
 
+    const [currUser, setCurrUser] = useState<Tuser>(null)
+    const [currMembershipId, setCurrMembershipId] = useState(null)
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const { data: session } = useSession()
     const dispatch = useDispatch()
-    const [currUser, setCurrUser] = useState<Tuser>(null)
+    const path = usePathname()
+
+    
     useEffect(() => {
-        // if(session?.user?.email){
-        //     setcurrUserState()
-
-        // }
-    }, [activity.date, activity.isCanceled, activity.id, periodicAgendaId,currUser,currUser?.memberships?.length])
-    const setcurrUserState = async () => {
-        if (!currUser ) {
-            const user = await getFullUserByEmail(session.user.email)
-            console.log('user use State  :', user)
-            setCurrUser(user)
-
+        if (session?.user?.email) {
+            console.log('path is++++++: ', path);
         }
+    }, [activity.date, activity.isCanceled, activity.id, periodicAgendaId, currUser, currUser?.memberships?.length, path,currMembershipId])
+    useEffect(() => {
+        isActivityPassed()
+    }, [])
 
-    }
     const handelClick = () => {
 
         handelLessonCancelation(activity.id, activity.isCanceled, activity.date)
@@ -57,17 +59,17 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         setTimeout(() => {
             dispatch(hideUserMsg())
         }, 3500);
-    }  
-      const handelSignInToClass = async () => {
+    }
+    const handelSignInToClass = async () => {
         //0. if user is not logged-in planLogin view
         if (session?.user?.email) {
-            let nameOfUser =session?.user?.name
-            const user:Tuser = await getFullUserByEmail(session.user.email)
-            setCurrUser(prevUser=>{return{...user}})
+            let nameOfUser = session?.user?.name
+            const user: Tuser = await getFullUserByEmail(session.user.email)
+            setCurrUser(prevUser => { return { ...user } })
             const userMembership = user.memberships[0]
             if (!userMembership || userMembership.length === 0) {
                 //0. if user have no active membership .
-                let msg = `היי ${ nameOfUser? nameOfUser : ""} על פי רישומיינו אין ברשותך מנוי פעיל בכדי להשלים את פעולת ההרשמה יש צורך לרכוש מנוי`
+                let msg = `היי ${nameOfUser ? nameOfUser : ""} על פי רישומיינו אין ברשותך מנוי פעיל בכדי להשלים את פעולת ההרשמה יש צורך לרכוש מנוי`
                 let btnTxt = 'לרכישת מנוי'
                 getAlertBox(msg, btnTxt)
                 return
@@ -93,7 +95,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         }
 
     }
-    const getAlertBox = (userMsg: string, btnTxt: string,) => {        
+    const getAlertBox = (userMsg: string, btnTxt: string,) => {
         setUserMsg(userMsg)
         setBtnTxt(btnTxt)
         setIsAlertBoxShown(true)
@@ -105,22 +107,24 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         const user = await getFullUserByEmail(session.user.email)
 
         if (user) {
+            setIsLoading(true)
             // after getting user first membership we check expiry date 
             const membershipId = user.memberships[0]
-            console.log('sanding to getMembership',membershipId);
-            
+            console.log('sanding to getMembership', membershipId);
+
             const membership: Tmembership = await getMembership(membershipId)
             //if membership expired we give alert box messege and return
-            console.log('membership :',membership)
+            console.log('membership :', membership)
             if (membership?.end) {
                 const today = new Date()
                 console.log('membership.end < today :', new Date(membership.end) < today)
-                if ((new Date(membership.end) < today)||membership.isExpired) {
+                if ((new Date(membership.end) < today) || membership.isExpired) {
                     let msg = `היי ${user ? user?.name : ""}  על פי רישומיינו המנוי שברשותך אינו בתוקף  `
                     let btnTxt = 'לרכישת מנוי'
                     getAlertBox(msg, btnTxt)
+                    setIsLoading(false)
                     const userAfterRemovingMembership = await removeUserMembership(currUser._id)
-                        updateClientSideUser(userAfterRemovingMembership)                    
+                    updateClientSideUser(userAfterRemovingMembership)
                     return
                 }
 
@@ -143,20 +147,20 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
                 }
                 if (updatedMembership.isExpired) {
-                    console.log(' membership has expired !',updatedMembership)
-                    updatedMembership.subscription.type==='drop-in'? addPractitionerToActivity():''
+                    console.log(' membership has expired !', updatedMembership)
+                    addPractitionerToActivity(membershipId)
                     // fetch to remove membershipId from array and shift it 
                     const userAfterRemovingMembership = await removeUserMembership(user._id)
-                   
-                        // update client side user to match the user in database so user can not signup to class 
-                        console.log('user After Removing Membership', userAfterRemovingMembership);
-                        updateClientSideUser(userAfterRemovingMembership)
-                        return
-                    
+
+                    // update client side user to match the user in database so user can not signup to class 
+                    console.log('user After Removing Membership', userAfterRemovingMembership);
+                    updateClientSideUser(userAfterRemovingMembership)
+                    return
+
                 }
                 console.log('updatedMembership', updatedMembership);
 
-                addPractitionerToActivity()
+                addPractitionerToActivity(membershipId)
             }
         }
 
@@ -164,30 +168,29 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
     const navigatToPricing = () => {
         router.replace('/pricing')
     }
-    let alertBoxProps = {
-        isAlertBoxShown, setIsAlertBoxShown,
-        userMsg, setUserMsg,
-        btnTxt, setBtnTxt,
-        navigatToPricing,
-        handelChargeUser,
-    }
+    
 
-    const addPractitionerToActivity = async () => {
+    const addPractitionerToActivity = async (membershipId: string) => {
         const url = getUrl('periodicAgenda/updatePeriodicAgendaPractitioners')
         const res = await fetch(url, {
             method: 'PUT',
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
+                id:makeId(8),
                 periodicAgendaId,
                 activityId: activity.id,
+                membershipId,
                 email: session?.user?.email,
                 name: session?.user?.name
             })
         })
         if (res.ok) {
+            console.log('adding Practitioner To Activity', await res.json());
+
             let txt = `הרשמתך לשיעור ${activity.name} עברה בהצלחה נתראה על המזרן 🙏 `
             getUserMsg(txt, true)
-            updateClientSideActivities()
+            updateClientSideActivities(membershipId)
+            setIsLoading(false)
 
 
 
@@ -197,26 +200,102 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
         }
     }
-   
+    const askUserIfToRemoveHimFromActivity = (membershipId:string) => {
+     console.log('ask User If To Remove Him From Activity',);
+     console.log('membershipId',membershipId);
+     setCurrMembershipId(membershipId)
+        let nameOfUser = session.user.name
+        let msg = `היי ${nameOfUser ? nameOfUser : ""} האם ברצונך לבטל את הגעתך לשיעור ${activity.name} ?`
+        let btnTxt = 'כן בטוח ברצוני לבטל'
+        getAlertBox(msg, btnTxt)
+    }
 
-    const updateClientSideActivities = () => {
+    const removePractitionerFromActivity = async (membershipId:string) => {
+             
+      const wasRemoved = await removePractitionerFromActivityFromDatabase(periodicAgendaId,activity.id,session.user.email)  
+        if (wasRemoved) {
+            removePractitionerFromClientSideActivities(session.user.email)
+            let txt = `הוסרת משיעור ${activity.name} בהצלחה`
+            getUserMsg(txt, true)
+
+        } else {
+            let txt = `הייתה בעייה לבטל שיעור, נסו מאוחר יותר`
+            getUserMsg(txt, false)
+
+        }
+        const wasRefunded = await refundPractitionerMembershipAtDatabase(membershipId)
+        if(wasRefunded){
+            console.log('practitioner after refund',wasRefunded);
+        }
+        const user:Tuser =await getFullUserByEmail(session?.user?.email)
+        // here we check if after refund user stil have memebershipId under user.memberships?
+        const doUserOwnMembership = user.memberships.some(membership=>membership===membershipId)
+        //if yes do nothing if no add it back to user.memberships[]
+        console.log('do User Own Membership',doUserOwnMembership);
+        if(!doUserOwnMembership){
+            const updatedUser = await updateUserWithNewMembershipAtDatabase(membershipId,user._id)
+            if(updatedUser) console.log('user.memberships was updated whith the refunded membership?',updatedUser);
+            
+        }
+        
+    }
+    let alertBoxProps = {
+        isAlertBoxShown, setIsAlertBoxShown,
+        userMsg, setUserMsg,
+        btnTxt, setBtnTxt,
+        navigatToPricing,
+        handelChargeUser,
+        currMembershipId,
+        
+        removePractitionerFromActivity,
+    }
+
+    const updateClientSideActivities = (membershipId: string) => {
         const activityToUpdate = activities.find(act => act.id === activity.id)
-        let practitioner: Tpractitioner = { email: session?.user?.email, name: session?.user?.name }
+        let practitioner: Tpractitioner = { membershipId, email: session?.user?.email, name: session?.user?.name }
         activityToUpdate.practitioners.push(practitioner)
         const index = activities.findIndex(act => act.id === activity.id)
         activities[index] = { ...activityToUpdate }
         const updatedActivities = [...activities]
         setActivities(updatedActivities)
     }
-    const updateClientSideUser = (updatedUser:Tuser) => {
-        setCurrUser({...updatedUser})
+    const removePractitionerFromClientSideActivities = (email:string) => {
+        const activityToUpdate = activities.find(act => act.id === activity.id)
+        const activityIndex = activities.findIndex(act => act.id === activity.id)
+        const index = activityToUpdate.practitioners.findIndex(practitioner=>practitioner.email === email)
+        activityToUpdate.practitioners.splice(index,1)
+        activities[activityIndex] = { ...activityToUpdate }
+        const updatedActivities = [...activities]
+        setActivities(updatedActivities)
+    }
+    const updateClientSideUser = (updatedUser: Tuser) => {
+        setCurrUser({ ...updatedUser })
     }
     const LessonInfoHoursRangeProps = {
         isCanceled: activity.isCanceled,
         start: activity.hoursRange.start,
         end: activity.hoursRange.end
     }
- 
+    const PractitionersIndexProps = {
+        practitioners:activity?.practitioners,
+        askUserIfToRemoveHimFromActivity
+    }
+    const isActivityPassed = () => {
+        let now = new Date()  
+        const isDayPassed = new Date(activity.date).getDate() < now.getDate()  
+        const isBothSameDay =new Date(activity.date).getDate() === now.getDate()
+        
+        if(isDayPassed) {
+            setIsActivityHasPassed(isDayPassed)
+            return 
+        }  
+        if(isBothSameDay){
+            const isTimePassed = +new Date(activity.hoursRange.start).toLocaleTimeString('he-IL').split(':')[0] < +new Date(now).toLocaleTimeString('he-IL').split(':')[0]
+            setIsActivityHasPassed(isTimePassed)
+
+        }
+
+    }
     return (
         <li className='actitity-card-container flex-col clean'>
             <article className='p-1'>
@@ -242,9 +321,10 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                             type='button' className='check-in-button'
                             onClick={() => handelClick()}>{activity.isCanceled ? 'שחזר ' : 'בטל '}
                         </button> :
-                            <button type='button' className='sign-in-to-class-btn'
+                            <button disabled={isActivityHasPassed||activity.isCanceled} type='button' className='sign-in-to-class-btn flex-jc-ac'
+                                style={isActivityHasPassed ||activity.isCanceled ? { color: `var(--clr3)` } : {}}
                                 onClick={() => handelSignInToClass()}>
-                                הרשמה
+                                {isLoading ? <Spinner /> : ` הרשמה`}
                             </button>}
                     </div>
 
@@ -254,7 +334,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             {
 
                 activity?.practitioners?.length > 0 &&
-                <PractitionersCircleIndex practitioners={activity?.practitioners} />
+                <PractitionersIndex {...PractitionersIndexProps} />
 
             }
             <AlertBox {...alertBoxProps} />

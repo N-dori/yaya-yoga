@@ -14,6 +14,7 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
   const [dayNum, setDayNum] = useState<number>()
   const [hbMonth, setHbMonth] = useState<string>()
   const [isClicked, setIsClicked] = useState<boolean>(false)
+  const [isDateHasPassed, setIsDateHasPassed] = useState<boolean>(false)
 
   const hebrewMonths = [
     "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
@@ -33,6 +34,7 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
       const monthIndex = activityDate.getMonth()
       setHbMonth(hebrewMonths[monthIndex])
       const today = new Date()
+    isDatePassed(today)
       if (isBothTheSameDate(activityDate,today)) {
         console.log('both days are the same')
         setHbDay('היום')
@@ -70,6 +72,12 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
       setCurrDate(new Date(activityDay.date))
     }
   }
+   const isDatePassed = (today:Date) => {
+    if(today){
+      setIsDateHasPassed( new Date (activityDay.date).getDay()<today.getDay())
+
+    }
+   }
 
   const isClickedStylesProps = {
     border: `1px solid #9a9796`,
@@ -77,7 +85,7 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
   }
 
   return (
-    <section className='date-info flex-jc-ac flex-col'
+    <section className={`${isDateHasPassed?'date-passed ':' '}date-info flex-jc-ac flex-col`}
       style={isClicked ? { ...isClickedStylesProps } : {}}
       onClick={handelDayClicked}>
       <li className='day clean'>{hbDay}</li>
