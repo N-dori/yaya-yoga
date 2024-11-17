@@ -73,7 +73,12 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
     }
   }
    const isDatePassed = (today:Date) => {
-    if(today){
+    if(today.getDay()!==6){
+      
+      setIsDateHasPassed( new Date (activityDay.date).getDay()<today.getDay())
+
+    }else{
+      today.setDate(today.getDate() + 1)
       setIsDateHasPassed( new Date (activityDay.date).getDay()<today.getDay())
 
     }

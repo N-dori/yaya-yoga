@@ -1,8 +1,9 @@
 import React from 'react'
 import { authOptions } from '../../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
-import { getUrl } from '../../utils/util';
+import { getUrl, sendEmail } from '../../utils/util';
 import Link from 'next/link';
+import { Tuser } from '@/app/types/types';
 
 type Props = {}
 
@@ -35,27 +36,6 @@ export default async function page({ params }) {
 
         }
     }
-    const sendWelcomeEmail = async () => {
-        try {
-            await updateNewUser(params.userId);
-            const url = getUrl('sendEmail')
-            const name = session?.user?.name
-            const email = session?.user?.email
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ to: email, name , _id:params.userId })
-            })
-            if (res.ok) {
-                console.log('email sent happyly!!!');
-
-            }
-
-
-        } catch (error) {
-            console.log('error sending Welcome Email');
-        }
-    }
     const getUser = async () => {
         try {
             const url = getUrl('user/getUser')
@@ -74,12 +54,12 @@ export default async function page({ params }) {
         }
     }
     
-    const user = await getUser() 
+    const user:Tuser = await getUser() 
     console.log('user :', user)
     if (session) {
       if(user){
         if(user.isNewUser){
-            await sendWelcomeEmail()
+            await sendEmail(session?.user?.email, session?.user?.name, 'welcome',user._id )
 
         }
       }

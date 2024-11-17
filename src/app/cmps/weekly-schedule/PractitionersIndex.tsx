@@ -6,9 +6,10 @@ import PractitionersList from './PractitionersList'
 type ParticipantsIndexProps = {
   practitioners: Tpractitioner[]
   askUserIfToRemoveHimFromActivity: (membershipId:string) => void
+  checkActivityTime: () => boolean
 }
 
-export default function PractitionersIndex({askUserIfToRemoveHimFromActivity, practitioners }: ParticipantsIndexProps) {
+export default function PractitionersIndex({askUserIfToRemoveHimFromActivity,checkActivityTime, practitioners }: ParticipantsIndexProps) {
   const [isShown, setisShown] = useState(false)
   useEffect(() => {
 
@@ -16,7 +17,8 @@ export default function PractitionersIndex({askUserIfToRemoveHimFromActivity, pr
 
 const PractitionersListProps = {
   practitioners,
-  askUserIfToRemoveHimFromActivity
+  askUserIfToRemoveHimFromActivity,
+  checkActivityTime,
 }
   return (
     <section className='practitioners-index-container grid'>

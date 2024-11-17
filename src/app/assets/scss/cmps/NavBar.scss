@@ -1,55 +1,15 @@
-.nav-bar {
+.nav-bar-conatiner {
     height: 4em;
-    border-bottom: 1px solid green;
-    
-    .menu-container {
-        position: relative;
-        
-        .main-menu-list-conatiner {
-            position: absolute;
-            top: 3em;
-            height: 100vh;
-            width: 12em;
-            transform: translate(-4em);
-            background-color: orange;
-            padding: 2em 2em 2em 2em;
-            z-index: 2;
-            font-size: .9em;
-            transition: transform .4s ease-in;
-
-            .headline {
-                margin-bottom: 2em;
-                text-decoration: overline;
-
-            }
-        }
-        .menu-list{
-            grid-template-columns: 1f ;
-            grid-template-rows: 1f 1fr 1fr 1fr 1fr 1fr;
-            width: 100%;
-            .signin-login{
-                grid-row: 1;
-                border-bottom: 1px solid #222;
-            }
-           
-        }
-        .menu-list>*{
-            cursor: pointer;
-        }
-    }
-
-    .backdrop {
-        position: absolute;
-        top: 0em;
-        width: 100vw;
-        height: 100vh;
-        z-index: 1;
-    }
+    border-bottom: 1px solid var(--clr4);
+    z-index: 12;
+    direction: initial;
+    .nav-bar-warpper{
+        width: 100%;
     .user-area-container{
         margin-inline-end: 1em;
         .user-img{
             border-radius: 1000px;
-
+            margin-left: 1em;
         }
         .user-custom-img{
             background-color: pink;
@@ -59,5 +19,60 @@
             height: 3em;
             font-size: 1em;
         }
+    }
+}
+    .main-menu-btn {
+        margin-right: 1em;
+    }
+    
+
+    .backdrop {
+        position: absolute;
+        top: 0em;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+    }
+   
+}
+.menu-container {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: var(--clr2);
+    z-index: 2;
+    
+    transform: translateY(-46em);
+    transition: transform .3s ease-in;
+  
+    
+    .main-menu-list-conatiner {
+      
+        padding: 4em;
+        font-size: .9em;
+
+        .headline {
+            margin-bottom: 2em;
+            text-decoration: overline;
+
+        }
+    }
+    .menu-list{
+        font-size: 1.2em;
+        grid-template-columns: 1fr ;
+        grid-template-rows: auto auto auto auto 1fr;
+                row-gap: 2em;
+        
+        .signin-login{
+            grid-row: 1;
+            border-bottom: 1px solid #222;
+        }
+       
+    }
+    .menu-list>*{
+        cursor: pointer;
+    }
+    .closeMenuSvg{
+        margin-top: 130%;
     }
 }

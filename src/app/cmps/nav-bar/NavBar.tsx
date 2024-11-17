@@ -8,14 +8,17 @@ import { getFullUserByEmail, getUserByEmail } from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/app/store/features/userSlice'
 import {  useAppSelector  } from '../../libs/hooks'
+import CloseSvg from '@/app/assets/svgs/CloseSvg'
+import Link from 'next/link'
+import MenuSvg from '@/app/assets/svgs/MenuSvg'
 
 type Props = {}
 export default function NavBar({ }: Props) {
+  const [isShown, setIsShown] = useState(false)
   const [firstLetter, setfirstLetter] = useState("")
   const { data: session } = useSession()
   const router = useRouter();
-  const dispatch = useDispatch()
-  const currentUser =  useAppSelector(state => state.currUserSlice.user)
+  
 
   useEffect(() => {
     getUserFirstLetter()
@@ -32,26 +35,6 @@ export default function NavBar({ }: Props) {
     
   }, [session?.user?.email]);
 
-  // useEffect(() => {
-    // if(currentUser === null){
-      
-  //  console.log('setting CurrUser In Store',currentUser);
-    // setCurrUserInStore()
-  //  }
-
-  // }, [session?.user?.email]);
-
-  // const setCurrUserInStore = async () => 
-  //   {
-  //     const user = await getFullUserByEmail(session?.user?.email);
-  //     console.log('user in navBar', user);
-  //     if(user === null ){
-  //       const user = await getFullUserByEmail(session?.user?.email);
-  //       dispatch(setUser(user))
-
-  //     }    
-  //     dispatch(setUser(user))
-  //   }
 
   const checkIfNewUser = async () => {
     const miniUser = await getUserByEmail(session?.user?.email);
@@ -67,9 +50,16 @@ export default function NavBar({ }: Props) {
   const getUserFirstLetter = () => {
     setfirstLetter(session?.user?.name ? session?.user?.name[0].toUpperCase() : "")
   }
+  const menuSvgProps = {
+    isShown,
+    setIsShown
+  }
   return (
-    <nav className='nav-bar flex-sb  full'>
-      <MainMenu />
+    <>
+    
+    <nav className='nav-bar-conatiner flex-ac  full'>
+<section className='nav-bar-warpper flex-sb' >
+
       <div className='user-area-container flex-col'>
         {session?.user?.image ?
           <Image src={session?.user?.image} alt={'user-image'} width={40} height={40} className='user-img' />
@@ -79,7 +69,17 @@ export default function NavBar({ }: Props) {
 
 
       </div>
+      <Link href={'/'}>לוגו</Link>
+      <div className='main-menu-btn flex-jc-ac gap05'>
+           { isShown?
+            <CloseSvg {...menuSvgProps}/>:
+            <MenuSvg {...menuSvgProps} />
+          }
+          </div>
 
+</section>
     </nav>
+        <MainMenu isShown={isShown} setIsShown={setIsShown}/>
+    </>
   )
 }

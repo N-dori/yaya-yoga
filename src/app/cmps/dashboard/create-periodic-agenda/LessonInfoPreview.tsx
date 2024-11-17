@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { getFullUserByEmail, getMembership, getUrl, makeId, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
+import { getFullUserByEmail, getMembership, getUrl, makeId, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, sendEmail, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { usePathname, useRouter } from 'next/navigation'
@@ -82,7 +82,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                     minute: '2-digit',     // Ensures 2-digit minute format
                     hour12: false
                 }
-                let msg = `היי ${nameOfUser ? nameOfUser : ""} איזה כיף!! לצרף אותך לשיעור ${activity.name} בין השעות ${new Date(activity.hoursRange.start).toLocaleTimeString('he-IL', timeOptions)} - ${new Date(activity.hoursRange.end).toLocaleTimeString('he-IL', timeOptions)} אצלנו בסטודיו ${activity.location}?`
+                let msg = `היי ${nameOfUser ? nameOfUser : ""} איזה כיף!! לצרף אותך לשיעור ${activity.name} בין השעות ${new Date(activity.hoursRange.start).toLocaleTimeString('he-IL', timeOptions)} - ${new Date(activity.hoursRange.end).toLocaleTimeString('he-IL', timeOptions)} אצלנו בסטודיו?`
                 let btnTxt = 'בטח רשום אותי!'
                 getAlertBox(msg, btnTxt)
 
@@ -144,7 +144,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                 const updatedMembership: Tmembership = await res.json()
                 if (updatedMembership.subscription.entries === 1) {
                     console.log('send email you have left last entery consider getting a new one');
-
+                    await sendEmail(session?.user?.email, session?.user?.name,'renew')
                 }
                 if (updatedMembership.isExpired) {
                     console.log(' membership has expired !', updatedMembership)
@@ -276,10 +276,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         start: activity.hoursRange.start,
         end: activity.hoursRange.end
     }
-    const PractitionersIndexProps = {
-        practitioners:activity?.practitioners,
-        askUserIfToRemoveHimFromActivity
-    }
+  
     const isActivityPassed = () => {
         let now = new Date()  
         const isDayPassed = new Date(activity.date).getDate() < now.getDate()  
@@ -294,7 +291,52 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             setIsActivityHasPassed(isTimePassed)
 
         }
-
+    }
+    const  checkActivityTime = () => {
+        let currentTime:Date = new Date();
+        let activityStart:Date = new Date(activity.date)
+        let activityTime = new Date(activity.hoursRange.start)
+        let hours=activityTime.toLocaleTimeString('he-IL').split(':')[0]
+        let minutes=activityTime.toLocaleTimeString('he-IL').split(':')[1]
+        activityStart.setHours(+hours,+minutes, 0, 0);
+        console.log('activityStart : ',activityStart)
+        
+        // Define 9:00 and 17:00 as reference times
+        const nineAM = new Date(activityStart);
+        nineAM.setHours(9, 0, 0, 0);
+        
+        const fivePM = new Date(activityStart);
+        fivePM.setHours(17, 0, 0, 0);
+    
+        // Condition 1: Early activity, starting at or before 9:00
+        if (activityStart <= nineAM) {
+            const twentyTwoDayBefore = new Date(activityStart);
+            twentyTwoDayBefore.setDate(twentyTwoDayBefore.getDate() - 1); // Set to the previous day
+            twentyTwoDayBefore.setHours(22, 0, 0, 0);
+            
+            // If current time is after 22:00 on the day before, return false
+            if (currentTime >= twentyTwoDayBefore) {
+                return false;
+            }
+        }
+    
+        // Condition 2: Late activity, starting at or after 17:00
+        if (activityStart >= fivePM) {
+            const timeDifference = Math.abs((+currentTime) - (+activityStart)) / (1000 * 60 * 60);
+            
+            // If the time difference is less than 2 hours, return false
+            if (timeDifference < 2) {
+                return false;
+            }
+        }
+    
+        // If neither condition returns false, return true
+        return true;
+    }
+    const PractitionersIndexProps = {
+        practitioners:activity?.practitioners,
+        askUserIfToRemoveHimFromActivity,
+        checkActivityTime
     }
     return (
         <li className='actitity-card-container flex-col clean'>

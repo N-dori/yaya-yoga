@@ -87,6 +87,7 @@ export default function PlanPreview(props: PlanPreviewProps) {
       isExpired: false,
       paid: 250,
       dateOfPurchase: new Date(),
+      
     }
     const tenPassMembership: Tmembership =
     {
@@ -107,6 +108,9 @@ export default function PlanPreview(props: PlanPreviewProps) {
     switch (membershipType) {
       case 'כניסה חד-פעמית':
         membership = dropInMembership
+        let end = new Date(dropInMembership.dateOfPurchase)
+        end.setDate(end.getMonth() + 6); // Move to the next day
+        dropInMembership.end =end
         break;
       case 'כרטיסייה 5 כניסות':
         membership = fivePassMembership

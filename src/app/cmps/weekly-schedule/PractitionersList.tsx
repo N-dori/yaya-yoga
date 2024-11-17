@@ -5,11 +5,10 @@ import PractitionersPreview from './PractitionersPreview'
 type PractitionersListProps = {
     practitioners: Tpractitioner[]
     askUserIfToRemoveHimFromActivity: (membershipId:string) => void
-
-
+    checkActivityTime: () => boolean
 }
 
-export default function PractitionersList({askUserIfToRemoveHimFromActivity,practitioners}: PractitionersListProps) {
+export default function PractitionersList({askUserIfToRemoveHimFromActivity,checkActivityTime,practitioners}: PractitionersListProps) {
   
     const [isShown2, setisShown2] = useState(false)
     useEffect(() => {
@@ -27,7 +26,11 @@ export default function PractitionersList({askUserIfToRemoveHimFromActivity,prac
         <ol  className='practitioners-list-warper flex-col clean ' style={isShown2?{height:'auto'}:{}}>
        {
         practitioners.map( (practitioner,i) =>
-        <PractitionersPreview key={i} practitioner={practitioner} askUserIfToRemoveHimFromActivity={askUserIfToRemoveHimFromActivity} />)
+        <PractitionersPreview 
+        key={i} 
+        practitioner={practitioner} 
+        askUserIfToRemoveHimFromActivity={askUserIfToRemoveHimFromActivity}
+        checkActivityTime={checkActivityTime} />)
        }
 
         </ol>

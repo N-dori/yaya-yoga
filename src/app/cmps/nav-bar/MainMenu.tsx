@@ -4,39 +4,23 @@ import MainMenuList from './MainMenuList'
 import CloseSvg from '@/app/assets/svgs/CloseSvg'
 import Link from 'next/link'
 
-type Props = {}
+type MainMenuProps = {
+  isShown: boolean
+  setIsShown: (b: boolean) => void
+}
 
-export default function MainMenu({ }: Props) {
-  const [isShown, setIsShown] = useState(false)
-  useEffect(() => {
-    console.log('isShown', isShown);
+export default function MainMenu({setIsShown, isShown }: MainMenuProps) {
 
-  }, [])
   const mainMenuListProps = {
     isShown,
     setIsShown
   }
-  const menuSvgProps = {
-    isShown,
-    setIsShown
-  }
+
   return (
-    <section className='menu-container flex-jc-ac'>
-      {isShown ?
-          <div className='flex-jc-ac gap05'>
-            <CloseSvg />
-            <Link href={'/'}> לוגו</Link>
-          </div>
-        :
-        <div className='flex-jc-ac gap05'>
-          <MenuSvg {...menuSvgProps} />
-          <Link href={'/'}> לוגו</Link>
-        </div>}
+    <section style={isShown?{transform: `translateY(4em)`}:{}} className='menu-container '>
+
       <MainMenuList {...mainMenuListProps} />
-      {isShown ?
-        <div onClick={() => setIsShown(!isShown)} className='backdrop'></div>
-        :
-        <></>}
+
     </section>
   )
 }

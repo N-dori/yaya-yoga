@@ -109,10 +109,11 @@ export const getPreiodicAgenda = async () => {
     const url = getUrl('periodicAgenda/getPeriodicAgenda')
     const res = await fetch(url, {
       method: 'POST',
-      headers: { "Content-type": "application/json" },
+      headers: { "Content-type": "application/json","Cache-Control": "no-store" },
+      cache: 'no-store'
+
     })
-    if (res.ok) {
-      
+    if (res.ok) {      
       return await res.json()
 
     } else {
@@ -122,64 +123,64 @@ export const getPreiodicAgenda = async () => {
     console.log('failed to fetch a periodic agenda reason: ', err);
   }
 }
-export const removePractitionerFromActivityFromDatabase = async ( periodicAgendaId:string,activityId:string,email:string) => {
+export const removePractitionerFromActivityFromDatabase = async (periodicAgendaId: string, activityId: string, email: string) => {
   const url = getUrl('periodicAgenda/removePractitionerFromActivity')
   const res = await fetch(url, {
-      method: 'PUT',
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-          periodicAgendaId,
-          activityId,
-          email,
-          
-      })
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({
+      periodicAgendaId,
+      activityId,
+      email,
+
+    })
   })
   if (res.ok) {
     return true
 
-} else {
-  return false
+  } else {
+    return false
 
+  }
 }
-}
-export const refundPractitionerMembershipAtDatabase = async ( membershipId:string) => {
+export const refundPractitionerMembershipAtDatabase = async (membershipId: string) => {
   const url = getUrl('membership/refundMembership')
   const res = await fetch(url, {
-      method: 'PUT',
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({
-        membershipId
-          
-      })
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({
+      membershipId
+
+    })
   })
   if (res.ok) {
     return await res.json()
 
-} else {
-  return null
+  } else {
+    return null
 
+  }
 }
-}
-export const updateUserWithNewMembershipAtDatabase = async ( membershipId:string,userId:string) => {
+export const updateUserWithNewMembershipAtDatabase = async (membershipId: string, userId: string) => {
   try {
     const url = getUrl('user/updateUserMembership')
 
     const res = await fetch(url, {
       method: 'PUT',
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ _id: userId, membershipId})
+      body: JSON.stringify({ _id: userId, membershipId })
     })
     if (res.ok) {
-      const updatedUser = await res.json() 
+      const updatedUser = await res.json()
 
-        console.log('User was updated with new membership',updatedUser);
-        return true
-        
-    }else{
+      console.log('User was updated with new membership', updatedUser);
+      return true
+
+    } else {
       return false
     }
   } catch (error) {
-    console.log('had a problem updating user with new membership',error)
+    console.log('had a problem updating user with new membership', error)
   }
 }
 
@@ -228,4 +229,24 @@ export function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+export const sendEmail = async (userEmail: string, userName: string, emailType: string, _id?: string) => {
+  try {
+    const url = getUrl('sendEmail')
+    const name = userName
+    const email = userEmail
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ to: email, name, emailType, _id })
+    })
+    if (res.ok) {
+      console.log('email sent happyly!!!');
+
+    }
+
+
+  } catch (error) {
+    console.log('error sending Welcome Email');
+  }
 }
