@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     
     <StoreProvider >
-    <html lang="en">
+    <html lang="en" style={{height:`100%`}}>
       <body className={`${varelaRound.className} main-layout`}>
         <AuthProvider>
           <NavBar />

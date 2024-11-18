@@ -84,7 +84,7 @@ export default function LoginForm({redirectTo }: LoginFormProps) {
 
   }
   return (
-    <main className='signup-container flex-col flex-jc-ac gc2 gap1'>
+    <main className='signup-container flex-col flex-jc-ac full gap1'>
       <h2 className='title tac'>התחברות</h2>
       <Link className='no-signup-yet' href={'/signup'}>לא רשום עדיין? לחץ כאן</Link>
 

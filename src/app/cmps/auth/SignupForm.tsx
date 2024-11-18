@@ -120,7 +120,7 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
 
 
   return (
-    <main className='signup-container flex-col flex-jc-ac gc2 gap1'>
+    <main className='signup-container flex-col flex-jc-ac full gap1'>
 
       <h2 className='title tac '>צור חשבון חדש</h2>
       <Link className="link-to-login" href={'/login'}><small>רשום כבר במערכת? לחץ כאן להתחברות </small></Link>

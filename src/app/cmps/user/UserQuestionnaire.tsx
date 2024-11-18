@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createDaysRange, createMonthsRange, createYearsRange, getUrl, scrollUp } from '@/app/utils/util';
 import { TuserQuestionnaire } from '@/app/types/types';
 import { useDispatch } from 'react-redux';
@@ -46,6 +46,37 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
     const router = useRouter()
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        if(_id[0] === 'U' ){
+            //U says that user have userQuestionnaireId and we wont to update 
+            setData(_id)
+        }
+
+    }, [])
+
+    const setData = async (_id:string) => {
+
+        const url = getUrl('user/userQeustionnaire/getUserQeusttionnaire')
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({ _id:_id.slice(1) })
+            })
+            if(res.ok){
+                const userQuestionnaire:TuserQuestionnaire = await res.json()
+                setFirstName(userQuestionnaire.firstName)
+                setLastName(userQuestionnaire.lastName)
+                setIsraeliId(userQuestionnaire.israelid)
+                setGender(userQuestionnaire.gender)
+                setDayBirth(userQuestionnaire.dayBirth)
+                setMonthBirth(userQuestionnaire.monthBirth)
+                setYearBirth(userQuestionnaire.yearBirth)
+                setOccupation(userQuestionnaire.occupation)
+                setPhone(userQuestionnaire.phone)
+                setAddress(userQuestionnaire.address)
+                setComments(userQuestionnaire.comments)
+            }
+    }
 
     const handelSubmit = async (e: any) => {
         try {
@@ -94,7 +125,7 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                 const result = await fetch(url, {
                     method: 'PUT',
                     headers: { "Content-type": "application/json" },
-                    body: JSON.stringify({ _id, userQuestionnaireId })
+                    body: JSON.stringify({ _id:_id[0]==='U'?_id.slice(1):_id, userQuestionnaireId })
                 })
                 if (result.ok) {
                     let txt = 'שאלון פרטים אישיים נקלט בהצלחה!'
@@ -274,7 +305,12 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
  onChange={(e: any) => setComments(e.target.value)}></textarea>
 
             </label>
-            <button type='submit' className='submit-questionnaire-btn'>שליחת שאלון</button>
+            <button type='submit' className='submit-questionnaire-btn'>{
+            _id[0]==='U'?
+            'עדכן שאלון '
+            :
+            'שליחת שאלון'}
+            </button>
         </form>
     )
 }

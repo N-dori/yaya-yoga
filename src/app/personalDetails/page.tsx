@@ -33,19 +33,28 @@ export default async function page({ }: Props) {
     if(res){
         periodicAgenda = await res.periodicAgenda
     }
+    const isBothTheSameDate = (date1:Date,date2:Date)=> {
+        return date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear()
+      }
     const loadMyUpComingActivities = async (): Promise<Tactivity[] | null> => {
         // get the current date 
         const today = new Date()
         // loop thghout the last periodicAgenda.activities for each activity 
         let myUpComingActivities:Tactivity []
         myUpComingActivities=  periodicAgenda?.activities.filter((activity:Tactivity) => {
-            if(new Date(activity.date)>today){
+            const actitityDate= new Date(activity.date)
+            
+            if( actitityDate > today || isBothTheSameDate(actitityDate,today)){
+                // console.log('todaty',today);
+                // console.log('activity.date',new Date(activity.date))
                 return  activity.practitioners.some(practitioner => practitioner.email === user.email)
             }    
         })
 
         // return activity promise only if today is later than today 
-        return myUpComingActivities.length>0 ? myUpComingActivities : null 
+        return myUpComingActivities?.length>0 ? myUpComingActivities : null 
     }
     const memberships: Tmembership[] | null = await loadMemberships();
     const myActivities: Tactivity[] | null = await loadMyUpComingActivities()
@@ -64,7 +73,7 @@ export default async function page({ }: Props) {
                   {myActivities?
                   <MyActivitiesList myActivities={myActivities}/>
                   :
-                  <p>אין שיעורים צפויים  </p>
+                  <p>אינך רשומ/ה </p>
                   }  
 
                 </section>
@@ -82,7 +91,7 @@ export default async function page({ }: Props) {
 
                 <section className='my-user-questionneaire card '>
                     <h3 className='tac mb-05'>שאלון אישי</h3>
-                    <MyUserQuestionaireCard userQuestionnaireId={user.userQuestionnaireId} userId={user._id} />
+                    <MyUserQuestionaireCard userQuestionnaireId={user.userQuestionnaireId?'U'+user.userQuestionnaireId:undefined} userId={user._id}  />
 
                 </section>
                 <section className='my-health-decelration card'>

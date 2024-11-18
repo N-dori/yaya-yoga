@@ -2,16 +2,17 @@ import Link from 'next/link'
 import React from 'react'
 
 type MyUserQuestionaireCardProps = {
-    userQuestionnaireId:string
+    userQuestionnaireId:string|undefined
     userId:string
 }
 
 export default function MyUserQuestionaireCard({userQuestionnaireId,userId}: MyUserQuestionaireCardProps) {
+  console.log('userQuestionnaireId',userQuestionnaireId);
   
     return (
     <div>
            {userQuestionnaireId?
-                        <Link href={`userQuestionnaire/${userId}`}>לעדכון השאלון אישי</Link>
+                        <Link href={`userQuestionnaire/${userQuestionnaireId}`}>לעדכון השאלון אישי</Link>
                     :
                     <div>
                         <Link href={`userQuestionnaire/${userId}`}>למילוי השאלון האישי </Link>

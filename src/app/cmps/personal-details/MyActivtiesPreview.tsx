@@ -16,13 +16,17 @@ export default function MyActivtiesPreview({activity}: MyActivtiesPreviewProps) 
     }
   return (
     <li className='my-activity-card '>
-        <p>{activity.name} שיעור </p>
+        <p className='activity-date tac '> {new Date(activity.date).toLocaleDateString('he-IL')} </p>
+<div className='activity-info-container flex-sb'>
     <LessonInfoHoursRange {...LessonInfoHoursRangeProps} />
-    <div style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} className='activity-info mb-1 grid'>
+        <p className='activity-name'>שיעור {activity.name}  </p>
+
+</div>
+    <div style={activity.isCanceled ? { textDecoration: ' line-through' } : {}}
+     className='activity-info mb-1 grid'>
                         <Image className='activity-teacher-img gc1'
                             alt={'teacher-img'} width={50} height={50} src={'https://robohash.org/kkk'} />
-                        <div className=' flex-col gc2'>
-                            <span className='activity-name gc2'> {activity.name} </span>
+                        <div className='activity-teacher-warpper flex-col gc2'>
                             <span className='activity-teacher-name gc2'> {activity.teacher} </span>
                             <span className='activity-location gc2'> בית פעם - סטודיו קדם  </span>
 

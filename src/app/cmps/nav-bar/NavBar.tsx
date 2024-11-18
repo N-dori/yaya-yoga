@@ -62,14 +62,15 @@ export default function NavBar({ }: Props) {
 
       <div className='user-area-container flex-col'>
         {session?.user?.image ?
-          <Image src={session?.user?.image} alt={'user-image'} width={40} height={40} className='user-img' />
+          <Image src={session?.user?.image} alt={'login-indication'} width={30} height={30} className='user-img' />
           :
-          firstLetter ? <div className='user-custom-img flex-jc-ac'>{firstLetter}</div> : <></>
+          firstLetter ?
+           <div className='login-indication flex-jc-ac'>{firstLetter}</div> : <div className='place-holder-for-no-login-indication'></div>
         }
 
 
       </div>
-      <Link href={'/'}>לוגו</Link>
+      <Link className='logo-container' href={'/'}><Image className='logo' alt={'logo'} width={200} height={90} src={'/logo.png'}/></Link>
       <div className='main-menu-btn flex-jc-ac gap05'>
            { isShown?
             <CloseSvg {...menuSvgProps}/>:

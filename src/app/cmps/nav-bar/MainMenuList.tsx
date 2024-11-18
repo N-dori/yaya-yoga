@@ -1,10 +1,15 @@
+import { SignoutSvg } from '@/app/assets/SignoutSvg'
+import { CalenderSvg } from '@/app/assets/svgs/CalenderSvg'
+import CerditCardSvg from '@/app/assets/svgs/CerditCardSvg'
 import CloseMenuSvg from '@/app/assets/svgs/CloseMenuSvg'
-import CloseSvg from '@/app/assets/svgs/CloseSvg'
-import MenuSvg from '@/app/assets/svgs/MenuSvg'
+import DetailsSvg from '@/app/assets/svgs/DetailsSvg'
+import { Loging } from '@/app/assets/svgs/Loging'
+import LoginSvg from '@/app/assets/svgs/LoginSvg'
+import { PencilSvg } from '@/app/assets/svgs/PencilSvg'
+import SignUpSvg from '@/app/assets/svgs/SignUpSvg'
 import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 type Props = {
   isShown:boolean
   setIsShown: (isShown: boolean) => void
@@ -13,10 +18,16 @@ type Props = {
 export default function MainMenuList({isShown ,setIsShown}: Props) {
   const router = useRouter()
   const { data: session } = useSession()
+  const [isAdmin,setIsAdmin] = useState(null)
   useEffect(() => {
-  
-  }, [session?.user?.name])
-  
+    setAdmin()
+    console.log('shimob',session?.user?.email );
+    
+  }, [session?.user?.email])
+ const setAdmin = () => {
+  setIsAdmin(session?.user?.email ==='yshwartz@gmail.com'||session?.user?.email==='dori.nadav@gmail.com')
+ } 
+
   const handelClick = (route:string) => {
     setIsShown(!isShown)
     router.replace(route)
@@ -30,26 +41,26 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
       <h2 className='headline'>יאיא יוגה</h2>
         <ul className='menu-list grid clean '>
           {session?.user?.name?
-          <div className='gr1' onClick={()=> handelClick('/personalDetails')}>
-            <li className='user-name'>{`שלום ${session.user.name}`}</li>
-            <li className='pointer' >לאיזור האישי</li>
-
-          </div>
+          <>
+          <li className='greeting gr1'>{`שלום,`}<br></br>{session?.user?.name}</li>
+          <li className='pointer gr2 flex-sb'onClick={()=> handelClick('/personalDetails')} > לאיזור האישי <DetailsSvg/></li>
+          </>
           :
-          <div className='signin-login gr1 flex-col gap05'>
-        <li className='pointer' onClick={()=> handelClick('/login')}  >התחברות </li>
-        <li className='pointer' onClick={()=> handelClick('/signup')}  >צור חשבון </li>
-          </div>
+          <>
+          <li className='pointer flex-sb gr1' onClick={()=> handelClick('/login')}  >התחברות <Loging/></li>
+          <li className='pointer flex-sb gr2' onClick={()=> handelClick('/signup')}  >צור חשבון <SignUpSvg/> </li>
+          
+          </>
+          
           }
 
-        <li  className='gr2' onClick={()=> handelClick('/weekly_schedule')} > מערכת שיעורים שבועית</li>
-        <li className='gr3' onClick={()=> handelClick('/dashboard')}>dashboard </li>
-        <li className='gr4' onClick={()=> handelClick('/pricing')}>מחירים </li>
-        <li className='pointer gr5' onClick={handleSignOut}>יציאה מהחשבון </li>
+        <li className='gr3 flex-sb' onClick={()=> handelClick('/weekly_schedule')} >לוח זמנים שבועי <CalenderSvg/></li>
+        <li className='gr4 flex-sb' onClick={()=> handelClick('/pricing')}>מחירים <CerditCardSvg/></li>
+{   isAdmin&&  <li className='gr5 flex-sb' onClick={()=> handelClick('/dashboard')}>ניהול מערכת <PencilSvg/></li>}
+        <li className='pointer gr6 flex-sb' onClick={handleSignOut}>יציאה מהחשבון <SignoutSvg/></li>
         <CloseMenuSvg isShown={isShown} setIsShown={setIsShown} />
         </ul>
-        <div style={{marginTop:'auto'}}>
-        </div>
+      
         </section>
   )
 }

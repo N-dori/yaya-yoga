@@ -16,7 +16,7 @@ type WeeklyScheduleProps = {
 export default function WeeklySchedule({
   periodicAgendaId,
   periodicAgenda }: WeeklyScheduleProps) {
-    const today = new Date(2024,10,17)
+    const today = new Date()
     if(today.getDay() === 6 )today.setDate(new Date().getDate()+1 )
       
   const [currDate, setCurrDate] = useState<Date>(today)
@@ -112,7 +112,8 @@ export default function WeeklySchedule({
 
   return (
     <main className='preview-display-container flex-col gap1'>
-      {<h1 className='schedule-headline tac mt1'>לוח זמנים שבועי</h1>}
+      <h1 className='schedule-headline tac mt1'>לוח זמנים שבועי</h1>
+      <h3 className='schedule-headline tac mt1'>יאיא יוגה</h3>
       <h4 className='studio-name mb-05'>בית פעם- סטודיו קדם</h4>
       <h6 className='studio-address mb-05'>רחוב הדקלים 92, פרדס חנה-כרכור</h6>
       <h6 className='studio-phone mb-1'>052-437-7820</h6>

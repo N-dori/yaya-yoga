@@ -1,24 +1,54 @@
 .personal-details-container {
-padding: 2em;
-    .personal-details-warpper{
+    padding: 2em;
+
+    .personal-details-warpper {
         row-gap: 1em;
-        .card{
+
+        .card {
             border: 1px solid #e0e0e0;
             background-color: #fafafa;
             padding: 15px;
             max-height: 475px;
             border-radius: 4px;
         }
-        .greeting-conatiner {
-            padding-block:2em ;
-        }
-        .my-memberships-container{
-            .my-membership-wrapper{
-                .my-membership-card{
-                    font-size: .8em;
-                }
-            }
+
+        .my-activity-card {
+            border-bottom: 1px solid var(--clr2);
+            margin-bottom: 10px;
+
         }
 
+        .activity-date {
+            margin-bottom: .5em;
+            font-size: .9em;
+        }
+
+        .greeting-conatiner {
+            padding-block: 2em;
+        }
+
+        .my-activities-warpper {
+            .activity-info-container {
+                font-size: .8em;
+
+                .activity-name {
+                    border: none;
+                }
+            }
+
+            .activity-teacher-warpper {
+                justify-content: end;
+            }
+
+
+        }
+
+    }
+  .my-memberships-container {
+        .my-membership-wrapper {
+            .my-membership-card {
+                font-size: .8em;
+            }
+        }
     }
 }

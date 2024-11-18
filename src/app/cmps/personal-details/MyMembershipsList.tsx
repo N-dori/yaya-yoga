@@ -9,9 +9,9 @@ memberships:Tmembership[]
 export default function MyMembershipsList({memberships}: MyMembershipListProps) {
   return (
     memberships&&
-    <ol className='my-membership-wrapper'>
+    <ul className='my-membership-wrapper '>
         {memberships.map((membership,i) => 
         <MyMembershipPreview key={membership._id} membership={membership} i={i}/>)}
-    </ol>
+    </ul>
   )
 }

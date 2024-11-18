@@ -1,10 +1,13 @@
 import UserQuestionnaire from '@/app/cmps/user/UserQuestionnaire';
 import React from 'react'
 
-type Props = {}
+type userQuestionnaireProps = {
+  
+}
 
 export default function userQuestionnaire({ params }) {
-    console.log('userQuestionnaire', params.userId);
+    console.log('userQuestionnaire1', params);
+ 
 
  
     return (
