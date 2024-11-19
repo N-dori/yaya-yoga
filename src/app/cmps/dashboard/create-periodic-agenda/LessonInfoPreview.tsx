@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { getFullUserByEmail, getMembership, getUrl, makeId, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, sendEmail, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
+import { getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, sendEmail, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { usePathname, useRouter } from 'next/navigation'
@@ -60,12 +60,27 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             dispatch(hideUserMsg())
         }, 3500);
     }
+
+    const isUserSignedInToClass = (user:Tuser) => {
+        const lesson = activities.find(currActivity => currActivity.id === activity.id)
+        const isUserFound = lesson.practitioners.some(practitioner =>practitioner.email === user.email )
+        console.log('isUserFound',isUserFound);
+         
+        return isUserFound
+    }
     const handelSignInToClass = async () => {
         //0. if user is not logged-in planLogin view
         if (session?.user?.email) {
             let nameOfUser = session?.user?.name
             const user: Tuser = await getFullUserByEmail(session.user.email)
             setCurrUser(prevUser => { return { ...user } })
+           //0.1 if user is already signup to this activity
+            if( isUserSignedInToClass(user) ){
+                let msg = `היי ${nameOfUser ? nameOfUser : ""} אין אפשרות להירשם לאותו השיעור פעמיים :) `
+                let btnTxt = 'הבנתי תודה'
+                getAlertBox(msg, btnTxt)
+                return 
+           }
             const userMembership = user.memberships[0]
             if (!userMembership || userMembership.length === 0) {
                 //0. if user have no active membership .
@@ -279,17 +294,21 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
   
     const isActivityPassed = () => {
         let now = new Date()  
-        const isDayPassed = new Date(activity.date).getDate() < now.getDate()  
-        const isBothSameDay =new Date(activity.date).getDate() === now.getDate()
-        
+        let activityDate = new Date(activity.date)
+        const isDayPassed = activityDate < now 
+        const isSameDay = isBothTheSameDate(activityDate,now)
         if(isDayPassed) {
             setIsActivityHasPassed(isDayPassed)
-            return 
         }  
-        if(isBothSameDay){
-            const isTimePassed = +new Date(activity.hoursRange.start).toLocaleTimeString('he-IL').split(':')[0] < +new Date(now).toLocaleTimeString('he-IL').split(':')[0]
+        if(isSameDay){
+            console.log('isSameDay in side :  :',isSameDay);
+        let activityTime = new Date(activity.hoursRange.start)
+        let hours=activityTime.toLocaleTimeString('he-IL').split(':')[0]
+        let minutes=activityTime.toLocaleTimeString('he-IL').split(':')[1]
+        activityDate.setHours(+hours,+minutes, 0, 0);
+        console.log('activityStart : ',activityDate)
+            const isTimePassed = activityDate<now
             setIsActivityHasPassed(isTimePassed)
-
         }
     }
     const  checkActivityTime = () => {

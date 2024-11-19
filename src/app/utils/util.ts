@@ -183,7 +183,11 @@ export const updateUserWithNewMembershipAtDatabase = async (membershipId: string
     console.log('had a problem updating user with new membership', error)
   }
 }
-
+export const isBothTheSameDate = (date1:Date,date2:Date)=> {
+  return date1.getDate() === date2.getDate() &&
+  date1.getMonth() === date2.getMonth() &&
+  date1.getFullYear() === date2.getFullYear()
+}
 export const createYearsRange = () => {
   let years: number[] = []
   let startYear = 1900

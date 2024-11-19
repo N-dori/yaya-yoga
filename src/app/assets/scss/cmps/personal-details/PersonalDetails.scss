@@ -45,10 +45,25 @@
 
     }
   .my-memberships-container {
+    .is-membership-excist-txt{
+        font-size: .9em;
+    }
         .my-membership-wrapper {
             .my-membership-card {
+                
                 font-size: .8em;
             }
         }
+    }
+    .my-user-questionnaire-conatiner{
+        text-align: justify;
+        line-height: 18px;
+        font-size: .8em;
+    }
+    .my-health-decleration-container{
+        text-align: justify;
+        line-height: 18px;
+        font-size: .8em;
+
     }
 }

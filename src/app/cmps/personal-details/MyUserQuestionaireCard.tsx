@@ -1,4 +1,6 @@
-import Link from 'next/link'
+
+'use client'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 type MyUserQuestionaireCardProps = {
@@ -8,15 +10,18 @@ type MyUserQuestionaireCardProps = {
 
 export default function MyUserQuestionaireCard({userQuestionnaireId,userId}: MyUserQuestionaireCardProps) {
   console.log('userQuestionnaireId',userQuestionnaireId);
-  
+  const router= useRouter()
+
+  const navigateTo = (route:string) => {
+      router.replace(`/${route}`)}
     return (
-    <div>
+    <div className='my-user-questionnaire-conatiner flex-col gap05'>
+      <span > מסע היוגה הינו יחודי לכל אדם, מילוי השאלון עוזר למורה להבין את הצרכים שלך, המטרות והעדפות שלך בצורה טובה יותר. ביחד אנחנו יכולים ליצור תרגול מותאם יותר ונכון יותר עבורך</span>
            {userQuestionnaireId?
-                        <Link href={`userQuestionnaire/${userQuestionnaireId}`}>לעדכון השאלון אישי</Link>
+                        <p onClick={()=>navigateTo(`userQuestionnaire/${userQuestionnaireId}`)} className='tac' >לעדכון השאלון אישי</p>
                     :
                     <div>
-                        <Link href={`userQuestionnaire/${userId}`}>למילוי השאלון האישי </Link>
-                        <span> וגם המלצה שתועדוד למלא אותו </span>
+                        <p onClick={()=>navigateTo(`userQuestionnaire/${userQuestionnaireId}`)}>למילוי השאלון האישי </p>
                        
                     </div>
 

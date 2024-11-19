@@ -8,11 +8,11 @@ type MyActivitiesProps = {
 
 export default function MyActivitiesList({myActivities}: MyActivitiesProps) {
   return (
-     <li className='my-activities-warpper clean'>
+     <ul className='my-activities-warpper clean'>
       {myActivities.map(activity=>
 
         <MyActivtiesPreview key={activity.id} activity={activity}/>
       )}
-    </li>
+    </ul>
   )
 }

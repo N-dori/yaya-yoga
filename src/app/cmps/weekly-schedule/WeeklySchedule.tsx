@@ -111,11 +111,10 @@ export default function WeeklySchedule({
   }
 
   return (
-    <main className='preview-display-container flex-col gap1'>
-      <h1 className='schedule-headline tac mt1'>לוח זמנים שבועי</h1>
-      <h3 className='schedule-headline tac mt1'>יאיא יוגה</h3>
-      <h4 className='studio-name mb-05'>בית פעם- סטודיו קדם</h4>
-      <h6 className='studio-address mb-05'>רחוב הדקלים 92, פרדס חנה-כרכור</h6>
+    <main className='preview-display-container flex-col gap05'>
+      <h1 className='schedule-headline tac'>לוח זמנים שבועי</h1>
+      <h3 className='tac yaya-yoga-txt'>יאיא יוגה</h3>
+      <h6 className='studio-address mb-05'>בית פעם- סטודיו קדם, רחוב הדקלים 92, פרדס חנה-כרכור </h6>
       <h6 className='studio-phone mb-1'>052-437-7820</h6>
 {!isOnBookingMode&&<h3>כדי להרשם לשיעור יש ללחוץ על כפתור  "הרשמה" </h3>}
     {!isOnBookingMode?
