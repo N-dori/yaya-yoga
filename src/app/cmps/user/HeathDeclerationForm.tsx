@@ -49,7 +49,18 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
         scrollUp()
         return () => window.removeEventListener('resize', resizeCanvas);
     }, [canvas]);
-
+    useEffect(() => {
+        const preventScroll = (e) => {
+            e.preventDefault();
+        };
+    
+        const canvas = canvasRef.current;
+        canvas.addEventListener('touchmove', preventScroll, { passive: false });
+    
+        return () => {
+            canvas.removeEventListener('touchmove', preventScroll);
+        };
+    }, []);
     const resizeCanvas = () => {
         if (canvas && canvasContainerRef.current) {
             canvas.width = canvasContainerRef.current.offsetWidth;
@@ -176,7 +187,7 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
     };
 
     return (
-        <main ref={pdfRef} className=' health-decleration-form-container gc2'>
+        <main ref={pdfRef} className='health-decleration-form-container gc2'>
             <h1 className='tac mb-1'>Yaya Yoga</h1>
             <p className='tac gc2 mb-1'>טופס הצהרת בריאות לתלמידי יוגה - סטודיו קדם </p>
             <p></p>
