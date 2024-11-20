@@ -53,8 +53,6 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
 
     try {
       const url = getUrl('auth/registration/')
-
-
       const res = await fetch(url, {
 
         method: 'POST',
@@ -67,6 +65,7 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
         const form = e.target
         form.reset()
         signUserIn()
+        
       } else {
         throw new Error('faild to create new user')
       }

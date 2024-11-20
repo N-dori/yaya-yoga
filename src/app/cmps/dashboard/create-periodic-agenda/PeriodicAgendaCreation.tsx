@@ -34,7 +34,7 @@ export default function PeriodicAgendaCreation() {
     const [activityEndTime, setActivityEndTime] = useState<Date | null | undefined>(null)
     const [activityName, setActivityName] = useState<string>('אשטנגה')
     const [activityType, setActivityType] = useState<string>('שיעור')
-    const [activityTeacher, setActivityTeacher] = useState<string>('יאיר שוורץ')
+    const [activityTeacher, setActivityTeacher] = useState<string>('יאיר שורץ')
     const [activityLocation, setActivityLocation] = useState<string>('בית פעם רחוב הדקלים 92, פרדס חנה-כרכור')
     
     const [isPreviewDisplayShown, setIsPreviewDisplayShown] = useState<boolean>(false)

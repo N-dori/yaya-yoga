@@ -17,7 +17,6 @@ export const authOptions: NextAuthOptions = {
             name: 'Credentials',
             credentials: {},
             async authorize(credentials) {
-                console.log('credentials******', credentials);
                 const { email, password } = credentials as Tcredentials
 
 

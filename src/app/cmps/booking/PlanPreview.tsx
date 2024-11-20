@@ -154,10 +154,7 @@ export default function PlanPreview(props: PlanPreviewProps) {
         let txt = 'הייתה בעיה נסו שוב מאוחר יותר'
         getUserMsg(txt,false)     
       }
-    } else {
-      console.log('no membership was not  created  :(');
-
-    }
+    } 
   }
   return (
     <>

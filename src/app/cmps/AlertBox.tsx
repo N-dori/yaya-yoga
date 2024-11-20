@@ -13,13 +13,14 @@ type AlertBoxProps = {
   setUserMsg: (userMsg: string) => void
   setIsAlertBoxShown: (b: boolean) => void
   handelChargeUser?:()=>void
-  navigatToPricing?:()=>void
+  navigatTo?:(route:string)=>void
   removePractitionerFromActivity?: (membershipId:string) => void
   currMembershipId:string|null
+  userId:string
 
 }
 
-export function AlertBox({removePractitionerFromActivity,currMembershipId,navigatToPricing,handelChargeUser,setBtnTxt, setUserMsg, setIsAlertBoxShown, isAlertBoxShown, userMsg, btnTxt }: AlertBoxProps) {
+export function AlertBox({removePractitionerFromActivity,currMembershipId,userId,navigatTo,handelChargeUser,setBtnTxt, setUserMsg, setIsAlertBoxShown, isAlertBoxShown, userMsg, btnTxt }: AlertBoxProps) {
 
 
   const styles: any = {
@@ -52,14 +53,16 @@ export function AlertBox({removePractitionerFromActivity,currMembershipId,naviga
   }
  const handelMyFunction = () => {
   if(btnTxt=== 'לרכישת מנוי'){
-   navigatToPricing() 
+   navigatTo('/pricing') 
   }
   if(btnTxt=== 'בטח רשום אותי!'){
     handelChargeUser()
   }
   if(btnTxt=== 'כן בטוח ברצוני לבטל'){
-console.log('currMembershipId is : ',currMembershipId);
     removePractitionerFromActivity(currMembershipId)
+  }
+  if(btnTxt=== 'להצהרת בריאות'){
+    navigatTo(`/healthDecleration/${userId}`) 
   }
   hideBox()
  }

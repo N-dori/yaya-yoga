@@ -12,37 +12,37 @@ type HeathDeclerationFormProps = {
 }
 
 export default function HeathDeclerationForm({ userId }: HeathDeclerationFormProps) {
-    
+
     const medicalHistory = ['לחץ דם', 'סוכרת', 'כאבי ראש, סחרחורות, חולשה', 'אסטמה או בעיות נשימה', 'בעיות בשיווי המשקל', 'בעיות צוואר, עורף וכתפיים', 'בעיות במפרקים', 'בעיות בעמוד השדרה פריצות דיסק, עקמת ', 'בעיות עיכול', 'בעיות אוזניים', 'בעיות אוזניים', 'גלאוקומה או בעיות עיניים אחרות', 'מחלה כרונית כלשהי פעילה או רדומה', 'ניתוחים כירורגיים', 'מעשן?', 'בריחת סידן/אוסטאופורוזיס', 'אחר']
     const [selectedRadioBtn, setSelectedRadioBtn] = useState<string>('לא')
     const [isPregnant] = useState([
         { id: makeId(), label: 'לא' },
         { id: makeId(), label: 'כן' },
     ])
-    
+
     const canvasContainerRef = useRef(null);
     const canvasRef = useRef(null);
     const pdfRef = useRef()
     const [canvas, setCanvas] = useState(null);
     const [gCtx, setGCtx] = useState(null);
     const [isDrawing, setIsDrawing] = useState(false);
-    
+
     const formData = new FormData();
-    
+
     const router = useRouter()
     const dispatch = useDispatch()
 
     const handleIsPregnant = (ev: React.ChangeEvent<HTMLInputElement>, label: string) => {
         setSelectedRadioBtn(label)
     }
-    
+
     useEffect(() => {
         // Canvas setup
         if (canvasRef.current) setCanvas(canvasRef.current);
         if (canvas) {
             const ctx = canvas.getContext('2d');
             setGCtx(ctx);
-          
+
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -67,28 +67,27 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
                 scrollUp()
                 let txt = `הייתה בעיה עם שליחת הטופס נסה שוב מאוחר יותר`
                 dispatch(callUserMsg({ msg: txt, isSucsses: false }))
-            }else
-            {
+            } else {
                 scrollUp()
                 let txt = `טופס הצהרת בריאות נשלח ונקלט בהצלחה!`
-                dispatch(callUserMsg({ msg: txt, isSucsses: true }))    
+                dispatch(callUserMsg({ msg: txt, isSucsses: true }))
                 const url = getUrl('user/updateHealthDeclration')
-                let healthDeclaration= `https://yayayoga.s3.eu-north-1.amazonaws.com/Health_Declerations/${userId}.pdf`
+                let healthDeclaration = `https://yayayoga.s3.eu-north-1.amazonaws.com/Health_Declerations/${userId}.pdf`
                 const res = await fetch(url, {
                     method: 'PUT',
                     headers: { "Content-type": "application/json" },
-                    body: JSON.stringify({ _id: userId ,healthDeclaration})
+                    body: JSON.stringify({ _id: userId, healthDeclaration })
                 })
-                if(res.ok){
+                if (res.ok) {
                     console.log('user health Declaration created successfuly');
-                    
+
                 }
 
             }
             setTimeout(() => {
                 dispatch(hideUserMsg())
                 router.replace('/')
-              }, 3500);
+            }, 3500);
 
         } catch (err) {
             console.log('had an error uploding file', err);
@@ -100,46 +99,48 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
         e.preventDefault()
         const input = pdfRef.current
         html2canvas(input).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png')
-        const pdf = new jsPDF('p', 'mm', 'a4', true)
-        const pdfWidth = pdf.internal.pageSize.getWidth()
-        const pdfHeight = pdf.internal.pageSize.getHeight()
-        const imgWidth = canvas.width
-        const imgHeight = canvas.height
-        
-        // Calculate ratio and scale the image to fit within the page
-        const widthRatio = pdfWidth / imgWidth
-        const heightRatio = pdfHeight / imgHeight
-        const ratio = Math.min(widthRatio, heightRatio)  // Use the smaller ratio to fit the page
-        
-        // Adjust the dimensions based on the calculated ratio
-        const imgScaledWidth = imgWidth * ratio
-        const imgScaledHeight = imgHeight * ratio
+            const imgData = canvas.toDataURL('image/png')
+            const pdf = new jsPDF('p', 'mm', 'a4', true)
+            const pdfWidth = pdf.internal.pageSize.getWidth()
+            const pdfHeight = pdf.internal.pageSize.getHeight()
+            const imgWidth = canvas.width
+            const imgHeight = canvas.height
 
-        // Center the image if there's any empty space left
-        const imgX = (pdfWidth - imgScaledWidth) / 2
-        const imgY = (pdfHeight - imgScaledHeight) / 2
+            // Calculate ratio and scale the image to fit within the page
+            const widthRatio = pdfWidth / imgWidth
+            const heightRatio = pdfHeight / imgHeight
+            const ratio = Math.min(widthRatio, heightRatio)  // Use the smaller ratio to fit the page
 
-        // Add the image to the PDF at the calculated position
-        pdf.addImage(imgData, 'PNG', imgX, imgY, imgScaledWidth, imgScaledHeight);
+            // Adjust the dimensions based on the calculated ratio
+            const imgScaledWidth = imgWidth * ratio
+            const imgScaledHeight = imgHeight * ratio
 
-        const pdfBlob = pdf.output('blob')
-        formData.append("file", pdfBlob, `${userId}.pdf`);
+            // Center the image if there's any empty space left
+            const imgX = (pdfWidth - imgScaledWidth) / 2
+            const imgY = (pdfHeight - imgScaledHeight) / 2
 
-        uploadPdfToS3()
+            // Add the image to the PDF at the calculated position
+            pdf.addImage(imgData, 'PNG', imgX, imgY, imgScaledWidth, imgScaledHeight);
+
+            const pdfBlob = pdf.output('blob')
+            formData.append("file", pdfBlob, `${userId}.pdf`);
+
+            uploadPdfToS3()
             // pdf.save(`Health_Decleration_${userId}.pdf`);
         })
     }
 
-    const startDrawing = (e:any) => {
+    const startDrawing = (e) => {
+        const { offsetX, offsetY } = getEventCoordinates(e);
         setIsDrawing(true);
         gCtx.beginPath();
-        gCtx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+        gCtx.moveTo(offsetX, offsetY);
     };
 
-    const draw = (e:any) => {
+    const draw = (e) => {
         if (!isDrawing) return;
-        gCtx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+        const { offsetX, offsetY } = getEventCoordinates(e);
+        gCtx.lineTo(offsetX, offsetY);
         gCtx.strokeStyle = 'black';
         gCtx.lineWidth = 2.7;
         gCtx.stroke();
@@ -152,14 +153,32 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
     const clearCanvas = () => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height); 
+        context.clearRect(0, 0, canvas.width, canvas.height);
     };
+    const getEventCoordinates = (e) => {
+        const canvas = canvasRef.current;
+        const rect = canvas.getBoundingClientRect();
 
+        if (e.nativeEvent.type.startsWith('mouse')) {
+            return {
+                offsetX: e.nativeEvent.offsetX,
+                offsetY: e.nativeEvent.offsetY,
+            };
+        } else if (e.nativeEvent.type.startsWith('touch')) {
+            const touch = e.nativeEvent.touches[0];
+            return {
+                offsetX: touch.clientX - rect.left,
+                offsetY: touch.clientY - rect.top,
+            };
+        }
+
+        return { offsetX: 0, offsetY: 0 };
+    };
 
     return (
         <main ref={pdfRef} className=' health-decleration-form-container gc2'>
             <h1 className='tac mb-1'>Yaya Yoga</h1>
-            <p  className='tac gc2 mb-1'>טופס הצהרת בריאות לתלמידי יוגה - סטודיו קדם </p>
+            <p className='tac gc2 mb-1'>טופס הצהרת בריאות לתלמידי יוגה - סטודיו קדם </p>
             <p></p>
             <form className='flex-col health-decleration-form'
 
@@ -182,9 +201,9 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
                 <input type='text' className='form-txt-input' />
 
 
-                <label style={{  letterSpacing: '.1em'}} className='mb-1'>
-                    
-            אנא  ידע/י  את  המורה  בהיסטוריה  הרפואית  הבסיסית  שלך.  סמן V היכן  שקיימת  בעיה  בהווה  או  הייתה  קיימת  בעבר:
+                <label style={{ letterSpacing: '.1em' }} className='mb-1'>
+
+                    אנא  ידע/י  את  המורה  בהיסטוריה  הרפואית  הבסיסית  שלך.  סמן V היכן  שקיימת  בעיה  בהווה  או  הייתה  קיימת  בעבר:
 
                 </label>
                 {medicalHistory.map((option, index) => (
@@ -244,16 +263,17 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
                 <div
                     style={{ width: '100%', height: '100px' }}
                     ref={canvasContainerRef} className='canvas-container mb-1'>
-                        <div className='trash-continer pointer' title='נקה' onClick={clearCanvas}>X</div>
+                    <div className='trash-continer pointer' title='נקה' onClick={clearCanvas}>X</div>
                     <canvas
                         ref={canvasRef}
                         onMouseDown={startDrawing}
                         onMouseMove={draw}
                         onMouseUp={endDrawing}
                         onMouseLeave={endDrawing}
-                        onTouchStart={(e) => startDrawing(e.touches[0])}
-                        onTouchMove={(e) => draw(e.touches[0])}
-                        onTouchEnd={endDrawing}
+                        onTouchStart={(e) => { e.preventDefault(); startDrawing(e); }}
+                        onTouchMove={(e) => { e.preventDefault(); draw(e); }}
+                        onTouchEnd={(e) => { e.preventDefault(); endDrawing(); }}
+
                         style={{ display: 'block' }}
                     />
                 </div>

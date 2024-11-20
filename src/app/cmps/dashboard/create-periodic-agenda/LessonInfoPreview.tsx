@@ -74,7 +74,14 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             let nameOfUser = session?.user?.name
             const user: Tuser = await getFullUserByEmail(session.user.email)
             setCurrUser(prevUser => { return { ...user } })
-           //0.1 if user is already signup to this activity
+           //0.1 if have not signed health_decleration 
+            if( !user.healthDeclaration ){
+                let msg = `היי ${nameOfUser ? nameOfUser : ""} ישנה אפשרות להרשם לשיעורי הסטודיו רק לאחר מילוי טופס הצהרת בריאות, תודה על שיתוף הפעולה. `
+                let btnTxt = 'להצהרת בריאות'
+                getAlertBox(msg, btnTxt)
+                return 
+           }
+           //0.2 if user is already signup to this activity
             if( isUserSignedInToClass(user) ){
                 let msg = `היי ${nameOfUser ? nameOfUser : ""} אין אפשרות להירשם לאותו השיעור פעמיים :) `
                 let btnTxt = 'הבנתי תודה'
@@ -180,8 +187,9 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         }
 
     }
-    const navigatToPricing = () => {
-        router.replace('/pricing')
+
+    const navigatTo = (route:string) => {
+        router.replace(route)
     }
     
 
@@ -258,10 +266,10 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         isAlertBoxShown, setIsAlertBoxShown,
         userMsg, setUserMsg,
         btnTxt, setBtnTxt,
-        navigatToPricing,
+        navigatTo,
         handelChargeUser,
         currMembershipId,
-        
+        userId:currUser === null?"":currUser._id,
         removePractitionerFromActivity,
     }
 
