@@ -10,11 +10,10 @@ export default function Dashboard({}: Props) {
   const getGreeting = () => {
       const today = new Date();
       const hours = today.getHours();
-      console.log('hours',hours)
+      if(hours>20||hours===+'00'||(hours > 0)||(hours<5))return `לילה טוב `
       if(hours<12)return `בוקר טוב`
       if(hours>12&&hours<16)return `צהריים טובים `
       if(hours>16&&hours<20)return `אחר צהריים טובים `
-      if(hours>20||hours===+'00')return `לילה טוב `
  
     
     }

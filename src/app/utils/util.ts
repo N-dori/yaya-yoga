@@ -105,7 +105,7 @@ export const getFullUserByEmail = async (email: String) => {
   return user
 }
 export const getPreiodicAgenda = async () => {
-  try {
+ 
     const url = getUrl('periodicAgenda/getPeriodicAgenda')
     const res = await fetch(url, {
       method: 'POST',
@@ -119,9 +119,7 @@ export const getPreiodicAgenda = async () => {
     } else {
       throw new Error('faild to get a new periodic Agenda')
     }
-  } catch (err) {
-    console.log('failed to fetch a periodic agenda reason: ', err);
-  }
+ 
 }
 export const removePractitionerFromActivityFromDatabase = async (periodicAgendaId: string, activityId: string, email: string) => {
   const url = getUrl('periodicAgenda/removePractitionerFromActivity')

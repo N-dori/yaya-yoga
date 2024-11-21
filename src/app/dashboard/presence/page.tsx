@@ -1,5 +1,4 @@
 import ActivityPresenceIndex from '@/app/cmps/dashboard/presence/ActivityPresenceIndex'
-import ActivityPresenceList from '@/app/cmps/dashboard/presence/ActivityPresenceList'
 import { TperiodicAgenda } from '@/app/types/types'
 import { getPreiodicAgenda } from '@/app/utils/util'
 import React from 'react'
@@ -7,7 +6,7 @@ import React from 'react'
 type Props = {}
 
 export default async function  page({}: Props) {
-    const res= await getPreiodicAgenda()
+    const res = await getPreiodicAgenda()
     let periodicAgenda:TperiodicAgenda
     
     if(res){
