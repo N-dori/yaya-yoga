@@ -1,4 +1,5 @@
-import PresenceList from '@/app/cmps/dashboard/presence/PresenceList'
+import ActivityPresenceIndex from '@/app/cmps/dashboard/presence/ActivityPresenceIndex'
+import ActivityPresenceList from '@/app/cmps/dashboard/presence/ActivityPresenceList'
 import { TperiodicAgenda } from '@/app/types/types'
 import { getPreiodicAgenda } from '@/app/utils/util'
 import React from 'react'
@@ -15,7 +16,7 @@ export default async function  page({}: Props) {
 
   return (
     <main className='presence-container gc2'>
-         <PresenceList activities={periodicAgenda?.activities}/>
+      <ActivityPresenceIndex periodicAgenda={periodicAgenda}/>
     </main>
   )
 }

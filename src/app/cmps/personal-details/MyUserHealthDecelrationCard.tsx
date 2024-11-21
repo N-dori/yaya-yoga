@@ -16,7 +16,10 @@ export default function MyUserHealthDecelrationCard({userHealthDeclarationLink,u
   return (
  <div>
            {userHealthDeclarationLink?
-                        <p onClick={()=>navigateTo(`healthDecleration/${userId}`)}>לעדכון הצהרת בריאות</p>
+              <div className='my-health-decleration-container flex-col flex-ac'>
+                      <p className='mb-05'> הצהרת בריאות שלך מלאה וחתומה </p>
+                        <p className='tac pointer underline'  onClick={()=>navigateTo(`healthDecleration/${userId}`)}>לעדכון הצהרת בריאות</p>
+                </div>
                     :
                     <div className='my-health-decleration-container flex-col flex-ac'>
                         <p className='mb-05'> הבריאות הפיזית שלך במקום הראשון!</p>

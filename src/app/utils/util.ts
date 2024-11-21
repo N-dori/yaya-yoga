@@ -173,7 +173,7 @@ export const updateUserWithNewMembershipAtDatabase = async (membershipId: string
     if (res.ok) {
       const updatedUser = await res.json()
 
-      console.log('User was updated with new membership', updatedUser);
+      console.log(`User id :${userId} was updated with new membership no' :${membershipId}`, updatedUser);
       return true
 
     } else {

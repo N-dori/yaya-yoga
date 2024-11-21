@@ -4,7 +4,7 @@
     z-index: 12;
     direction: initial;
     overflow: hidden;
-    background: linear-gradient(#c2ac97,#dbc8b4);
+    background: linear-gradient(var(--clr7),var(--clr8));
     .nav-bar-warpper{
         width: 100%;
         .logo{
@@ -19,7 +19,7 @@
             opacity: .8;
         }
         .custom-login-indication{
-            background-color: pink;
+            background-color: var(--clr8);
             border-radius: 1000px;
             padding: 1em;
             width: 30px;

@@ -22,16 +22,15 @@ const hoursRangeSchema = new Schema({
     }
 
 })
-const presenceSchema = new Schema({
+const practitionerSchema = new Schema({
     email: {
         type: String,
     },
     name: {
         type: String,
     },
-    hasArrived: {
-        type: Boolean,
-
+    membershipId: {
+        type: String, 
     }
 
 })
@@ -66,7 +65,7 @@ const activitySchema = new Schema({
         type: String
     },
     practitioners: [
-         presenceSchema 
+        practitionerSchema 
     ],
 
 })

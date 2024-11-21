@@ -16,7 +16,7 @@ export async function PUT(request) {
             { $push: { "activities.$[activity].practitioners": {id,email,name,membershipId} } },
             {
               arrayFilters: [{ "activity.id": activityId }]  
-              // Filters to find the correct activity
+              // Filters to find the currect activity
             }
         )
         if (!updatedPeriodicAgenda) {

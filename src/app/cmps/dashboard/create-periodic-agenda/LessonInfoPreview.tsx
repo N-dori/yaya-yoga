@@ -181,19 +181,20 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
                 }
                 console.log('updatedMembership', updatedMembership);
-
+                
                 addPractitionerToActivity(membershipId)
             }
         }
-
+        
     }
-
+    
     const navigatTo = (route:string) => {
         router.replace(route)
     }
     
-
+    
     const addPractitionerToActivity = async (membershipId: string) => {
+        console.log('addin  Practitioner To Activity with membership num :', membershipId);
         const url = getUrl('periodicAgenda/updatePeriodicAgendaPractitioners')
         const res = await fetch(url, {
             method: 'PUT',

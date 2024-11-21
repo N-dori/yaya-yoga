@@ -78,7 +78,7 @@ export default async function page({ }: Props) {
                 <section className='my-memberships-container card'>
                     <h3 className='tac mb-05'>מנויים</h3>
                     <div className='is-membership-excist-txt'>
-                        {user?.memberships.length === 0 && <div className='tac mb-05'><p> לא קיים מנוי פעיל</p><Link href={'/pricing'}></Link></div>}
+                        {user?.memberships.length === 0 && <div className='tac mb-05 flex-col gap05'><p> לא קיים מנוי פעיל</p><Link href={'/pricing'}>לרכישת מנוי חדש</Link></div>}
                         {user?.memberships.length === 1 && <p className='tac mb-05'> קיים מנוי פעיל 1</p>}
                         {user?.memberships.length > 1 && <p className='tac mb-05'>קיימים {memberships.length} מנויים פעילים</p>}
 
