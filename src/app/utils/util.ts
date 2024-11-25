@@ -66,10 +66,16 @@ export const getUsers = async () => {
     method: 'POST',
     headers: { "Content-type": "application/json" },
   })
-  const users = await res.json()
-  console.log(' my users in utils getUserl = ', users);
+  if(res.ok){
+   const  users = await res.json()
+   console.log(' my users in utils getUserl = ', users);
+   return users
+   
+  }else{
+    console.log('thare has been a problem getting users');
+    
+  }
 
-  return users
 }
 export const getMembership = async (membershipId: String) => {
   console.log(' fatching with membershipId = ', membershipId);

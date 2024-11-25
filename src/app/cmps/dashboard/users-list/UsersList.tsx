@@ -10,6 +10,9 @@ type UsersListProps = {
 export default function UsersList({users}: UsersListProps) {
   return (
     <tbody>
-        {users.map(user=> <UsersPreview key={user._id} user={user}/>)}
+
+        {users&&
+        users.map(user=> <UsersPreview key={user._id} user={user}/>)
+      }
   </tbody>  )
 }
