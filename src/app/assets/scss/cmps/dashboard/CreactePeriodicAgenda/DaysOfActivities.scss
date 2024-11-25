@@ -48,6 +48,7 @@
 
 .hours-range {
     align-items: end;
+    margin-bottom: .5em;
 }
 
 .hours-range>* {
@@ -56,8 +57,10 @@
 }
 
 .activity-info-container {
+    margin-bottom: .5em;
+    align-items: baseline;
     .activity-info {
-        grid-template-columns: minmax(50px, 50px) minmax(auto, 11em);
+        grid-template-columns: minmax(50px, 50px) 1.2fr .8fr;
 
         .activity-teacher-img {
             border-radius: 50%;
@@ -82,7 +85,7 @@
     .activity-location {
         grid-row: 1;
         color: var(--clr4);
-        font-size: 14px;
+        font-size: 12px;
 
 
     }
@@ -90,20 +93,11 @@
         color: var(--clr3);
 
     }
-    .sign-in-to-class-btn {
-        min-width: 5em;
-        border: 1px solid rgba(0, 0, 0, 0.33);
-        padding: 15px 10px;
-        line-height: 1.5;
-        border-radius: 10px;
-        background-color: transparent;
-        font-size: 1.1em;
-        cursor: pointer;
 
-    }
 }
 
 .check-in-container {
+    justify-content: end;
 
     .drop-in {
         color: var(--clr4);
@@ -120,4 +114,15 @@
         font-size: .9em;
         cursor: pointer;
     }
+}
+.sign-in-or-cancel-btn {
+    min-width: 5em;
+    border: 1px solid rgba(0, 0, 0, 0.33);
+    padding: 15px 10px;
+    line-height: 1.5;
+    border-radius: 10px;
+    background-color: transparent;
+    font-size: 1.1em;
+    cursor: pointer;
+
 }

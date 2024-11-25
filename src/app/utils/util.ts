@@ -58,6 +58,19 @@ export const getUser = async (_id: String) => {
 
   return user
 }
+export const getUsers = async () => {
+  const url = getUrl('user/getUsers/')
+
+  const res = await fetch(url, {
+
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+  })
+  const users = await res.json()
+  console.log(' my users in utils getUserl = ', users);
+
+  return users
+}
 export const getMembership = async (membershipId: String) => {
   console.log(' fatching with membershipId = ', membershipId);
   const url = getUrl('membership/getMembership/')

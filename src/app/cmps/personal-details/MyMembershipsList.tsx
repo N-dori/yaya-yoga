@@ -9,7 +9,7 @@ memberships:Tmembership[]
 export default function MyMembershipsList({memberships}: MyMembershipListProps) {
   return (
     memberships&&
-    <ul className='my-membership-wrapper '>
+    <ul className='my-membership-wrapper flex-col gap05'>
         {memberships.map((membership,i) => 
         <MyMembershipPreview key={membership._id} membership={membership} i={i}/>)}
     </ul>

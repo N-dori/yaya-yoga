@@ -69,7 +69,7 @@ export default async function page({ }: Props) {
                 <section className='my-activities-container card'>
                     <h3 className='tac mb-05'> השיעורים שלי</h3>
                     {myActivities ?
-                        <MyActivitiesList myActivities={myActivities} />
+                        <MyActivitiesList myActivities={myActivities} periodicAgendaId={periodicAgenda._id} userEmail={user.email}/>
                         :
                         <p>אינך רשומ/ה </p>
                     }

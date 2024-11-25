@@ -55,7 +55,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
           }
 
         <li className='gr3 flex-sb' onClick={()=> handelClick('/weekly_schedule')} >לוח זמנים שבועי <CalenderSvg/></li>
-        <li className='gr4 flex-sb' onClick={()=> handelClick('/pricing')}>מחירים <CerditCardSvg/></li>
+        <li className='gr4 flex-sb' onClick={()=> handelClick('/pricing')}>מחירון <CerditCardSvg/></li>
 {   isAdmin&&  <li className='gr5 flex-sb' onClick={()=> handelClick('/dashboard')}>ניהול מערכת <PencilSvg/></li>}
         <li className='pointer gr6 flex-sb' onClick={handleSignOut}>יציאה מהחשבון <SignoutSvg/></li>
         <CloseMenuSvg isShown={isShown} setIsShown={setIsShown} />

@@ -62,16 +62,19 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
   
     
   }, [activityDay, currDate])
+  
   const isBothTheSameDate = (date1:Date,date2:Date)=> {
     return date1.getDate() === date2.getDate() &&
     date1.getMonth() === date2.getMonth() &&
     date1.getFullYear() === date2.getFullYear()
   }
+
   const handelDayClicked = () => {
     if (activityDay?.date) {
       setCurrDate(new Date(activityDay.date))
     }
   }
+
    const isDatePassed = (today:Date) => {
     if(today.getDay()!==6){
       

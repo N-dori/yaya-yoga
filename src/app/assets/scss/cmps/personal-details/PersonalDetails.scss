@@ -1,5 +1,5 @@
 .personal-details-container {
-    padding: 2em;
+    padding-block: 2em;
 
     .personal-details-warpper {
         row-gap: 1em;
@@ -28,9 +28,9 @@
         }
 
         .my-activities-warpper {
+            font-size: .8em;
             .activity-info-container {
-                font-size: .8em;
-
+                align-items: baseline;
                 .activity-name {
                     border: none;
                 }
@@ -50,8 +50,9 @@
     }
         .my-membership-wrapper {
             .my-membership-card {
-                
                 font-size: .8em;
+                border-bottom:0.5px solid var(--clr2) ;
+                padding-bottom: .5em;
             }
         }
     }

@@ -37,12 +37,12 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
     const dispatch = useDispatch()
     const path = usePathname()
 
-    
+
     useEffect(() => {
         if (session?.user?.email) {
             console.log('path is++++++: ', path);
         }
-    }, [activity.date, activity.isCanceled, activity.id, periodicAgendaId, currUser, currUser?.memberships?.length, path,currMembershipId])
+    }, [activity.date, activity.isCanceled, activity.id, periodicAgendaId, currUser, currUser?.memberships?.length, path, currMembershipId])
     useEffect(() => {
         isActivityPassed()
     }, [])
@@ -61,11 +61,11 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         }, 3500);
     }
 
-    const isUserSignedInToClass = (user:Tuser) => {
+    const isUserSignedInToClass = (user: Tuser) => {
         const lesson = activities.find(currActivity => currActivity.id === activity.id)
-        const isUserFound = lesson.practitioners.some(practitioner =>practitioner.email === user.email )
-        console.log('isUserFound',isUserFound);
-         
+        const isUserFound = lesson.practitioners.some(practitioner => practitioner.email === user.email)
+        console.log('isUserFound', isUserFound);
+
         return isUserFound
     }
     const handelSignInToClass = async () => {
@@ -74,20 +74,20 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             let nameOfUser = session?.user?.name
             const user: Tuser = await getFullUserByEmail(session.user.email)
             setCurrUser(prevUser => { return { ...user } })
-           //0.1 if have not signed health_decleration 
-            if( !user.healthDeclaration ){
+            //0.1 if have not signed health_decleration 
+            if (!user.healthDeclaration) {
                 let msg = `היי ${nameOfUser ? nameOfUser : ""} ישנה אפשרות להרשם לשיעורי הסטודיו רק לאחר מילוי טופס הצהרת בריאות, תודה על שיתוף הפעולה. `
                 let btnTxt = 'להצהרת בריאות'
                 getAlertBox(msg, btnTxt)
-                return 
-           }
-           //0.2 if user is already signup to this activity
-            if( isUserSignedInToClass(user) ){
+                return
+            }
+            //0.2 if user is already signup to this activity
+            if (isUserSignedInToClass(user)) {
                 let msg = `היי ${nameOfUser ? nameOfUser : ""} אין אפשרות להירשם לאותו השיעור פעמיים :) `
                 let btnTxt = 'הבנתי תודה'
                 getAlertBox(msg, btnTxt)
-                return 
-           }
+                return
+            }
             const userMembership = user.memberships[0]
             if (!userMembership || userMembership.length === 0) {
                 //0. if user have no active membership .
@@ -166,7 +166,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                 const updatedMembership: Tmembership = await res.json()
                 if (updatedMembership.subscription.entries === 1) {
                     console.log('send email you have left last entery consider getting a new one');
-                    await sendEmail(session?.user?.email, session?.user?.name,'renew')
+                    await sendEmail(session?.user?.email, session?.user?.name, 'renew')
                 }
                 if (updatedMembership.isExpired) {
                     console.log(' membership has expired !', updatedMembership)
@@ -181,18 +181,18 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
                 }
                 console.log('updatedMembership', updatedMembership);
-                
+
                 addPractitionerToActivity(membershipId)
             }
         }
-        
+
     }
-    
-    const navigatTo = (route:string) => {
+
+    const navigatTo = (route: string) => {
         router.replace(route)
     }
-    
-    
+
+
     const addPractitionerToActivity = async (membershipId: string) => {
         console.log('addin  Practitioner To Activity with membership num :', membershipId);
         const url = getUrl('periodicAgenda/updatePeriodicAgendaPractitioners')
@@ -200,7 +200,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             method: 'PUT',
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
-                id:makeId(8),
+                id: makeId(8),
                 periodicAgendaId,
                 activityId: activity.id,
                 membershipId,
@@ -224,19 +224,19 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
         }
     }
-    const askUserIfToRemoveHimFromActivity = (membershipId:string) => {
-     console.log('ask User If To Remove Him From Activity',);
-     console.log('membershipId',membershipId);
-     setCurrMembershipId(membershipId)
+    const askUserIfToRemoveHimFromActivity = (membershipId: string) => {
+        console.log('ask User If To Remove Him From Activity',);
+        console.log('membershipId', membershipId);
+        setCurrMembershipId(membershipId)
         let nameOfUser = session.user.name
         let msg = `היי ${nameOfUser ? nameOfUser : ""} האם ברצונך לבטל את הגעתך לשיעור ${activity.name} ?`
         let btnTxt = 'כן בטוח ברצוני לבטל'
         getAlertBox(msg, btnTxt)
     }
 
-    const removePractitionerFromActivity = async (membershipId:string) => {
-             
-      const wasRemoved = await removePractitionerFromActivityFromDatabase(periodicAgendaId,activity.id,session.user.email)  
+    const removePractitionerFromActivity = async (membershipId: string) => {
+
+        const wasRemoved = await removePractitionerFromActivityFromDatabase(periodicAgendaId, activity.id, session.user.email)
         if (wasRemoved) {
             removePractitionerFromClientSideActivities(session.user.email)
             let txt = `הוסרת משיעור ${activity.name} בהצלחה`
@@ -248,20 +248,20 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
         }
         const wasRefunded = await refundPractitionerMembershipAtDatabase(membershipId)
-        if(wasRefunded){
-            console.log('practitioner after refund',wasRefunded);
+        if (wasRefunded) {
+            console.log('practitioner after refund', wasRefunded);
         }
-        const user:Tuser =await getFullUserByEmail(session?.user?.email)
+        const user: Tuser = await getFullUserByEmail(session?.user?.email)
         // here we check if after refund user stil have memebershipId under user.memberships?
-        const doUserOwnMembership = user.memberships.some(membership=>membership===membershipId)
+        const doUserOwnMembership = user.memberships.some(membership => membership === membershipId)
         //if yes do nothing if no add it back to user.memberships[]
-        console.log('do User Own Membership',doUserOwnMembership);
-        if(!doUserOwnMembership){
-            const updatedUser = await updateUserWithNewMembershipAtDatabase(membershipId,user._id)
-            if(updatedUser) console.log('user.memberships was updated whith the refunded membership?',updatedUser);
-            
+        console.log('do User Own Membership', doUserOwnMembership);
+        if (!doUserOwnMembership) {
+            const updatedUser = await updateUserWithNewMembershipAtDatabase(membershipId, user._id)
+            if (updatedUser) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
+
         }
-        
+
     }
     let alertBoxProps = {
         isAlertBoxShown, setIsAlertBoxShown,
@@ -270,7 +270,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         navigatTo,
         handelChargeUser,
         currMembershipId,
-        userId:currUser === null?"":currUser._id,
+        userId: currUser === null ? "" : currUser._id,
         removePractitionerFromActivity,
     }
 
@@ -283,11 +283,11 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         const updatedActivities = [...activities]
         setActivities(updatedActivities)
     }
-    const removePractitionerFromClientSideActivities = (email:string) => {
+    const removePractitionerFromClientSideActivities = (email: string) => {
         const activityToUpdate = activities.find(act => act.id === activity.id)
         const activityIndex = activities.findIndex(act => act.id === activity.id)
-        const index = activityToUpdate.practitioners.findIndex(practitioner=>practitioner.email === email)
-        activityToUpdate.practitioners.splice(index,1)
+        const index = activityToUpdate.practitioners.findIndex(practitioner => practitioner.email === email)
+        activityToUpdate.practitioners.splice(index, 1)
         activities[activityIndex] = { ...activityToUpdate }
         const updatedActivities = [...activities]
         setActivities(updatedActivities)
@@ -300,69 +300,69 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         start: activity.hoursRange.start,
         end: activity.hoursRange.end
     }
-  
+
     const isActivityPassed = () => {
-        let now = new Date()  
+        let now = new Date()
         let activityDate = new Date(activity.date)
-        const isDayPassed = activityDate < now 
-        const isSameDay = isBothTheSameDate(activityDate,now)
-        if(isDayPassed) {
+        const isDayPassed = activityDate < now
+        const isSameDay = isBothTheSameDate(activityDate, now)
+        if (isDayPassed) {
             setIsActivityHasPassed(isDayPassed)
-        }  
-        if(isSameDay){
-            console.log('isSameDay in side :  :',isSameDay);
-        let activityTime = new Date(activity.hoursRange.start)
-        let hours=activityTime.toLocaleTimeString('he-IL').split(':')[0]
-        let minutes=activityTime.toLocaleTimeString('he-IL').split(':')[1]
-        activityDate.setHours(+hours,+minutes, 0, 0);
-        console.log('activityStart : ',activityDate)
-            const isTimePassed = activityDate<now
+        }
+        if (isSameDay) {
+            console.log('isSameDay in side :  :', isSameDay);
+            let activityTime = new Date(activity.hoursRange.start)
+            let hours = activityTime.toLocaleTimeString('he-IL').split(':')[0]
+            let minutes = activityTime.toLocaleTimeString('he-IL').split(':')[1]
+            activityDate.setHours(+hours, +minutes, 0, 0);
+            console.log('activityStart : ', activityDate)
+            const isTimePassed = activityDate < now
             setIsActivityHasPassed(isTimePassed)
         }
     }
-    const  checkActivityTime = () => {
-        let currentTime:Date = new Date();
-        let activityStart:Date = new Date(activity.date)
+    const checkActivityTime = () => {
+        let currentTime: Date = new Date();
+        let activityStart: Date = new Date(activity.date)
         let activityTime = new Date(activity.hoursRange.start)
-        let hours=activityTime.toLocaleTimeString('he-IL').split(':')[0]
-        let minutes=activityTime.toLocaleTimeString('he-IL').split(':')[1]
-        activityStart.setHours(+hours,+minutes, 0, 0);
-        console.log('activityStart : ',activityStart)
-        
+        let hours = activityTime.toLocaleTimeString('he-IL').split(':')[0]
+        let minutes = activityTime.toLocaleTimeString('he-IL').split(':')[1]
+        activityStart.setHours(+hours, +minutes, 0, 0);
+        console.log('activityStart : ', activityStart)
+
         // Define 9:00 and 17:00 as reference times
         const nineAM = new Date(activityStart);
         nineAM.setHours(9, 0, 0, 0);
-        
+
         const fivePM = new Date(activityStart);
         fivePM.setHours(17, 0, 0, 0);
-    
+
         // Condition 1: Early activity, starting at or before 9:00
         if (activityStart <= nineAM) {
             const twentyTwoDayBefore = new Date(activityStart);
             twentyTwoDayBefore.setDate(twentyTwoDayBefore.getDate() - 1); // Set to the previous day
             twentyTwoDayBefore.setHours(22, 0, 0, 0);
-            
+
             // If current time is after 22:00 on the day before, return false
             if (currentTime >= twentyTwoDayBefore) {
                 return false;
             }
         }
-    
+
         // Condition 2: Late activity, starting at or after 17:00
         if (activityStart >= fivePM) {
             const timeDifference = Math.abs((+currentTime) - (+activityStart)) / (1000 * 60 * 60);
-            
+
             // If the time difference is less than 2 hours, return false
             if (timeDifference < 2) {
                 return false;
             }
         }
-    
+
         // If neither condition returns false, return true
         return true;
     }
     const PractitionersIndexProps = {
-        practitioners:activity?.practitioners,
+        practitioners: activity?.practitioners,
         askUserIfToRemoveHimFromActivity,
         checkActivityTime
     }
@@ -372,30 +372,27 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                 <LessonInfoHoursRange {...LessonInfoHoursRangeProps} />
                 {activity.isCanceled && <span > השיעור בוטל</span>}
 
-                <section className='activity-info-container flex-col'>
-                    <div style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} className='activity-info mb-1 grid'>
+                <section className='activity-info-container'>
+                    <div className='activity-info grid' style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} >
                         <Image className='activity-teacher-img gc1'
                             alt={'teacher-img'} width={50} height={50} src={'https://robohash.org/kkk'} />
                         <div className=' flex-col gc2'>
                             <span className='activity-name gc2'> {activity.name} </span>
-                            <span className='activity-teacher-name gc2'> {activity.teacher} </span>
+                            <span className='activity-teacher-name gc2'>עם {activity.teacher} </span>
                             <span className='activity-location gc2'> בית פעם - סטודיו קדם  </span>
 
                         </div>
-                    </div>
-                    <div className='check-in-container flex-sb'>
-                        <span style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} className='drop-in'>
-                            מחיר כניסה חד פעמית : 50 ש"ח
-                        </span>
-                        {!isOnWeeklyScheduleMode ? <button style={activity.isCanceled ? { backgroundColor: 'green' } : { backgroundColor: '#cf00009e' }}
-                            type='button' className='check-in-button'
-                            onClick={() => handelClick()}>{activity.isCanceled ? 'שחזר ' : 'בטל '}
-                        </button> :
-                            <button disabled={isActivityHasPassed||activity.isCanceled} type='button' className='sign-in-to-class-btn flex-jc-ac'
-                                style={isActivityHasPassed ||activity.isCanceled ? { color: `var(--clr3)` } : {}}
-                                onClick={() => handelSignInToClass()}>
-                                {isLoading ? <Spinner /> : ` הרשמה`}
-                            </button>}
+                        <div className='check-in-container gc3 flex-ac'>
+                            {!isOnWeeklyScheduleMode ? <button style={activity.isCanceled ? { backgroundColor: 'green' } : { backgroundColor: '#cf00009e' }}
+                                type='button' className='check-in-button'
+                                onClick={() => handelClick()}>{activity.isCanceled ? 'שחזר ' : 'בטל '}
+                            </button> :
+                                <button disabled={isActivityHasPassed || activity.isCanceled} type='button' className='sign-in-or-cancel-btn flex-jc-ac'
+                                    style={isActivityHasPassed || activity.isCanceled ? { color: `var(--clr3)` } : {}}
+                                    onClick={() => handelSignInToClass()}>
+                                    {isLoading ? <Spinner /> : ` הרשמה`}
+                                </button>}
+                        </div>
                     </div>
 
                 </section>
