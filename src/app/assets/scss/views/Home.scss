@@ -1,12 +1,47 @@
 
 .hero-container{
-    position: 'relative';
-     width: '100%';
-      height: '40%';
+    position: relative;
+     width: 100%;
       .hero {
           object-fit: 'cover' ;
           opacity: 0.9;
       }
-    }
+      .quote-container{
+        position: absolute;
+        top:45%;
+        color: #fff;
+        background: #0000010d;
+        .quotaion-mark{
+            font-size: 1.8em;
 
+        }
+        .patangeli-quote{
+            font-size: 1.3em;
+            
+        }
+        .patangeli-quote-credit{
+            font-size: .8em;
+            margin-inline-start: 10px;
+
+        }
+        .welcome-txt{
+
+        }
+        .yaya-yoga{
+            text-decoration: overline;
+        }
+      }
+    }
+    .weekly-schedule-image-conatiner{
+      position: relative;
+      .weekly-schedule-button{
+          position: absolute;
+          top:0;
+          padding: 2em;
+          color: #fff;
+          border: 1px solid #fff;
+          text-decoration: none;
+      }
+    }
+    
     

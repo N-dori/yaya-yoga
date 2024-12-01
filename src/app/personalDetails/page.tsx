@@ -8,6 +8,7 @@ import Link from 'next/link';
 import MyUserQuestionaireCard from '../cmps/personal-details/MyUserQuestionaireCard';
 import MyUserHealthDecelrationCard from '../cmps/personal-details/MyUserHealthDecelrationCard';
 import MyActivitiesList from '../cmps/personal-details/MyActivitiesList';
+import MyPersonalDetailsIndex from '../cmps/personal-details/MyPersonalDetailsIndex';
 type Props = {}
 
 export default async function page({ }: Props) {
@@ -56,55 +57,22 @@ export default async function page({ }: Props) {
     }
     const memberships: Tmembership[] | null = await loadMemberships();
     const myActivities: Tactivity[] | null = await loadMyUpComingActivities()
+
+    const MyPersonalDetailsProps = {
+        userName:session.user.name,
+        userEmail:user.email,
+        userId:user._id,
+        myActivities,
+        periodicAgendaId:periodicAgenda._id,
+        memberships,
+        userQuestionnaireId:user.userQuestionnaireId,
+        userHealthDeclarationLink:user.healthDeclaration,
+    }
+
     return (
         <section className='personal-details-container gc2'>
             <h2 className='tac m-0'>האיזור האישי </h2>
-            <section className='personal-details-warpper flex-col'>
-
-                <div className='greeting-conatiner '>
-                    <p className='mb-05'>היי {session.user.name}, </p>
-                    <span>כיף לראות אותך! </span>
-                </div>
-
-                <section className='my-activities-container card'>
-                    <h3 className='tac mb-05'> השיעורים שלי</h3>
-                    {myActivities ?
-                        <MyActivitiesList myActivities={myActivities} periodicAgendaId={periodicAgenda._id} userEmail={user.email}/>
-                        :
-                        <p>אינך רשומ/ה </p>
-                    }
-
-                </section>
-                <section className='my-memberships-container card'>
-                    <h3 className='tac mb-05'>מנויים</h3>
-                    <div className='is-membership-excist-txt'>
-                        {user?.memberships.length === 0 && <div className='tac mb-05 flex-col gap05'><p> לא קיים מנוי פעיל</p><Link href={'/pricing'}>לרכישת מנוי חדש</Link></div>}
-                        {user?.memberships.length === 1 && <p className='tac mb-05'> קיים מנוי פעיל 1</p>}
-                        {user?.memberships.length > 1 && <p className='tac mb-05'>קיימים {memberships.length} מנויים פעילים</p>}
-
-                    </div>
-                    <MyMembershipsList memberships={memberships} />
-
-                </section>
-
-                <section className='my-user-questionneaire card '>
-                    <h3 className='tac mb-05'>שאלון אישי</h3>
-                    <MyUserQuestionaireCard
-                        userQuestionnaireId={user.userQuestionnaireId ? 'U' + user.userQuestionnaireId : undefined}
-                        userId={user._id} />
-
-                </section>
-                <section className='my-health-decelration card'>
-                    <h3 className='tac mb-05'>הצהרת בריאות</h3>
-                    <MyUserHealthDecelrationCard
-                        userHealthDeclarationLink={user.healthDeclaration}
-                        userId={user._id} />
-
-                </section>
-
-
-            </section>
-
+            <MyPersonalDetailsIndex {...MyPersonalDetailsProps}/>
 
         </section>
     )

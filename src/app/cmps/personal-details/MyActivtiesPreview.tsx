@@ -11,60 +11,26 @@ type MyActivtiesPreviewProps = {
     activity: Tactivity
     periodicAgendaId: string
     userEmail: string
+    setCurrActivityId:(currActivityId:string)=>void
+    askUserIfToRemoveHimFromActivity:(membershipId:string, activityName:string) => void
+
 }
 
-export default function MyActivtiesPreview({ activity, periodicAgendaId, userEmail }: MyActivtiesPreviewProps) {
+export default function MyActivtiesPreview({ activity, setCurrActivityId, userEmail,askUserIfToRemoveHimFromActivity }: MyActivtiesPreviewProps) {
+    
+    const practitioner: Tpractitioner = activity.practitioners.find(currPractitioner => currPractitioner.email === userEmail)
+    const membershipId = practitioner.membershipId
     const LessonInfoHoursRangeProps = {
         isCanceled: activity.isCanceled,
         start: activity.hoursRange.start,
         end: activity.hoursRange.end
     }
-const dispatch = useDispatch()
     const handelCancelation = () => {
         console.log('cancelation!!! ');
-        removePractitionerFromActivity()
-
+        setCurrActivityId(activity.id)
+        askUserIfToRemoveHimFromActivity(membershipId, activity.name)
     }
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
-        window.scrollTo(0, 0)
-        dispatch(callUserMsg({ msg: txt, isSucsses }))
-        setTimeout(() => {
-            dispatch(hideUserMsg())
-        }, 3500);
-    }
-    const removePractitionerFromActivity = async () => {
-        const practitioner:Tpractitioner = activity.practitioners.find(currPractitioner => currPractitioner.email === userEmail)
-       const membershipId = practitioner.membershipId
-        const isAgree = confirm(`האם לבטל ולזכות את ${practitioner.name}?`)
-        if (isAgree) {
 
-            const wasRemoved = await removePractitionerFromActivityFromDatabase(periodicAgendaId, activity.id, userEmail)
-            if (wasRemoved) {
-                // removePractitionerFromClientSideActivities(userEmail ,activity.id)
-                let txt = `${practitioner.name} הוסר משיעור ${activity.name} בהצלחה`
-                getUserMsg(txt, true)
-
-            } else {
-                let txt = `הייתה בעייה לבטל שיעור, נסה מאוחר יותר`
-                getUserMsg(txt, false)
-
-            }
-            const wasRefunded = await refundPractitionerMembershipAtDatabase(membershipId)
-            if (wasRefunded) {
-                console.log('practitioner after refund', wasRefunded);
-            }
-            const user: Tuser = await getFullUserByEmail(userEmail)
-            // here we check if after refund user stil have memebershipId under user.memberships?
-            const doUserOwnMembership = user.memberships.some(membership => membership === membershipId)
-            //if yes do nothing if no add it back to user.memberships[]
-            console.log('do User Own Membership', doUserOwnMembership);
-            if (!doUserOwnMembership) {
-                const updatedUser = await updateUserWithNewMembershipAtDatabase(membershipId, user._id)
-                if (updatedUser) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
-
-            }
-        }
-    }
     return (
         <li className='my-activity-card '>
             <p className='activity-date tac '> {new Date(activity.date).toLocaleDateString('he-IL')} </p>
