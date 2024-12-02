@@ -40,7 +40,7 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
      
        if(isBothTheSameDate(activityDate,today)) {
         console.log('both days are the same')
-        today.getDay() === 1? setHbDay('ראשון') : setHbDay('היום')
+        today.getDay() === 6? setHbDay('ראשון') : setHbDay('היום')
       } else {
         const dayIndex = activityDate.getDay()
         setHbDay(hebrewDays[dayIndex])
