@@ -6,6 +6,7 @@ import { AuthProvider } from "./Providers";
 import NavBar from "./cmps/nav-bar/NavBar";
 import StoreProvider from "./StoreProvider";
 import { UserMsg2 } from "./cmps/UserMsg2";
+import Image from "next/image";
 const varelaRound = Varela_Round ({ weight:'400',subsets: ["hebrew"] });
 
 export const metadata: Metadata = {
@@ -31,6 +32,26 @@ export default function RootLayout({
       <body className={`${varelaRound.className} main-layout`}>
         <AuthProvider>
           <NavBar />
+          <section className="hero-container flex-col full gap2">
+
+        <Image className='hero' src={'/4.jpg'}  
+          style={{width:'100%',height:'100%'}}
+          sizes="100vw"
+          width={0}
+          height={0}
+          quality={90} alt="image of yoga class" />
+
+        <section className="quote-container">
+          <p className='patangeli-quote'><span className="quotaion-mark">״</span>אך אימון זה מכה שורש כשהוא מבוצע כראוי, בהתמדה ולאורך זמן״</p>
+          <p className='patangeli-quote-credit'>-פטנג׳לי, בתרגומה של אורית סן גופטה</p>
+
+        </section>
+        <section className="welcome-conteiner flex-col flex-ac">
+          <h1 className="welcome-txt tac"> ברוכים הבאים </h1>
+          <h3 className="yaya-yoga tac">YAYA-YOGA</h3>
+
+        </section>
+      </section>
           {children}
         </AuthProvider>
                       <UserMsg2/>
