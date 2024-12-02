@@ -1,4 +1,17 @@
 .this-mounth-index-container {
+    margin-top: 1em;
+    padding-inline: 1em;
+    background-color: var(--clr8);
+    padding: 1em;
+    border-radius: 8px;
+
+    .headline {
+        padding-block: 1em;
+        background-color: var(--clr7);
+        border-radius: 4px;
+        margin-bottom: 1em;
+    }
+
     .image-conatiner {
         position: relative;
         width: 100%;
@@ -7,7 +20,16 @@
             object-fit: cover;
 
         }
+    }
 
-
+    .this-mounth-event-date {
+        margin-bottom: 1em;
+    }
+    .this-mounth-event-desc{
+        text-align: justify;
+        font-size: .9em;
+        border-radius: 8px;
+    
+        letter-spacing: .6px;
     }
 }

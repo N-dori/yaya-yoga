@@ -1,7 +1,7 @@
 .welcome-container{
     margin-top: 5em;
     align-items: center;
-    text-align: center;
+    text-align: justify;
     gap: .5em;
     .hey-title{
         font-size: 1.2em;
@@ -10,9 +10,11 @@
     .transition-btn{
         border-radius: 20px;
         border: 1px solid  #222;
-        padding: 1em;
+        padding: .5em;
         text-decoration: none;
+        text-align: center;
         color: #222;
         margin-top: 1.5em;
+        margin-bottom: 1.5em;
     }
 }

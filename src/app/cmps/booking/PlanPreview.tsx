@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { Tmembership } from '@/app/types/types';
-import { getUrl, getUserByEmail } from '@/app/utils/util';
+import { getUrl, getUserByEmail, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util';
 import { useDispatch } from 'react-redux';
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice';
 import LoginForm from '../auth/LoginForm';
@@ -38,24 +38,16 @@ export default function PlanPreview(props: PlanPreviewProps) {
       dispatch(hideUserMsg())
     }, 3500);
   }
+
   const updateUserMembership = async (membership: Tmembership, userId: string) => {
     try {
-      const url = getUrl('user/updateUserMembership')
-
-      const res = await fetch(url, {
-        method: 'PUT',
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ _id: userId, membershipId: membership._id })
-      })
-      if (res.ok) {
-        const updatedUser = await res.json()
-        dispatch(setUser(updatedUser))
-        // console.log('User was updated with new membership');
-        return true
-
-      } else {
-        return false
-      }
+      const wasMembershipJustPurchesed = true
+    const [isSucsses,updatedUser]= await updateUserWithNewMembershipAtDatabase( membership._id, userId, wasMembershipJustPurchesed)
+     if(isSucsses){
+       dispatch(setUser(updatedUser))
+      return isSucsses
+    }
+    return isSucsses
     } catch (error) {
       console.log('had a problem updating user with new membership', error)
     }

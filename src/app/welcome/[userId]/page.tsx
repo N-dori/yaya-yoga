@@ -24,9 +24,9 @@ export default async function page({ params }) {
 
             })
             if (res.ok) {
-                console.log('updated user',await res.json() );
+                console.log('updated user', await res.json());
                 return await res.json()
-            }else{
+            } else {
                 console.log('there was a problem trying to update new user status');
 
             }
@@ -39,11 +39,11 @@ export default async function page({ params }) {
     const getUser = async () => {
         try {
             const url = getUrl('user/getUser')
-    
+
             const res = await fetch(url, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({_id:params.userId })
+                body: JSON.stringify({ _id: params.userId })
             })
             if (res.ok) {
                 return await res.json()
@@ -53,54 +53,42 @@ export default async function page({ params }) {
             console.log('error getting user ');
         }
     }
-    
-    const user:Tuser = await getUser() 
+
+    const user: Tuser = await getUser()
     console.log('user :', user)
     if (session) {
-      if(user){
-        if(user.isNewUser){
-            await sendEmail(session?.user?.email, session?.user?.name, 'welcome',user._id )
+        if (user) {
+            if (user.isNewUser) {
+                await sendEmail(session?.user?.email, session?.user?.name, 'welcome', user._id)
 
+            }
         }
-      }
     }
     return (
         <main className='welcome-container gc2 flex-col '>
             <p className='hey-title'> היי {session?.user?.name} </p>
-            <p> ברוך הבא לסטודיו קדם</p>
-            <p>שמחים שאתה איתנו</p>
-            <p>ברוך/ה הבא/ה למשפחת היוגה של סטודיו קדם! 🌿</p>`
+            <p className='bold'>ברוך/ה הבא/ה למשפחת היוגה של יאיא יוגה! 🌿</p>`
 
             <p>
-                אנחנו כל כך שמחים שהצטרפת אלינו למסע המדהים הזה בעולם היוגה, במיוחד במסורת האשטנגה, שמתמקדת בנשימה, יציבות, והקשבה פנימית. כאן, תוכל/י למצוא את השקט והאיזון בחיי היומיום, ולהתחבר אל עצמך דרך התרגול.
-            </p>
+                אני כל כך שמח שבחרת להצטרף אלינו למסע המדהים הזה בעולם היוגה, ובמיוחד במסורת האשטנגה, שמתמקדת בנשימה, יציבות, והקשבה פנימית.
+                כאן, תוכל/י למצוא את השקט והאיזון בחיי היומיום, ולהתחבר אל עצמך דרך התרגול.            </p>
             <p>
 
                 במסגרת האתר שלנו, תוכל/י:
 
             </p>
+            <ul>
+               <li>   להירשם לשיעורי הסטודיו במהלך השבוע</li> 
+                <li>   לקבל מידע על סדנאות ואירועים</li> 
+               <li>ללמוד תוכן מעשיר - גישה למאמרים, סרטונים והדרכות שיחזקו את התרגול שלך וירחיבו את הידע.</li> 
+            </ul>
             <p>
+            כמובן - אני כאן לכל שאלה ואת/ה מוזמן/ת לפנות אלי בכל שלב. ✨
 
-                להירשם לשיעורים: .
-                ללמוד תוכן מעשיר: גישה למאמרים, סרטונים והדרכות שיחזקו את התרגול שלך וירחיבו את הידע.
             </p>
             <p>
-                אם יש לך שאלות, את/ה תמיד מוזמן/ת לפנות אלינו בכל שלב.
-                אנחנו כאן כדי לתמוך בך ולעזור לך להפיק את המיטב מהחוויה שלך איתנו.
-                ✨
+            נתראה על המזרן! 🙏 שלכם ובשבילכם יאיר שורץ
             </p>
-            <p>
-                מתנה קטנה עבורך: לכבוד הצטרפותך, אנחנו מציעים לך שיעור ראשון במתנה! פשוט השתמש/י בקוד WELCOME
-                כשתרשום/י לשיעור הקרוב שלך
-
-            </p>
-
-
-
-
-
-            נתראה על המזרן! 🙏
-            שלכם ובשבילכם יאיר שוורץ
             <p>לנוחיותכם ברגעים אלה נשלח לחשבון המייל שלך שאלון רפואי אותו אפשר למלא בזמן שנח לך </p>
             <Link className='transition-btn' href={`/trnsitionToUserQuestionnaire/${params.userId}`}>הבנתי תודה</Link>
         </main>

@@ -16,7 +16,7 @@ type WeeklyScheduleProps = {
 export default function WeeklySchedule({
   periodicAgendaId,
   periodicAgenda }: WeeklyScheduleProps) {
-    const today = new Date()
+    const today =  new Date()
     if(today.getDay() === 6 )today.setDate(new Date().getDate()+1 )
       
   const [currDate, setCurrDate] = useState<Date>(today)

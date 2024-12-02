@@ -178,19 +178,39 @@ export const refundPractitionerMembershipAtDatabase = async (membershipId: strin
 
   }
 }
-export const updateUserWithNewMembershipAtDatabase = async (membershipId: string, userId: string) => {
+export const updateUserWithNewMembershipAtDatabase = async (membershipId: string, userId: string, wasMembershipJustPurchesed:boolean) => {
   try {
     const url = getUrl('user/updateUserMembership')
 
     const res = await fetch(url, {
       method: 'PUT',
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ _id: userId, membershipId })
+      body: JSON.stringify({ _id: userId, membershipId,wasMembershipJustPurchesed })
     })
     if (res.ok) {
       const updatedUser = await res.json()
 
       console.log(`User id :${userId} was updated with new membership no' :${membershipId}`, updatedUser);
+      return [true ,updatedUser ]
+
+    } else {
+      return [false,null]
+    }
+  } catch (error) {
+    console.log('had a problem updating user with new membership', error)
+  }
+}
+export const clearPractitionersFromActivityAtDataBase = async (activityId:string,periodicAgendaId:string) => {
+  try {
+    const url = getUrl('periodicAgenda/removeAllPractitionersFromActivity')
+
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({activityId, periodicAgendaId })
+    })
+    if (res.ok) {
+
       return true
 
     } else {

@@ -1,47 +1,68 @@
+.home-page-container{
+    padding-bottom: 2em;
 
-.hero-container{
-    position: relative;
-     width: 100%;
-      .hero {
-          object-fit: 'cover' ;
-          opacity: 0.9;
-      }
-      .quote-container{
-        position: absolute;
-        top:45%;
-        color: #fff;
-        background: #0000010d;
-        .quotaion-mark{
-            font-size: 1.8em;
-
+    .hero-container {
+        position: relative;
+        width: 100%;
+    
+        .hero {
+            object-fit: 'cover';
+            opacity: 0.9;
+            border-radius: 0px 0px 8px 8px;
         }
-        .patangeli-quote{
-            font-size: 1.3em;
-            
+    
+        .quote-container {
+            position: absolute;
+            top: 40%;
+            color: #fff;
+            background: #0000010d;
+    
+            .quotaion-mark {
+                font-size: 1.8em;
+    
+            }
+    
+            .patangeli-quote {
+                font-size: 1.3em;
+                text-align: justify;
+                padding-inline: .25em;
+            }
+    
+            .patangeli-quote-credit {
+                font-size: .8em;
+                margin-inline-start: 10px;
+    
+            }
         }
-        .patangeli-quote-credit{
-            font-size: .8em;
-            margin-inline-start: 10px;
-
+    
+        .welcome-conteiner {
+            row-gap: 1em;
+    
+            .welcome-txt {
+                font-size: 2.5em;
+            }
+    
+            .yaya-yoga {
+                font-size: 1.5em;
+                text-decoration: overline;
+            }
+    
         }
-        .welcome-txt{
-
-        }
-        .yaya-yoga{
-            text-decoration: overline;
-        }
-      }
-    }
-    .weekly-schedule-image-conatiner{
-      position: relative;
-      .weekly-schedule-button{
-          position: absolute;
-          top:0;
-          padding: 2em;
-          color: #fff;
-          border: 1px solid #fff;
-          text-decoration: none;
-      }
     }
     
+    .weekly-schedule-image-conatiner {
+        position: relative;
     
+        .weekly-schedule-image {
+           border-radius: 8px;
+        }
+        .for-signup-txt {
+            position: absolute;
+            background-color: var(--clr9);
+            color:  var(--clr1);
+            bottom: 0;
+            padding: 1em;
+            width: 100%;
+        }
+    }
+}

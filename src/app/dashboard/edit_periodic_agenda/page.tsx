@@ -1,4 +1,3 @@
-import PeriodicAgendaPreviewDisplay from '@/app/cmps/dashboard/create-periodic-agenda/PeriodicAgendaPreviewDisplay'
 import EditWarpper from '@/app/cmps/dashboard/edit-periodic-agenda/EditWarpper'
 import { TperiodicAgenda } from '@/app/types/types'
 import { getUrl } from '@/app/utils/util'

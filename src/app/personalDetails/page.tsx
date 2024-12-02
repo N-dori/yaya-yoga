@@ -34,10 +34,16 @@ export default async function page({ }: Props) {
     if (res) {
         periodicAgenda = await res.periodicAgenda
     }
-    const isBothTheSameDate = (date1: Date, date2: Date) => {
-        return date1.getDate() === date2.getDate() &&
-            date1.getMonth() === date2.getMonth() &&
-            date1.getFullYear() === date2.getFullYear()
+    const isBothTheSameDateAndIsTimePassed = (actitityDate: Date, today: Date,activityStartTime:Date) => {
+           if ( actitityDate.getDate() === today.getDate() &&
+            actitityDate.getMonth() === today.getMonth() &&
+            actitityDate.getFullYear() === today.getFullYear() ){
+                let activityTime = new Date(activityStartTime)
+                let hours = activityTime.toLocaleTimeString('he-IL').split(':')[0]
+                let minutes = activityTime.toLocaleTimeString('he-IL').split(':')[1]
+                actitityDate.setHours(+hours, +minutes, 0, 0);
+                return actitityDate > today
+            }
     }
     const loadMyUpComingActivities = async (): Promise<Tactivity[] | null> => {
         // get the current date 
@@ -47,7 +53,8 @@ export default async function page({ }: Props) {
         myUpComingActivities = periodicAgenda?.activities.filter((activity: Tactivity) => {
             const actitityDate = new Date(activity.date)
 
-            if (actitityDate > today || isBothTheSameDate(actitityDate, today)) {
+            if (actitityDate > today || isBothTheSameDateAndIsTimePassed(actitityDate, today,activity.hoursRange.start)) {
+
                 return activity.practitioners.some(practitioner => practitioner.email === user.email)
             }
         })

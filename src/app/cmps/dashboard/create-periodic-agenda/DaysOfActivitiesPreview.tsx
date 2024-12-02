@@ -26,6 +26,8 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
   ]
 
   useEffect(() => {
+    console.log('cuurDate #$%#', currDate);
+    
     if (activityDay) {
       if(activityDay.date){
       const activityDate = new Date(activityDay.date)
@@ -34,10 +36,11 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
       const monthIndex = activityDate.getMonth()
       setHbMonth(hebrewMonths[monthIndex])
       const today = new Date()
-    isDatePassed(today)
-      if (isBothTheSameDate(activityDate,today)) {
+       isDatePassed(today)
+     
+       if(isBothTheSameDate(activityDate,today)) {
         console.log('both days are the same')
-        setHbDay('היום')
+        today.getDay() === 1? setHbDay('ראשון') : setHbDay('היום')
       } else {
         const dayIndex = activityDate.getDay()
         setHbDay(hebrewDays[dayIndex])

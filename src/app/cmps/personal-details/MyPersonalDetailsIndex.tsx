@@ -33,12 +33,16 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
     const [userMsg, setUserMsg] = useState('')
     const [btnTxt, setBtnTxt] = useState('')
     const [currMembershipId, setCurrMembershipId] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
         setMyActivities(props.myActivities)
         setMyMemberships(props.memberships)
     }, [])
+    useEffect(() => {
+
+    }, [myActivities?.length])
 
     const getAlertBox = (userMsg: string, btnTxt: string,) => {
         setUserMsg(userMsg)
@@ -67,7 +71,7 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
     }
 
     const removePractitionerFromActivity = async () => {
-       
+            setIsLoading(true)
 
             const wasRemoved = await removePractitionerFromActivityFromDatabase(props.periodicAgendaId, currActivityId, props.userEmail)
             if (wasRemoved) {
@@ -92,10 +96,10 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
                     setMyMemberships([...myMemberships])
                 } 
                 else {
-                    myMemberships.push(membershipAfterRefund)
+                    myMemberships.unshift(membershipAfterRefund)
                     setMyMemberships([...myMemberships])
                 }
-
+                setIsLoading(false)
             }
             const user: Tuser = await getFullUserByEmail(props.userEmail)
             // here we check if after refund user stil have memebershipId under user.memberships?
@@ -103,8 +107,11 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
             //if yes do nothing if no add it back to user.memberships[]
             console.log('do User Own Membership', doUserOwnMembership);
             if (!doUserOwnMembership) {
-                const updatedUser = await updateUserWithNewMembershipAtDatabase(currMembershipId, user._id)
-                if (updatedUser) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
+                const wasMembershipJustPurchesed =false
+                const [isSucsses,updatedUser]= await updateUserWithNewMembershipAtDatabase(currMembershipId, user._id, wasMembershipJustPurchesed)
+                if (isSucsses){
+                    console.log('user.memberships was updated whith the refunded membership?', updatedUser);
+                }    
             }  
             removeActivityFromClientSide(currActivityId) 
     }
@@ -130,8 +137,11 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
         periodicAgendaId:props.periodicAgendaId,
         userEmail:props.userEmail,
         setCurrActivityId,
-        askUserIfToRemoveHimFromActivity
+        askUserIfToRemoveHimFromActivity,
+        isLoading,
+        currActivityId
     }
+
     return (
         <section className='personal-details-warpper flex-col'>
 
@@ -142,12 +152,8 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
 
             <section className='my-activities-container card'>
                 <h3 className='tac mb-05'> השיעורים שלי</h3>
-                {props.myActivities ?
                     <MyActivitiesList {...MyActivitiesListProps}  />
-                    :
-                    <p> אינך רשומ/ה עדיין... </p>
-                }
-
+              
             </section>
 
             <section className='my-memberships-container card'>

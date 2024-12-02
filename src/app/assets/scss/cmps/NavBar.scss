@@ -19,12 +19,13 @@
             opacity: .8;
         }
         .custom-login-indication{
-            background-color: var(--clr8);
+            background-color: var(--clr1);
             border-radius: 1000px;
             padding: 1em;
             width: 30px;
             height: 30px;
             font-size: 1em;
+            margin-left: 1em;
         }
         .place-holder-for-no-login-indication{
             width: 30px;

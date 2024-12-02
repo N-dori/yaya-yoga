@@ -257,8 +257,9 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         //if yes do nothing if no add it back to user.memberships[]
         console.log('do User Own Membership', doUserOwnMembership);
         if (!doUserOwnMembership) {
-            const updatedUser = await updateUserWithNewMembershipAtDatabase(membershipId, user._id)
-            if (updatedUser) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
+            const wasMembershipJustPurchesed= false
+            const [isSucsses,updatedUser] = await updateUserWithNewMembershipAtDatabase(membershipId, user._id, wasMembershipJustPurchesed)
+            if (isSucsses) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
 
         }
 

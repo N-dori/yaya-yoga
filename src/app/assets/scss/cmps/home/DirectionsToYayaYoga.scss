@@ -1,0 +1,26 @@
+.map-warrper{
+    background-color: var(--clr8);
+    font-size: .9em;
+    border-radius: 8px;
+    padding: 1em;
+    .title{
+        padding-block: 1em;
+        background-color: var(--clr7);
+        border-radius: 4px;
+        margin-bottom: 1em;
+    }
+    .adress-container{
+     font-size: 1em;
+     padding-block:1em ;
+        letter-spacing: .6px;
+        font-weight: 600;
+        
+    }
+    .waize-txt{
+        font-size: 1em;
+        padding-block:1em ;
+           letter-spacing: .6px;
+           font-weight: 600;
+        
+    }
+}

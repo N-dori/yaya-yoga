@@ -9,12 +9,15 @@ type MyActivitiesProps = {
   userEmail:string
   setCurrActivityId:(currActivityId:string)=>void
   askUserIfToRemoveHimFromActivity:(membershipId:string ,activityName:string) => void
+  isLoading:boolean
+  currActivityId:string
 }
 
-export default function MyActivitiesList({myActivities,periodicAgendaId,userEmail, setCurrActivityId,askUserIfToRemoveHimFromActivity}: MyActivitiesProps) {
+export default function MyActivitiesList({myActivities,periodicAgendaId,userEmail,isLoading,currActivityId, setCurrActivityId,askUserIfToRemoveHimFromActivity}: MyActivitiesProps) {
   return (
      <ul className='my-activities-warpper clean'>
       {myActivities?
+
       myActivities.map(activity=>
 
         <MyActivtiesPreview key={activity.id} 
@@ -22,10 +25,15 @@ export default function MyActivitiesList({myActivities,periodicAgendaId,userEmai
         userEmail={userEmail} 
         periodicAgendaId={periodicAgendaId}
         setCurrActivityId={setCurrActivityId}
+        isLoading={isLoading}
+        currActivityId={currActivityId}
         askUserIfToRemoveHimFromActivity={askUserIfToRemoveHimFromActivity}/>
       )
-    :
-    <span><Spinner/></span>}
+      
+      
+      :
+      <p> אינך רשומ/ה עדיין... </p>
+}
     </ul>
   )
 }
