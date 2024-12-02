@@ -34,7 +34,15 @@ export default function NavBar({ }: Props) {
     checkUserAndRedirect();
 
   }, [session?.user?.email]);
-
+  useEffect(() => {
+    if (isShown) {
+      document.body.style.overflow = "hidden"; // Prevent scroll
+      document.body.style.touchAction = "none"; // Disable touch gestures
+    } else {
+      document.body.style.overflow = ""; // Re-enable scroll
+      document.body.style.touchAction = ""; // Re-enable touch gestures
+    }
+  }, [isShown]);
   const handelLogoClicked = () => {
     setIsShown(false)
     router.replace('/')
