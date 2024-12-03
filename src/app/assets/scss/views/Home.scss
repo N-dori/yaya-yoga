@@ -1,7 +1,7 @@
 .hero-container {
     position: relative;
     width: 100%;
-
+    margin-bottom: 1em;
     .hero {
         object-fit: 'cover';
         opacity: 0.9;
@@ -52,10 +52,10 @@
     
     .weekly-schedule-image-conatiner {
         position: relative;
-    
         .weekly-schedule-image {
-           border-radius: 8px;
+            border-radius: 8px;
         }
+        
         .for-signup-txt {
             position: absolute;
             background-color: var(--clr9);
@@ -63,6 +63,7 @@
             bottom: 0;
             padding: 1em;
             width: 100%;
+            border-radius: 0px 0px 8px 8px;
         }
     }
 }

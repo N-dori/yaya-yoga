@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react'
 
 type DirectionsToYayaYogaProps = {}
 const containerStyle = {
-    width: '270px',
+    width: '100%',
     height: '300px'
 };
 
@@ -49,6 +49,7 @@ export default function DirectionsToYayaYoga({ }: DirectionsToYayaYogaProps) {
             <section className='adress-container  flex-col '>
                 <p className='region flex-ac'>רח הדקלים 95 פרדס חנה </p>
             </section>
+        <div className='flex-jc-ac'>
 
             {isLoaded ? <GoogleMap
                 mapContainerStyle={containerStyle}
@@ -64,10 +65,10 @@ export default function DirectionsToYayaYoga({ }: DirectionsToYayaYogaProps) {
                 options={{
                     mapTypeControl: true,
                     mapTypeControlOptions: {
-                      style: google.maps.MapTypeControlStyle.DEFAULT, // Style can be changed as needed
-                      mapTypeIds: [], // Excludes 'satellite', 'hybrid', or other types
+                        style: google.maps.MapTypeControlStyle.DEFAULT, // Style can be changed as needed
+                        mapTypeIds: [], // Excludes 'satellite', 'hybrid', or other types
                     },
-                  }}
+                }}
                 >
                 <MarkerF visible={true} position={center}>
                 </MarkerF>
@@ -75,6 +76,7 @@ export default function DirectionsToYayaYoga({ }: DirectionsToYayaYogaProps) {
             </GoogleMap>
                 : <></>
             }
+            </div>
 
             <div className='bold mt-1 flex-ac'>הוראות הגעה:</div>
             <div className='flex-ac'>עולים במדרגות מימין לבית מרקחת, ממשיכים לפי השילוט לאורך המסדרון אחרי "דרך המשי", אל הסטודיו.  אנחנו שם!</div>

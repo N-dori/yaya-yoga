@@ -1,4 +1,5 @@
 "use client"
+import CheckSvg from '@/app/assets/svgs/CheckSvg'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -16,9 +17,9 @@ export default function MyUserHealthDecelrationCard({userHealthDeclarationLink,u
   return (
  <div>
            {userHealthDeclarationLink?
-              <div className='my-health-decleration-container flex-col flex-ac'>
-                      <p className='mb-05'> הצהרת בריאות שלך מלאה וחתומה </p>
-                        <p className='tac pointer underline'  onClick={()=>navigateTo(`healthDecleration/${userId}`)}>לעדכון הצהרת בריאות</p>
+              <div className='my-health-decleration-container flex-col flex-ac gap05'>
+                      <p className='flex-jc-ac'> <CheckSvg color='#16ed60'/>הצהרת בריאות שלך מלאה וחתומה </p>
+                        <p className='btn flex-jc-ac w100'  onClick={()=>navigateTo(`healthDecleration/${userId}`)}>לעדכון הצהרת בריאות</p>
                 </div>
                     :
                     <div className='my-health-decleration-container flex-col flex-ac'>

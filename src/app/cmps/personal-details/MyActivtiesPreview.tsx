@@ -92,7 +92,7 @@ export default function MyActivtiesPreview({ activity, setCurrActivityId, userEm
                 </div>
                 <button disabled={!checkActivityTime() || activity.isCanceled}
                    style={!checkActivityTime() || activity.isCanceled ? { color: `var(--clr3)` } : {}}
-                 onClick={handelCancelation} className='sign-in-or-cancel-btn flex-jc-ac gc3'>
+                 onClick={handelCancelation} className='btn flex-jc-ac gc3'>
                 {isLoading&& activity.id === currActivityId?
                 <Spinner/>
                 :

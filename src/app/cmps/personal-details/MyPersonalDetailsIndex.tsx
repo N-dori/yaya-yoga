@@ -1,15 +1,14 @@
 "use client"
-import { Tactivity, Tmembership, Tpractitioner, Tuser } from '@/app/types/types'
+import { Tactivity, Tmembership, Tuser } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
-import MyActivitiesList from './MyActivitiesList'
-import MyMembershipsList from './MyMembershipsList'
 import MyUserQuestionaireCard from './MyUserQuestionaireCard'
-import Link from 'next/link'
 import MyUserHealthDecelrationCard from './MyUserHealthDecelrationCard'
 import { AlertBox } from '../AlertBox'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { getFullUserByEmail, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
+import MyActivitiesIndex from './MyActivitiesIndex'
+import MyMembershipsIndex from './MyMembershipsIndex'
 
 type MyPersonalDetailsIndexProps = {
     userName: string
@@ -132,7 +131,7 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
 
     }
 
-    let MyActivitiesListProps = {
+    let MyActivitiesIndexProps = {
         myActivities,
         periodicAgendaId:props.periodicAgendaId,
         userEmail:props.userEmail,
@@ -150,23 +149,11 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
                 <span>כיף לראות אותך! </span>
             </div>
 
-            <section className='my-activities-container card'>
-                <h3 className='tac mb-05'> השיעורים שלי</h3>
-                    <MyActivitiesList {...MyActivitiesListProps}  />
-              
-            </section>
+            <MyActivitiesIndex {...MyActivitiesIndexProps} />
+           
 
-            <section className='my-memberships-container card'>
-                <h3 className='tac mb-05'>מנויים</h3>
-                <div className='is-membership-excist-txt'>
-                    {myMemberships?.length === 0 && <div className='tac mb-05 flex-col gap05'><p> לא קיים מנוי פעיל</p><Link href={'/pricing'}>לרכישת מנוי חדש</Link></div>}
-                    {myMemberships?.length === 1 && <p className='tac mb-05'> קיים מנוי פעיל 1</p>}
-                    {myMemberships?.length > 1 && <p className='tac mb-05'>קיימים {myMemberships?.length} מנויים פעילים</p>}
-
-                </div>
-                <MyMembershipsList memberships={myMemberships} />
-
-            </section>
+            <MyMembershipsIndex memberships={myMemberships}/>
+    
 
             <section className='my-user-questionneaire card '>
                 <h3 className='tac mb-05'>שאלון אישי</h3>

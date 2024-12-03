@@ -48,14 +48,14 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
 
     useEffect(() => {
         if(_id[0] === 'U' ){
-            //U says that user have userQuestionnaireId and we wont to update 
+            //U says that user have userQuestionnaireId and we woant to edit+update 
             setData(_id)
         }
 
     }, [])
 
     const setData = async (_id:string) => {
-
+// here we slice the U that was concated to user _id
         const url = getUrl('user/userQeustionnaire/getUserQeusttionnaire')
             const res = await fetch(url, {
                 method: 'POST',

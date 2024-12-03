@@ -4,23 +4,35 @@
     .personal-details-warpper {
         row-gap: 1em;
 
+        .my-activities-container {
+            position: relative;
+            overflow: hidden;
+
+            .display-all-activities-btn {
+                position: absolute;
+                width: 91%;
+                padding-block: .5em;
+                bottom: 0;
+                background-color: #fafafa;
+            }
+        }
+
         .card {
             border: 1px solid #e0e0e0;
             background-color: #fafafa;
             padding: 15px;
-            max-height: 475px;
             border-radius: 4px;
         }
 
         .my-activity-card {
             border-bottom: 1px solid var(--clr2);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
 
         }
 
         .activity-date {
             margin-bottom: .5em;
-            font-size: .9em;
+            font-size: 1em;
         }
 
         .greeting-conatiner {
@@ -29,8 +41,10 @@
 
         .my-activities-warpper {
             font-size: .8em;
+
             .activity-info-container {
                 align-items: baseline;
+
                 .activity-name {
                     border: none;
                 }
@@ -40,28 +54,37 @@
                 justify-content: end;
             }
 
-
+           
         }
 
     }
-  .my-memberships-container {
-    .is-membership-excist-txt{
-        font-size: .9em;
-    }
+
+    .my-memberships-container {
+        .is-membership-excist-txt {
+            font-size: .9em;
+        }
+
         .my-membership-wrapper {
             .my-membership-card {
                 font-size: .8em;
-                border-bottom:0.5px solid var(--clr2) ;
+                border-bottom: 0.5px solid var(--clr2);
                 padding-bottom: .5em;
             }
+            
+        }
+        .link-to-pricing {
+            text-decoration: none;
+            color: initial;
         }
     }
-    .my-user-questionnaire-conatiner{
+
+    .my-user-questionnaire-conatiner {
         text-align: justify;
         line-height: 18px;
         font-size: .8em;
     }
-    .my-health-decleration-container{
+
+    .my-health-decleration-container {
         text-align: justify;
         line-height: 18px;
         font-size: .8em;

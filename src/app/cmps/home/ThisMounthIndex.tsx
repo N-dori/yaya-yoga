@@ -21,7 +21,7 @@ export default function ThisMounthIndex({ }: Props) {
             alt={'this mounth event image'} />
 
         </div>
-        <p className='this-mounth-event-desc p-1 ' >מוסיפים שיעור חדש למערכת!</p>
+        <p className='this-mounth-event-desc mb-1 ' >מוסיפים שיעור חדש למערכת!</p>
 
         <p className='this-mounth-event-desc '>  נעים להכיר אני טלי 🧡
         מורה לויניאסה, תנועה וספורטתרפיסטית, מתרגלת אצל יאיר בשנתיים האחרונות.    </p>

@@ -15,9 +15,9 @@ export default function MyMembershipsList({memberships}: MyMembershipListProps) 
         <MyMembershipPreview key={membership._id} membership={membership} i={i}/>)}
     </ul>
     :
-    <section className='flex-col flex-ac'>
+    <section className='flex-col flex-ac gap1'>
     <p>אין ברשותך מנוי פעיל עדיין...  </p>
-    <Link href={'/pricing'}>לרכישה</Link>
+    <Link className='link-to-pricing btn' href={'/pricing'}>לרכישת מנוי </Link>
     </section>
   )
 }

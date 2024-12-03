@@ -385,10 +385,10 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                         </div>
                         <div className='check-in-container gc3 flex-ac'>
                             {!isOnWeeklyScheduleMode ? <button style={activity.isCanceled ? { backgroundColor: 'green' } : { backgroundColor: '#cf00009e' }}
-                                type='button' className='check-in-button'
+                                type='button' className='check-in-button '
                                 onClick={() => handelClick()}>{activity.isCanceled ? 'שחזר ' : 'בטל '}
                             </button> :
-                                <button disabled={isActivityHasPassed || activity.isCanceled} type='button' className='sign-in-or-cancel-btn flex-jc-ac'
+                                <button disabled={isActivityHasPassed || activity.isCanceled} type='button' className='btn flex-jc-ac'
                                     style={isActivityHasPassed || activity.isCanceled ? { color: `var(--clr3)` } : {}}
                                     onClick={() => handelSignInToClass()}>
                                     {isLoading ? <Spinner /> : ` הרשמה`}

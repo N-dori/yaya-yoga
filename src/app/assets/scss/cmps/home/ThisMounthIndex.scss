@@ -10,6 +10,7 @@
         background-color: var(--clr7);
         border-radius: 4px;
         margin-bottom: 1em;
+        color: var(--clr1);
     }
 
     .image-conatiner {
@@ -18,6 +19,7 @@
 
         .this-mounth-event-image {
             object-fit: cover;
+            border-radius: 4px;
 
         }
     }
@@ -29,7 +31,7 @@
         text-align: justify;
         font-size: .9em;
         border-radius: 8px;
-    
+        line-height: 20px;
         letter-spacing: .6px;
     }
 }
