@@ -376,7 +376,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                 <section className='activity-info-container'>
                     <div className='activity-info grid' style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} >
                         <Image className='activity-teacher-img gc1'
-                            alt={'teacher-img'} width={50} height={50} src={'https://robohash.org/kkk'} />
+                            alt={'teacher-img'} width={30} height={30} src={'/hero.jpg'} />
                         <div className=' flex-col gc2'>
                             <span className='activity-name gc2'> {activity.name} </span>
                             <span className='activity-teacher-name gc2'>עם {activity.teacher} </span>

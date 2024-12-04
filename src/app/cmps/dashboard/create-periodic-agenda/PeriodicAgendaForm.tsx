@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { StartEndTimePickers } from './StartEndTimePickers'
@@ -39,7 +39,7 @@ type PeriodicAgendaFromProps = {
     datesCounter: number
     periodLength: number | undefined
     allDaysOfPeriod: Date[] | undefined
-   
+
 
 }
 
@@ -74,13 +74,13 @@ export default function PeriodicAgendaFrom({
     periodLength,
     allDaysOfPeriod,
 
- 
+
     error,
 
 
 
 }: PeriodicAgendaFromProps) {
-    const [options] = useState<string[]>(['אשטנגה','פראניאמה + אשטנגה','108 ברכות שמש','יסודות','האטה יוגה','פראניאמה'])
+    const [options] = useState<string[]>(['אשטנגה', 'פראניאמה + אשטנגה', '108 ברכות שמש', 'וינאסה', 'יסודות', 'האטה יוגה', 'פראניאמה'])
     const RepeatingActivityRadioBtnsProps = {
         isActivityRepeating,
         setIsActivityRepeating,
@@ -88,7 +88,7 @@ export default function PeriodicAgendaFrom({
         repeationNumber,
         removeSaturdays
     }
- 
+
     const StartEndTimePickersProps = {
         activityEndTime,
         handelTimeChange,
@@ -114,7 +114,7 @@ export default function PeriodicAgendaFrom({
                 <div className='flex-col gap1 flex-jc-ac'>
                     <DatePicker
                         selected={activityDate}
-                        onChange={(currDate:Date|null) => handelDateChange(currDate)}
+                        onChange={(currDate: Date | null) => handelDateChange(currDate)}
                         dateFormat={'dd/MM/yyyy'}
                         minDate={startPeriodicAgendaDate ? startPeriodicAgendaDate : undefined}
                         maxDate={endPeriodicAgendaDate ? endPeriodicAgendaDate : undefined}
@@ -128,23 +128,22 @@ export default function PeriodicAgendaFrom({
                 </div>
                 <RepeatingActivityRadioBtns {...RepeatingActivityRadioBtnsProps} />
 
-                <label htmlFor={'activity-name'} className='flex-col'>
+                <label  htmlFor={'activity-name'} className='flex-col ' >
                     שם הפעילות:
-                   <input id={'activity-name'}
-                     type={'text'}
-                     list='options'
-                    
-                     onChange={(ev:any)=>setActivityName(ev.target.value)}
-                   />
-                 
-                    <datalist id="options">
-        {options.map((option, index) => (
-          <option key={index} value={option} />
-        ))}
-      </datalist>
-             
+                    <input className='form-input' id={'activity-name '}
+                        type={'text'}
+                        list='options'
+                        onChange={(ev: any) => setActivityName(ev.target.value)}
+                    />
 
-              </label>
+                    <datalist id="options" className='form-input'>
+                        {options.map((option, index) => (
+                            <option key={index} value={option} />
+                        ))}
+                    </datalist>
+
+
+                </label>
 
                 <label htmlFor='activity-type' className='flex-col'>
                     סוג הפעילות:
@@ -154,10 +153,13 @@ export default function PeriodicAgendaFrom({
                         <option value={'סדנא'}>סדנא</option>
                     </select>
                 </label>
-
-                <label className='flex-col'>
+                <label htmlFor='teacher' className='flex-col'>
                     מורה :
-                    <input className='form-input' name='teacher' onChange={(e) => setActivityTeacher(e.target.value)} value={activityTeacher} />
+                    <select className='form-input' name='teacher' onChange={(e) =>
+                        setActivityTeacher(e.target.value)} value={activityTeacher} >
+                        <option value={'יאיר שורץ'}>יאיר שורץ</option>
+                        <option value={'טלי רודי'}>טלי רודי</option>
+                    </select>
                 </label>
                 <label className='flex-col'>
                     מיקום :
@@ -167,6 +169,6 @@ export default function PeriodicAgendaFrom({
                 <button className='form-btn flex-jc-ac pointer' type='button' onClick={() => setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
                 <button className='form-btn flex-jc-ac pointer' type='button' onClick={createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
             </form>
-          
+
         </main>)
 }

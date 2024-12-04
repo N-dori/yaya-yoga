@@ -9,7 +9,7 @@ export default async function page({}: Props) {
   const users:Tuser[] = await getUsers()
 
   return (
-    <main className='users-table-conatiner gc2 p-1'>
+    <main className='users-list-page-conatiner gc2 p-1'>
           <h2 className='tac'>רשימת תלמידים </h2>
 
   <UsersIndex users={users}/>

@@ -16,26 +16,21 @@ export default function DatesBackForwordSvg({ currDate,setCurrDate,PAGE ,totalLe
   const handelClick = () => {
 
     if (!isRotate) {
-      //rigth arrow
-      console.log('left start index is : ',startIndex);
+        // left arrow
       let newDate:Date =new Date( currDate )
-      // if (startIndex === 0) return
       if(startIndex!== undefined && endIndex!==undefined && totalLength){
         if(startIndex+PAGE>=totalLength){
-          if(newDate.getDay() <= 4){
+          if(newDate.getDay() <= 5){
             moveOneDay(newDate,1)
             return 
           }else{
             return
           }
         }
-      moveOneDay(newDate,1)
-        
-      }
-      
-      
+      moveOneDay(newDate,1)   
+      }   
     }else{
-      // left arrow
+         //rigth arrow
       let newDate:Date =new Date( currDate )
       if(startIndex!== undefined && endIndex!==undefined ){
     if(startIndex <= 0 ){

@@ -8,15 +8,8 @@ type UsersIndexProps = {
 
 export default function UsersIndex({users}: UsersIndexProps) {
   return (
-    <table className="users-table">
-    <thead className='table-head'>
-      <tr>
-        <th> שם</th>
-        <th> מנוי</th>
-        <th> הצהרת בריאות </th>
-        <th> שאלון אישי  </th>
-      </tr>
-    </thead>
+    <section className="users-list-container">
+  
    <UsersList users={users}/>
-    </table>  )
+    </section>  )
 }

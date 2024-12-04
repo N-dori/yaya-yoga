@@ -49,7 +49,7 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
         setIsAlertBoxShown(true)
 
     }
-    
+
     const getUserMsg = (txt: string, isSucsses: boolean) => {
         window.scrollTo(0, 0)
         dispatch(callUserMsg({ msg: txt, isSucsses }))
@@ -58,7 +58,7 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
         }, 3500);
     }
 
-    const askUserIfToRemoveHimFromActivity = (membershipId: string, activityName:string) => {
+    const askUserIfToRemoveHimFromActivity = (membershipId: string, activityName: string) => {
         console.log('ask User If To Remove Him From Activity',);
         console.log('membershipId', membershipId);
         setCurrMembershipId(membershipId)
@@ -70,54 +70,54 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
     }
 
     const removePractitionerFromActivity = async () => {
-            setIsLoading(true)
+        setIsLoading(true)
 
-            const wasRemoved = await removePractitionerFromActivityFromDatabase(props.periodicAgendaId, currActivityId, props.userEmail)
-            if (wasRemoved) {
-                // removePractitionerFromClientSideActivities(userEmail ,activity.id)
-                let txt = `${props.userName} הוסר משיעור ${currActivityName} בהצלחה`
-                getUserMsg(txt, true)
+        const wasRemoved = await removePractitionerFromActivityFromDatabase(props.periodicAgendaId, currActivityId, props.userEmail)
+        if (wasRemoved) {
+            // removePractitionerFromClientSideActivities(userEmail ,activity.id)
+            let txt = `${props.userName} הוסר משיעור ${currActivityName} בהצלחה`
+            getUserMsg(txt, true)
 
-            } else {
-                let txt = `הייתה בעייה לבטל שיעור, נסה מאוחר יותר`
-                getUserMsg(txt, false)
+        } else {
+            let txt = `הייתה בעייה לבטל שיעור, נסה מאוחר יותר`
+            getUserMsg(txt, false)
 
+        }
+        const membershipAfterRefund = await refundPractitionerMembershipAtDatabase(currMembershipId)
+        if (membershipAfterRefund) {
+            console.log('practitioner after refund', membershipAfterRefund);
+            //is memebrship there? if yes 1.find it 2.replace it with the updated one.
+            // if no - push it to client side array of emberships
+            const isMembershipFound = myMemberships.some(membership => membership._id === currMembershipId)
+            if (isMembershipFound) {
+                const index = myMemberships.findIndex(membership => membership._id === currMembershipId)
+                myMemberships.splice(index, 1, membershipAfterRefund)
+                setMyMemberships([...myMemberships])
             }
-            const membershipAfterRefund = await refundPractitionerMembershipAtDatabase(currMembershipId)
-            if (membershipAfterRefund) {
-                console.log('practitioner after refund', membershipAfterRefund);
-                //is memebrship there? if yes 1.find it 2.replace it with the updated one.
-                // if no - push it to client side array of emberships
-                const isMembershipFound = myMemberships.some(membership=>membership._id=== currMembershipId)
-                if(isMembershipFound){
-                   const index =  myMemberships.findIndex(membership=>membership._id=== currMembershipId)
-                    myMemberships.splice(index,1,membershipAfterRefund)
-                    setMyMemberships([...myMemberships])
-                } 
-                else {
-                    myMemberships.unshift(membershipAfterRefund)
-                    setMyMemberships([...myMemberships])
-                }
-                setIsLoading(false)
+            else {
+                myMemberships.unshift(membershipAfterRefund)
+                setMyMemberships([...myMemberships])
             }
-            const user: Tuser = await getFullUserByEmail(props.userEmail)
-            // here we check if after refund user stil have memebershipId under user.memberships?
-            const doUserOwnMembership = user.memberships.some(membership => membership === currMembershipId)
-            //if yes do nothing if no add it back to user.memberships[]
-            console.log('do User Own Membership', doUserOwnMembership);
-            if (!doUserOwnMembership) {
-                const wasMembershipJustPurchesed =false
-                const [isSucsses,updatedUser]= await updateUserWithNewMembershipAtDatabase(currMembershipId, user._id, wasMembershipJustPurchesed)
-                if (isSucsses){
-                    console.log('user.memberships was updated whith the refunded membership?', updatedUser);
-                }    
-            }  
-            removeActivityFromClientSide(currActivityId) 
+            setIsLoading(false)
+        }
+        const user: Tuser = await getFullUserByEmail(props.userEmail)
+        // here we check if after refund user stil have memebershipId under user.memberships?
+        const doUserOwnMembership = user.memberships.some(membership => membership === currMembershipId)
+        //if yes do nothing if no add it back to user.memberships[]
+        console.log('do User Own Membership', doUserOwnMembership);
+        if (!doUserOwnMembership) {
+            const wasMembershipJustPurchesed = false
+            const [isSucsses, updatedUser] = await updateUserWithNewMembershipAtDatabase(currMembershipId, user._id, wasMembershipJustPurchesed)
+            if (isSucsses) {
+                console.log('user.memberships was updated whith the refunded membership?', updatedUser);
+            }
+        }
+        removeActivityFromClientSide(currActivityId)
     }
-    const removeActivityFromClientSide =(currActivityId:string) => {
-        let index= myActivities.findIndex(activity=> activity.id === currActivityId)
-        myActivities.splice(index,1)
-        let updatedActivities =  [...myActivities]
+    const removeActivityFromClientSide = (currActivityId: string) => {
+        let index = myActivities.findIndex(activity => activity.id === currActivityId)
+        myActivities.splice(index, 1)
+        let updatedActivities = [...myActivities]
         setMyActivities(updatedActivities)
 
     }
@@ -127,14 +127,14 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
         btnTxt, setBtnTxt,
         currMembershipId,
         removePractitionerFromActivity,
-        userId:props.userId,
+        userId: props.userId,
 
     }
 
     let MyActivitiesIndexProps = {
         myActivities,
-        periodicAgendaId:props.periodicAgendaId,
-        userEmail:props.userEmail,
+        periodicAgendaId: props.periodicAgendaId,
+        userEmail: props.userEmail,
         setCurrActivityId,
         askUserIfToRemoveHimFromActivity,
         isLoading,
@@ -150,10 +150,11 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
             </div>
 
             <MyActivitiesIndex {...MyActivitiesIndexProps} />
-           
 
-            <MyMembershipsIndex memberships={myMemberships}/>
-    
+            <section className='my-memberships-container card'>
+                <h3 className='tac mb-05'>מנויים</h3>
+                <MyMembershipsIndex memberships={myMemberships} />
+            </section>
 
             <section className='my-user-questionneaire card '>
                 <h3 className='tac mb-05'>שאלון אישי</h3>

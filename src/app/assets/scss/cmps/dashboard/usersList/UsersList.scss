@@ -1,0 +1,29 @@
+.users-list-page-conatiner{
+    .users-list-wrapper{
+        .user-card-container{
+            border: 1px solid #e0e0e0;
+            background-color: #fafafa;
+            padding-block: 15px;
+            border-radius: 4px;
+            .user-wrapper{
+                align-items:center ;
+                // padding-block-end: 15px;
+                .practitioners-arrow{
+                    margin-left: 15px;
+                    
+                }
+                .user-name{
+                    margin-right: 15px;
+                }
+                
+            }
+            .user-additional-info{
+                padding-block: 15px;
+                border-top: 1px solid #e0e0e0;
+                font-size: 0.9em;
+                margin-top: 15px;
+
+            }
+        }
+    }
+}

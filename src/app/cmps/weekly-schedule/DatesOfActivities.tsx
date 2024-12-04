@@ -41,7 +41,7 @@ export default function DatesOfActivities({ activities, setCurrDate, currDate, }
         setUniqueDates([...uniqueDates])
         return uniqueDates
     }
-    const findDateIndex = (date: Date, activities: Tactivity[]) => {
+    const findDateIndex = (date: Date, activities: Tactivity[]) => {        
         const dateIndex = activities.findIndex(activityDay => {
             if (activityDay) {
                 if (activityDay.date) {
@@ -75,7 +75,9 @@ export default function DatesOfActivities({ activities, setCurrDate, currDate, }
         let sortRes = sortDates(activities)
         let sortedThreeDays: Tactivity[]
         let uniqueDates = getUniqueDates(sortRes)
-        let todayIndex = findDateIndex(currDate, activities)
+        let todayIndex = findDateIndex(currDate, uniqueDates)
+        console.log('todayIndex',todayIndex);
+        
         if(todayIndex === -1 ){
             todayIndex= 0
         }
@@ -85,10 +87,9 @@ export default function DatesOfActivities({ activities, setCurrDate, currDate, }
 
         if (todayIndex % 2 === 0) {
             startIndex += todayIndex
-            endIndex += todayIndex + PAGE
-
+            endIndex += (todayIndex + PAGE)
         } else {
-            startIndex += todayIndex - 1
+            startIndex += (todayIndex - 1)
             endIndex += (todayIndex - 1) + PAGE
         }
         if (endIndex > uniqueDates.length) {

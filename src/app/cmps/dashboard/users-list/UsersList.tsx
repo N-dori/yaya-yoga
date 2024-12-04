@@ -9,10 +9,10 @@ type UsersListProps = {
 
 export default function UsersList({users}: UsersListProps) {
   return (
-    <tbody>
+    <ul className='users-list-wrapper flex-col gap05 clean'>
 
         {users&&
         users.map(user=> <UsersPreview key={user._id} user={user}/>)
       }
-  </tbody>  )
+  </ul>  )
 }
