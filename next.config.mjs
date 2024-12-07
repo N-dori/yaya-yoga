@@ -12,6 +12,11 @@ const nextConfig = {
             hostname: 'robohash.org',
             
           },
+          {
+            protocol: 'https',
+            hostname: 'yayayoga.s3.eu-north-1.amazonaws.com',
+            
+          },
         ],
       },
 };

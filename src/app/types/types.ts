@@ -78,3 +78,22 @@ export type Tuser =
         isAdmin : boolean ,
     }
 
+export type Tannouncement = 
+{
+    id?:string
+    title: string ,
+    subTitle: string ,
+    date : Date | null | undefined,
+    hours ?: {start:Date,end:Date},
+    img: string ,
+    desc:string,
+    price?:number,
+} 
+export type TselectedHoursRange ={
+    start:Date
+    end:Date
+}
+export type Tbillboard ={
+    _id?:string
+    announcements:Tannouncement[]
+}

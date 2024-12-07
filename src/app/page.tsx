@@ -1,8 +1,8 @@
 import Image from "next/image";
-import ThisMounthIndex from "./cmps/home/ThisMounthIndex";
 import Link from "next/link";
 import AboutMeIndex from "./cmps/home/AboutMeIndex";
 import DirectionsToYayaYoga from "./cmps/home/DirectionsToYayaYoga";
+import BillboardIndex from "./cmps/home/BillboardIndex";
 
 export default function Home() {
 
@@ -33,7 +33,7 @@ export default function Home() {
 
       <main className="home-page-container flex-col gap1 gc2" >
 
-        <ThisMounthIndex />
+        <BillboardIndex />
 
         <section className='weekly-schedule-image-conatiner flex-ac-jc'>
           <Link className="weekly-schedule-button" href={'/weekly_schedule'}>

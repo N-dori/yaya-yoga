@@ -140,6 +140,24 @@ export const getPreiodicAgenda = async () => {
     }
  
 }
+
+export const getBillboard = async () => {
+ 
+    const url = getUrl('announcement/getBillboard')
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { "Content-type": "application/json"},
+  
+    })
+    if (res.ok) {      
+      return await res.json()
+
+    } else {
+      throw new Error('faild to get a new periodic Agenda')
+    }
+ 
+}
+
 export const removePractitionerFromActivityFromDatabase = async (periodicAgendaId: string, activityId: string, email: string) => {
   const url = getUrl('periodicAgenda/removePractitionerFromActivity')
   const res = await fetch(url, {
