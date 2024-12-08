@@ -47,24 +47,26 @@ export default function WeeklySchedule({
   }
 
   const getWeeklyActivities = (activities: Tactivity[]) => {
-    // get nearst sunday.
-    // if today is Saturday than moving to the next day Sunday and dispalying the next week 
-    let currentDate = new Date()
-    // if(currentDate.getDay() === 6 )currentDate.setDate(new Date().getDate()+1 )
-    if (currentDate.getDay() === 0) {
-      const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
-      console.log('today is sunday');
-      
-      setActivities([...activitiesOfTheWeek])
-      return 
-    }
+    if(activities){
 
+      // get nearst sunday.
+      // if today is Saturday than moving to the next day Sunday and dispalying the next week 
+      let currentDate = new Date()
+      // if(currentDate.getDay() === 6 )currentDate.setDate(new Date().getDate()+1 )
+      if (currentDate.getDay() === 0) {
+        const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
+        
+        setActivities([...activitiesOfTheWeek])
+        return 
+      }
+      
       while (currentDate.getDay() > 0) {
         currentDate.setDate(currentDate.getDate() - 1); // Move to the prev day
       }
       const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
       setActivities([...activitiesOfTheWeek])
-  
+      
+    }
   }
 
 

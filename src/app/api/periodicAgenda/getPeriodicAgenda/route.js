@@ -9,11 +9,15 @@ export async function POST (request) {
     // collection
    await connectMongoDB()
     const lastDoc = await PeriodicAgenda.findOne().sort( { _id: -1 } )
-    const {_id}= lastDoc 
-    
-    const periodicAgenda= await PeriodicAgenda.findOne({_id})
- 
-  return NextResponse.json({periodicAgenda}, {status: 201 } )
+    if(lastDoc){
+
+       const {_id}= lastDoc 
+       
+       const periodicAgenda= await PeriodicAgenda.findOne({_id})
+       
+       return NextResponse.json({periodicAgenda}, {status: 201 } )
+      }
+      return NextResponse.json({msg:'could not find last doc'}, {status: 201 } )
     
  }catch ( err ) {
     console.log('had a problem finding periodic Agenda', err);

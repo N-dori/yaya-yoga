@@ -3,7 +3,6 @@ import mongoose, { Schema } from "mongoose";
 const hoursSchema = new Schema({
     start: {
         type: Date,
-        required: [true, " please provide start date"],
     },
     end: {
         type: Date,
@@ -15,16 +14,13 @@ const hoursSchema = new Schema({
 const announcementSceama = new Schema ({
     id : {
         type: String,
-        required:[true , " please write your full name"]
     } ,
     date : {
         type: String,
-        required:[true , " please write your full name"]
     } ,
     hours : hoursSchema  ,
     img: {
         type: String,
-        required:[false , " please provide password"]
     } ,
     desc: {
         type: String,
@@ -38,10 +34,6 @@ const announcementSceama = new Schema ({
     price: {
         type: Number,
     } ,
- 
-
-
-
 },
 
 {

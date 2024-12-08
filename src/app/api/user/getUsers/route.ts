@@ -8,8 +8,11 @@ export async function POST () {
    await connectMongoDB()
     const users = await User.find({})
   
- 
-  return NextResponse.json(users, {status: 201 } )
+   if(users){
+     return NextResponse.json(users, {status: 201 } )
+     
+    }
+    return NextResponse.json({message:'users could not be found yet'}, {status: 201 } )
     
  }catch ( err ) {
     console.log('had a problem finding users', err);

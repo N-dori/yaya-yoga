@@ -68,7 +68,7 @@ export const getUsers = async () => {
   })
   if(res.ok){
    const  users = await res.json()
-   console.log(' my users in utils getUserl = ', users);
+  //  console.log(' my users in utils getUserl = ', users);
    return users
    
   }else{
@@ -144,16 +144,18 @@ export const getPreiodicAgenda = async () => {
 export const getBillboard = async () => {
  
     const url = getUrl('announcement/getBillboard')
+    console.log('url to fetch ',url);
+    
     const res = await fetch(url, {
       method: 'POST',
-      headers: { "Content-type": "application/json"},
-  
+      headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ }),
     })
     if (res.ok) {      
       return await res.json()
 
     } else {
-      throw new Error('faild to get a new periodic Agenda')
+      throw new Error('faild to get billboard')
     }
  
 }
