@@ -4,7 +4,7 @@ import AboutMeIndex from "./cmps/home/AboutMeIndex";
 import DirectionsToYayaYoga from "./cmps/home/DirectionsToYayaYoga";
 import BillboardIndex from "./cmps/home/BillboardIndex";
 
-export default function Home() {
+export default async function Home() {
 
   return (
 
