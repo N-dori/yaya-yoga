@@ -6,6 +6,7 @@ import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
 import { getUrl, makeId, scrollUp } from '@/app/utils/util'
 import EditAnnouncementFrom from './EditAnnouncementFrom'
+import { revalidatePath } from 'next/cache'
 
 type Props = {}
 
@@ -158,6 +159,7 @@ export default function AnnouncementCreationIndex({ }: Props) {
             let txt = 'לוח מודעות פורסם בהצלחה'
             getUserMsg(txt, true)
             setIsLoading(false)
+            revalidatePath('/')
         } else {
             let txt = 'הייתה בעיה לפרסם לוח מודעות נסה מאוחר יותר'
             getUserMsg(txt, false)
