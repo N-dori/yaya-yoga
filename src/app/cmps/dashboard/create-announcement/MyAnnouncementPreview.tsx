@@ -18,6 +18,7 @@ type MyAnnouncementPreviewProps = {
       <Image className='announcement-preview-img' src={announcement.img}
       width={70}
       height={70}
+      unoptimized
       quality={90} alt="image of announcement" /> 
       </article>
 )}
