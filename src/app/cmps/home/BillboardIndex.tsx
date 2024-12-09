@@ -9,7 +9,6 @@ let billboard:Tbillboard
 const res = await getBillboard()
 if(res){
   billboard = res?.billboard
-  console.log('annuncements in hpme page',billboard?.announcements);
 }
 
   

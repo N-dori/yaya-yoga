@@ -83,7 +83,7 @@ export default function AnnouncementCreationIndex({ }: Props) {
     const handelSubmitAnnouncement = async (e: any) => {
         e.preventDefault()
         try {
-            if (!title || !subTitle || !date || !hours || !desc || !img) {
+            if (!title || !subTitle || !desc || !img) {
 
                 if (!title) { handelOnError('בבקשה להוסיף כותרת', 'title'); return }
                 if (!subTitle) { handelOnError('בבקשה למלא כותרת משנה', 'subtitle'); return }
