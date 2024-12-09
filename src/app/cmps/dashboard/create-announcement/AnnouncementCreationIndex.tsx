@@ -1,16 +1,18 @@
 'use client'
-import { Tannouncement, TselectedHoursRange } from '@/app/types/types'
-import React, { useState } from 'react'
+import { Tannouncement, Tbillboard, TselectedHoursRange } from '@/app/types/types'
+import React, { useEffect, useState } from 'react'
 import AnnouncementCreationForm from './AnnouncementCreationForm'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
-import { getUrl, makeId, scrollUp } from '@/app/utils/util'
+import {  getUrl, makeId, scrollUp } from '@/app/utils/util'
 import EditAnnouncementFrom from './EditAnnouncementFrom'
 import { revalidatePath } from 'next/cache'
 
-type Props = {}
+type AnnouncementCreationIndexProps = {
+    billboard:Tbillboard
+}
 
-export default function AnnouncementCreationIndex({ }: Props) {
+export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCreationIndexProps) {
     const [announcements, setAnnouncements] = useState<Tannouncement[]>([])
     const [currAnnuncement, setCurrAnnuncement] = useState<Tannouncement>()
 
@@ -35,7 +37,16 @@ export default function AnnouncementCreationIndex({ }: Props) {
 
     const [selectedDate, setSelectedDate] = useState(null)
     const dispatch = useDispatch()
-
+    
+    console.log('Billboard',billboard);
+    useEffect(() => {
+     loadBillboard()
+    }, [])
+    const loadBillboard = ()=>{
+        if(billboard){
+            setAnnouncements([...billboard.announcements])
+        }
+    }
 
     const getUserMsg = (txt: string, isSucsses: boolean) => {
         dispatch(callUserMsg({ msg: txt, isSucsses }))
