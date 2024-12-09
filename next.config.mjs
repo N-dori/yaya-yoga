@@ -15,6 +15,7 @@ const nextConfig = {
           {
             protocol: 'https',
             hostname: 'yayayoga.s3.eu-north-1.amazonaws.com',
+            pathname: '/**', // Allow all paths
             
           },
         ],

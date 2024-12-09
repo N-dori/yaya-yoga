@@ -10,7 +10,9 @@ type MyAnnouncementPreviewProps = {
 }
 
   export default function MyAnnouncementPreview({setCurrAnnuncement,announcement,i}: MyAnnouncementPreviewProps) {
-  return (
+ console.log('imgggggggggg:',announcement.img);
+ 
+    return (
   <article  className='pointer' onClick={()=>setCurrAnnuncement(announcement)}>
     <span>{i+1}. </span>
       <Image className='announcement-preview-img' src={announcement.img}
