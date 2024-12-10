@@ -4,15 +4,15 @@ import React, { useEffect, useState } from 'react'
 import AnnouncementCreationForm from './AnnouncementCreationForm'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
-import {  getUrl, makeId, scrollUp } from '@/app/utils/util'
+import { getUrl, makeId, scrollUp } from '@/app/utils/util'
 import EditAnnouncementFrom from './EditAnnouncementFrom'
 import { revalidatePath } from 'next/cache'
 
 type AnnouncementCreationIndexProps = {
-    billboard:Tbillboard
+    billboard: Tbillboard
 }
 
-export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCreationIndexProps) {
+export default function AnnouncementCreationIndex({ billboard }: AnnouncementCreationIndexProps) {
     const [announcements, setAnnouncements] = useState<Tannouncement[]>([])
     const [currAnnuncement, setCurrAnnuncement] = useState<Tannouncement>()
 
@@ -34,17 +34,21 @@ export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCr
     const [imgPreview, setImgPreview] = useState('')
     const [errorMsg, setErrorMsg] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [isfirstTimeCmpMounts, setIsfirstTimeCmpMounts] = useState(true)
 
     const [selectedDate, setSelectedDate] = useState(null)
     const dispatch = useDispatch()
+
     
-    console.log('Billboard',billboard);
     useEffect(() => {
-     loadBillboard()
+        if(isfirstTimeCmpMounts){
+            loadBillboard()
+        }
     }, [])
-    const loadBillboard = ()=>{
-        if(billboard){
+    const loadBillboard = () => {
+        if (billboard) {
             setAnnouncements([...billboard.announcements])
+            setIsfirstTimeCmpMounts(false)
         }
     }
 
@@ -104,7 +108,7 @@ export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCr
                 // if (!dateInError) handelOnError('יש לבחור תאריך לפעילות ', 'date')
                 // if (!hoursActivityRangeInError) handelOnError('יש לבחור שעת להתחלה-סיום ', 'hours')
             }
-
+            setIsLoading(true)
             const formData = new FormData();
             formData.append('image', img);
             console.log('formData : ', formData);
@@ -123,7 +127,7 @@ export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCr
                 addAnnouncement(data)
                 resetForm()
                 scrollUp()
-                // creactNewAnnuncement(data)
+                setIsLoading(false)
                 console.log('woow it worked now save it to in to array of announcements');
 
             } else {
@@ -224,11 +228,13 @@ export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCr
         }
         setHours({ ...selectedHoursRange })
     }
+
     const updateAnnouncement = (announcement: Tannouncement) => {
         const index = announcements.findIndex(currAnnouncement => currAnnouncement.id === announcement.id)
         announcements.splice(index, 1, announcement)
         setAnnouncements([...announcements])
     }
+
     const handelPublishAnnuncement = async () => {
         const isConfirmed = confirm('האם אתה בטוח שברצונך לפרסם לוח מודעות חדש?')
         if (isConfirmed) {
@@ -237,6 +243,14 @@ export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCr
         }
 
     }
+
+    const removeAnnuncement = (id:string) => {
+        const index = announcements.findIndex(announcement=>announcement.id === id)
+         announcements.splice(index,1)
+        setAnnouncements([...announcements])
+    }
+
+
 
     const AnnouncementCreationFormProps = {
         announcements, setAnnouncements,
@@ -266,7 +280,8 @@ export default  function  AnnouncementCreationIndex({ billboard}: AnnouncementCr
         updateAnnouncement,
         currAnnuncement, setCurrAnnuncement,
         resetForm,
-        handelPublishAnnuncement
+        handelPublishAnnuncement,
+        removeAnnuncement,
 
     }
     return (

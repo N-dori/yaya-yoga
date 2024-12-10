@@ -12,11 +12,6 @@ const s3Client = new S3Client({
 
 const uploadPdfToS3 = async (file, fileName) => {
     const fileBuffer = file
-    console.log("AWS_ACCESS_KEY_ID:", process.env.MY_AWS_ACCESS_KEY);
-console.log("AWS_SECRET_ACCESS_KEY:", process.env.MY_AWS_SECRET_ACCESS_KEY);
-console.log("AWS_REGION:", process.env.AWS_REGION);
-console.log("AWS_BUCKET_NAME:", process.env.AWS_BUCKET_NAME);
-
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: `Annuncements-images/${fileName}`,

@@ -4,6 +4,7 @@ import { makeId } from '@/app/utils/util'
 import { he } from 'date-fns/locale'
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
+import Spinner from '../../Spinner'
 
 type AnnouncementFormProps = {
     announcements: Tannouncement[]
@@ -51,6 +52,7 @@ type AnnouncementFormProps = {
     isOnEditMode: boolean
     resetForm: () => void
     updateAnnouncement: (announcement: Tannouncement) => void
+    isLoading:boolean
 }
 
 export default function AnnouncementForm(props: AnnouncementFormProps) {
@@ -192,7 +194,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                 <button type='button' onClick={handelSaveChanges} className='btn'>שמירת שינויים </button>
 
                 :
-                <button className='btn'>הוסף מודעה</button>
+                <button className='btn flex-jc-ac'>{props.isLoading?<Spinner/>:'הוסף מודעה'}</button>
 
             }
         </form>

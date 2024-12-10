@@ -54,6 +54,7 @@ type AnnouncementCreationFormProps = {
     updateAnnouncement: (annuncement: Tannouncement) => void
     handelPublishAnnuncement: () => void
     isLoading: boolean
+    removeAnnuncement:(id:string) => void
 }
 
 export default function AnnouncementCreationForm(props: AnnouncementCreationFormProps) {
@@ -62,9 +63,6 @@ export default function AnnouncementCreationForm(props: AnnouncementCreationForm
 
 
 
-    useEffect(() => {
-
-    }, [props.announcements?.length])
 
 
     const AnnouncementFormProps = {
@@ -88,7 +86,7 @@ export default function AnnouncementCreationForm(props: AnnouncementCreationForm
                 <section className='my-announcement-preview flex-col'>
                     <h3>המודעות שלי</h3>
                     {props.announcements &&
-                        <MyAnnouncementIndex announcements={props.announcements} setCurrAnnuncement={props.setCurrAnnuncement}
+                        <MyAnnouncementIndex announcements={props.announcements} removeAnnuncement={props.removeAnnuncement}setCurrAnnuncement={props.setCurrAnnuncement}
                         />
                     }
                     <button onClick={props.handelPublishAnnuncement} className='publish-billbord-btn btn flex-jc-ac'>
