@@ -47,6 +47,7 @@ type EditAnnouncementFromProps = {
     currAnnuncement: Tannouncement
     resetForm:()=>void
     updateAnnouncement:(annuncement:Tannouncement)=>void
+    isLoading:boolean
 
 }
 
