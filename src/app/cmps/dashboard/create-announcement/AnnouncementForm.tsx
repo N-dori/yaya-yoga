@@ -52,7 +52,7 @@ type AnnouncementFormProps = {
     isOnEditMode: boolean
     resetForm: () => void
     updateAnnouncement: (announcement: Tannouncement) => void
-    isLoading:boolean
+    isLoading: boolean
 }
 
 export default function AnnouncementForm(props: AnnouncementFormProps) {
@@ -88,8 +88,20 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
     }
     return (
         <form className='announcement-creation-form flex-col gap1' onSubmit={props.handelSubmitAnnouncement}>
-            {props.isOnEditMode && <p className='pointer' onClick={() => { props.setCurrAnnuncement(null); props.resetForm() }}>חזרה אחורה</p>}
-            {props.isOnEditMode ? <h3>עריכת מודעה</h3> : <h3>טופס יצירת מודעה</h3>}
+
+
+            {props.isOnEditMode ? 
+            <section className='edit-mode-headline'>
+                <h3 className='tac'>עריכת מודעה</h3> 
+                <svg onClick={() => { props.setCurrAnnuncement(null); props.resetForm() }}
+                className='backSvg pointer'
+                xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg>
+
+            </section>
+            
+            : 
+            <h3>טופס יצירת מודעה</h3>}
+
             <label className='input-label flex-col' htmlFor="title" >
                 כותרת
                 <input className='input-text' type='text' name='title'
@@ -107,6 +119,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                     value={props.subTitle} onChange={(e: any) => props.setSubTitle(e.target.value)}
                 />
             </label>
+
             <label className='flex-col'
                 style={props.dateInError ? { border: '1px solid red' } : {}}>
                 תאריך הפעילות :
@@ -119,6 +132,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                     placeholderText='בחר תאריך לפעילות'
                 />
             </label>
+
             <label className='flex-col'
                 style={props.hoursActivityRangeInError ? { border: '1px solid red' } : {}}>
                 שעת התחלה :
@@ -138,6 +152,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                     timeIntervals={30}
                 />
             </label>
+
             <label className='flex-col'
                 style={props.hoursActivityRangeInError ? { border: '1px solid red' } : {}}>
                 שעת סיום :
@@ -157,18 +172,19 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                     timeIntervals={30}
                 />
             </label>
+
             {props.imgPreview && (
                 <div>
                     <p>תמונה שנבחרה</p>
                     <img src={props.imgPreview} alt="Preview" style={{ maxWidth: '300px' }} />
                 </div>
             )}
+
             <div className=' flex-col'>
-                {/* <span className='mb-1'>  בחירת תמונה</span> */}
-                <input className='input-select-img ' id='select-img' type='file' accept="image/*" name='select-img'
+                <input className='input-select-img' id='select-img' type='file' accept="image/*" name='select-img'
                     style={props.imgInError ? { border: '1px solid red' } : {}}
-                    onChange={(e: any) => props.handelImgInput(e)}
-                />
+                    onChange={(e: any) => props.handelImgInput(e)} />
+
                 <label className='custom-input-select-img btn tac' htmlFor='select-img'
                     style={(props.errorMsg && !props.imgPreview) ? { color: 'red' } : {}}
                 >{(props.errorMsg && !props.imgPreview) ? props.errorMsg : 'לחץ לבחירת תמונה'}</label>
@@ -178,11 +194,12 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
             <label className='input-label flex-col' htmlFor="desc">
                 תיאור הפעילות
                 <textarea className='input-text' name='desc'
-                    placeholder={!props.desc?props.errorMsg:'התיאור שלך...'}
-                    style={props.descError ? { border: '1px solid red',color:'red' } : {}}
+                    placeholder={!props.desc ? props.errorMsg : 'התיאור שלך...'}
+                    style={props.descError ? { border: '1px solid red', color: 'red' } : {}}
                     value={props.desc} onChange={(e: any) => props.setDesc(e.target.value)}
                 />
             </label>
+
             <label className='input-label flex-col' htmlFor="price">
                 מחיר הפעילות
                 <input className='input-text' type='number' name='price'
@@ -190,12 +207,11 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                     value={props.price} onChange={(e: any) => props.setPrice(e.target.value)}
                 />
             </label>
+
             {props.isOnEditMode ?
                 <button type='button' onClick={handelSaveChanges} className='btn'>שמירת שינויים </button>
-
                 :
-                <button className='btn flex-jc-ac'>{props.isLoading?<Spinner/>:'הוסף מודעה'}</button>
-
+                <button className='btn flex-jc-ac'>{props.isLoading ? <Spinner /> : 'הוסף מודעה'}</button>
             }
         </form>
     )

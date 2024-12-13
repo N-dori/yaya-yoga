@@ -27,11 +27,11 @@ export default function BillboardPreview({ announcement }: ThisMounthPreviewProp
 
             </div>
             <div className='flex-sb'>
-           {announcement.date&&
+           {announcement?.date&&
             <h5 className='this-mounth-event-date'>{new Date(announcement.date).toLocaleDateString('he-IL')}</h5>
             }
             {
-            announcement.hours.start&&
+            announcement?.hours?.start&&
             <h5 className='this-mounth-event-date'>{getFormtaedtime(announcement.hours.start)+'-'+getFormtaedtime(announcement.hours.end)}</h5>
             }
             </div>

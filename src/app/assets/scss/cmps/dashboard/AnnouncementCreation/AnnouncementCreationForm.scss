@@ -1,16 +1,25 @@
 .announcement-creation-page-container {
-    .announcement-creation-form-container {
-        .instructions {
-            font-size: .9em;
-
-            li {
-                font-size: .8em;
-                margin-bottom: 5px;
-
-            }
+        .edit-mode-headline {
+            position: relative;
+            margin-bottom: 2em;
         }
 
-        .announcement-creation-form {
+        .backSvg {
+            transform: rotate(-180deg);
+            position: absolute;
+            top: 0em;
+        }
+
+            .instructions {
+                font-size: .9em;
+
+                li {
+                    font-size: .8em;
+                    margin-bottom: 5px;
+
+                }
+            }
+
             .react-datepicker__input-container {
                 input {
                     width: 100%;
@@ -22,49 +31,54 @@
                 }
             }
 
-            .input-text {
-                padding: 4px;
-            }
+            .announcement-creation-form {
 
-            .custom-input-select-img {
-                text-decoration: underline;
-            }
+                .input-text {
+                    padding: 4px;
+                }
 
-            .input-select-img {
-                display: none;
-            }
+                .custom-input-select-img {
+                    text-decoration: underline;
+                }
 
-            textarea {
-                min-height: 150px;
+                .input-select-img {
+                    display: none;
+                }
+
+                textarea {
+                    min-height: 150px;
+                }
             }
         }
-    }
+    
 
     .publish-billbord-btn {
         background-color: var(--clr4);
         color: var(--clr1);
     }
-    .my-announcement-list-container{
+
+    .my-announcement-list-container {
         overflow-x: scroll;
-        gap:.5em;
+        gap: .5em;
         margin-bottom: 1em;
         padding: 1em;
-        .remove-annuncement-btn-wrapper{
+
+        .remove-annuncement-btn-wrapper {
             min-height: 74px;
-        .remove-annuncement-btn {
-            position: relative;
-            padding: .5em;
-            border-radius: 100%;
-            z-index: 12;
-            cursor: pointer;
-            background-color: var(--clr1);
-            font-size: 16px;
-            border: none;
-            padding: 0px 4px 2px 4px;
-            
+
+            .remove-annuncement-btn {
+                position: relative;
+                padding: .5em;
+                border-radius: 100%;
+                z-index: 12;
+                cursor: pointer;
+                background-color: var(--clr1);
+                font-size: 16px;
+                border: none;
+                padding: 0px 4px 2px 4px;
+
+            }
         }
-    }
 
     }
 
-}

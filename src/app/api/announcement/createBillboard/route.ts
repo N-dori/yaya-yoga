@@ -2,7 +2,7 @@ import connectMongoDB from '../../../libs/mongoDB'
 import { NextResponse } from 'next/server'
 import Billboard from '../../../models/billboard'
 import { Tannouncement, Tbillboard } from '@/app/types/types'
-
+import { revalidatePath } from 'next/cache';
 export async function POST (request) {
 
  try {
@@ -21,9 +21,9 @@ export async function POST (request) {
                 { _id, announcements },
                 { new: true, upsert: true } // Create if not exists, return updated document
               );
-
+              revalidatePath('/')
             }
-            return NextResponse.json({message: "billboard was updated/over",billboard }, {status: 201 } )
+            return NextResponse.json({message: "billboard was updated/overwirtten",updatedDoc }, {status: 201 } )
     }else{
          billboard =  await Billboard.create({announcements})
 

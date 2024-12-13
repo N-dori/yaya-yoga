@@ -66,14 +66,14 @@ export const getUsers = async () => {
     method: 'POST',
     headers: { "Content-type": "application/json" },
   })
-  if(res.ok){
-   const  users = await res.json()
-  //  console.log(' my users in utils getUserl = ', users);
-   return users
-   
-  }else{
+  if (res.ok) {
+    const users = await res.json()
+    //  console.log(' my users in utils getUserl = ', users);
+    return users
+
+  } else {
     console.log('thare has been a problem getting users');
-    
+
   }
 
 }
@@ -124,40 +124,56 @@ export const getFullUserByEmail = async (email: String) => {
   return user
 }
 export const getPreiodicAgenda = async () => {
- 
-    const url = getUrl('periodicAgenda/getPeriodicAgenda')
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { "Content-type": "application/json","Cache-Control": "no-store" },
-      cache: 'no-store'
 
-    })
-    if (res.ok) {      
-      return await res.json()
+  const url = getUrl('periodicAgenda/getPeriodicAgenda')
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { "Content-type": "application/json", "Cache-Control": "no-store" },
+    cache: 'no-store'
 
-    } else {
-      throw new Error('faild to get a new periodic Agenda')
-    }
- 
+  })
+  if (res.ok) {
+    return await res.json()
+
+  } else {
+    throw new Error('faild to get a new periodic Agenda')
+  }
+
 }
 
 export const getBillboard = async () => {
- 
-    const url = getUrl('announcement/getBillboard')
-    console.log('url to fetch ',url);
-    
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { "Content-type": "application/json" },
-    body: JSON.stringify({ }),
-    })
-    if (res.ok) {      
-      return await res.json()
 
-    } else {
-      throw new Error('faild to get billboard')
-    }
- 
+  const url = getUrl('announcement/getBillboard')
+  console.log('url to fetch ', url);
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({}),
+  })
+  if (res.ok) {
+    return await res.json()
+
+  } else {
+    throw new Error('faild to get billboard')
+  }
+
+}
+export const clearBillboard = async (_id: string) => {
+
+  const url = getUrl('announcement/removeBillboard')
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ _id }),
+  })
+  if (res.ok) {
+    return await res.json()
+
+  } else {
+    throw new Error('faild to remove billboard')
+  }
+
 }
 
 export const removePractitionerFromActivityFromDatabase = async (periodicAgendaId: string, activityId: string, email: string) => {
@@ -198,36 +214,36 @@ export const refundPractitionerMembershipAtDatabase = async (membershipId: strin
 
   }
 }
-export const updateUserWithNewMembershipAtDatabase = async (membershipId: string, userId: string, wasMembershipJustPurchesed:boolean) => {
+export const updateUserWithNewMembershipAtDatabase = async (membershipId: string, userId: string, wasMembershipJustPurchesed: boolean) => {
   try {
     const url = getUrl('user/updateUserMembership')
 
     const res = await fetch(url, {
       method: 'PUT',
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ _id: userId, membershipId,wasMembershipJustPurchesed })
+      body: JSON.stringify({ _id: userId, membershipId, wasMembershipJustPurchesed })
     })
     if (res.ok) {
       const updatedUser = await res.json()
 
       console.log(`User id :${userId} was updated with new membership no' :${membershipId}`, updatedUser);
-      return [true ,updatedUser ]
+      return [true, updatedUser]
 
     } else {
-      return [false,null]
+      return [false, null]
     }
   } catch (error) {
     console.log('had a problem updating user with new membership', error)
   }
 }
-export const clearPractitionersFromActivityAtDataBase = async (activityId:string,periodicAgendaId:string) => {
+export const clearPractitionersFromActivityAtDataBase = async (activityId: string, periodicAgendaId: string) => {
   try {
     const url = getUrl('periodicAgenda/removeAllPractitionersFromActivity')
 
     const res = await fetch(url, {
       method: 'PUT',
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({activityId, periodicAgendaId })
+      body: JSON.stringify({ activityId, periodicAgendaId })
     })
     if (res.ok) {
 
@@ -240,10 +256,10 @@ export const clearPractitionersFromActivityAtDataBase = async (activityId:string
     console.log('had a problem updating user with new membership', error)
   }
 }
-export const isBothTheSameDate = (date1:Date,date2:Date)=> {
+export const isBothTheSameDate = (date1: Date, date2: Date) => {
   return date1.getDate() === date2.getDate() &&
-  date1.getMonth() === date2.getMonth() &&
-  date1.getFullYear() === date2.getFullYear()
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear()
 }
 export const createYearsRange = () => {
   let years: number[] = []

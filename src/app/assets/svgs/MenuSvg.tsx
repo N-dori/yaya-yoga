@@ -1,3 +1,4 @@
+import { scrollUp } from '@/app/utils/util'
 import React from 'react'
 
 type Props = {
@@ -9,14 +10,10 @@ type Props = {
 export default function  MenuSvg({isShown,setIsShown}: Props) {
   const HandelOpenMenu = () => {
 setIsShown(!isShown)
-// disableScroll()
-  }
+scrollUp()
+}
 
-  const disableScroll = () => {
-    // Disable scrolling on touch devices
-    document.body.style.overflow = "hidden"; // For most devices
-    document.body.style.touchAction = "none"; // Specifically for touch gestures
-  }
+ 
 
   return (
 <svg onClick={HandelOpenMenu} 

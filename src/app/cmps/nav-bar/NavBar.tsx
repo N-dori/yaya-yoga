@@ -43,6 +43,9 @@ export default function NavBar({ }: Props) {
       document.body.style.touchAction = ""; // Re-enable touch gestures
     }
   }, [isShown]);
+
+
+
   const handelLogoClicked = () => {
     setIsShown(false)
     router.replace('/')

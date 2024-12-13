@@ -4,9 +4,8 @@ import React, { useEffect, useState } from 'react'
 import AnnouncementCreationForm from './AnnouncementCreationForm'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
-import { getUrl, makeId, scrollUp } from '@/app/utils/util'
+import { clearBillboard, getUrl, makeId, scrollUp } from '@/app/utils/util'
 import EditAnnouncementFrom from './EditAnnouncementFrom'
-import { revalidatePath } from 'next/cache'
 
 type AnnouncementCreationIndexProps = {
     billboard: Tbillboard
@@ -39,9 +38,9 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
     const [selectedDate, setSelectedDate] = useState(null)
     const dispatch = useDispatch()
 
-    
+
     useEffect(() => {
-        if(isfirstTimeCmpMounts){
+        if (isfirstTimeCmpMounts) {
             loadBillboard()
         }
     }, [])
@@ -174,7 +173,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
             let txt = 'לוח מודעות פורסם בהצלחה'
             getUserMsg(txt, true)
             setIsLoading(false)
-            revalidatePath('/')
+          
         } else {
             let txt = 'הייתה בעיה לפרסם לוח מודעות נסה מאוחר יותר'
             getUserMsg(txt, false)
@@ -244,10 +243,29 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
     }
 
-    const removeAnnuncement = (id:string) => {
-        const index = announcements.findIndex(announcement=>announcement.id === id)
-         announcements.splice(index,1)
+    const removeAnnuncement = async (id: string) => {
+        const isConfirmed = confirm('האם אתה בטוח שברצונך להסיר מודעה?')
+        if (isConfirmed) {
+
+            removeClientSideAnnuncement(id)
+
+            if (addAnnouncement.length === 1) {
+                const res = await clearBillboard(billboard._id)
+                console.log('res : ', res);
+
+            }
+
+        }
+    }
+    const removeClientSideAnnuncement = (id: string) => {
+
+        const announcement = announcements.find(announcement => announcement.id === id)
+        const index = announcements.findIndex(announcement => announcement.id === id)
+        announcements.splice(index, 1)
         setAnnouncements([...announcements])
+        let txt = `מודעה "${announcement.title}" הוסרה בהצלחה!`
+        getUserMsg(txt, true)
+
     }
 
 
@@ -285,14 +303,12 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
     }
     return (
-        <main className='announcement-creation-page-container'>
 
-            {!currAnnuncement ?
+            !currAnnuncement ?
 
                 <AnnouncementCreationForm {...AnnouncementCreationFormProps} />
                 :
                 <EditAnnouncementFrom {...AnnouncementCreationFormProps} />
-            }
-        </main>
+            
     )
 }
