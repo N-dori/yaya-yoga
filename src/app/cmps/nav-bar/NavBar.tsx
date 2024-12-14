@@ -4,12 +4,8 @@ import React, { useEffect, useState } from 'react'
 import MainMenu from './MainMenu'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import { getFullUserByEmail, getUserByEmail } from '@/app/utils/util'
-import { useDispatch } from 'react-redux'
-import { setUser } from '@/app/store/features/userSlice'
-import { useAppSelector } from '../../libs/hooks'
+import { getUserByEmail } from '@/app/utils/util'
 import CloseSvg from '@/app/assets/svgs/CloseSvg'
-import Link from 'next/link'
 import MenuSvg from '@/app/assets/svgs/MenuSvg'
 
 type Props = {}
@@ -20,15 +16,15 @@ export default function NavBar({ }: Props) {
   const { data: session } = useSession()
   const router = useRouter();
   const path = usePathname()
-  
+
 
   useEffect(() => {
-   console.log('path is :',path);
+    console.log('path is :', path);
     path === '/'
-    ?
-    setIsHomePage(true)
-    :
-    setIsHomePage(false)
+      ?
+      setIsHomePage(true)
+      :
+      setIsHomePage(false)
   }, [path]);
 
   useEffect(() => {
@@ -82,7 +78,7 @@ export default function NavBar({ }: Props) {
     <>
 
       <nav className='nav-bar-conatiner flex-ac  full'
-            style={isHomePage ? {position:'fixed',width:'100%'} : {}}>
+        style={isHomePage ? { position: 'fixed', width: '100%' } : {}}>
         <section className='nav-bar-warpper flex-sb' >
 
           <div className='user-area-container flex-col'>

@@ -3,7 +3,7 @@ import { Tactivity, TperiodicAgenda } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import { LesssonsInfoList } from '../dashboard/create-periodic-agenda/LesssonsInfoList'
 import 'react-datepicker/dist/react-datepicker.css'
-import { stripTime } from '@/app/utils/util'
+import { isBothTheSameDate, stripTime } from '@/app/utils/util'
 import DatesOfActivities from './DatesOfActivities'
 import PlansLogin from '../booking/PlansLogin'
 
@@ -16,13 +16,33 @@ type WeeklyScheduleProps = {
 export default function WeeklySchedule({
   periodicAgendaId,
   periodicAgenda }: WeeklyScheduleProps) {
-  const today = new Date()
+    const [activities, setActivities] = useState<Tactivity[] | undefined[]>([])
+  var today = new Date()
   // if(today.getDay() === 6 )today.setDate(new Date().getDate()+1 )
-
+  const checkIfAnyThingShecduleOnSaterday = (activities:Tactivity[],givenDate:Date) =>{
+    if(givenDate.getDay() === 6 ){
+      // if today is Saturday and there is nothing scheduled! 
+      //than moving to the next day Sunday and dispalying the next week   
+      const SaterdayFound = activities.some(activity => isBothTheSameDate(new Date(activity.date),givenDate)   )   
+     if(!SaterdayFound){
+       givenDate.setDate(new Date().getDate()+1 ) //moving to the next day
+       return givenDate
+      }
+      //if there was a class schedule on saterday
+      //we check if it is now pass 17:00 if yes display the next day  
+      const fivePM = new Date(givenDate);
+      fivePM.setHours(17, 0, 0, 0);
+      if(givenDate>fivePM){
+        givenDate.setDate(new Date().getDate()+1 ) //moving to the next day
+        
+      }
+    }
+    return givenDate
+  }
+  today = checkIfAnyThingShecduleOnSaterday(periodicAgenda?.activities,today)//if not moving to next day
   const [currDate, setCurrDate] = useState<Date>(today)
   const [isOnBookingMode, setIsOnBookingMode] = useState<boolean>(false)
 
-  const [activities, setActivities] = useState<Tactivity[] | undefined[]>([])
   const [isOnWeeklyScheduleMode] = useState<boolean>(true)
   const [isOnCancelMode, setIsOnCancelMode] = useState<boolean>(false)
 
@@ -49,21 +69,28 @@ export default function WeeklySchedule({
   const getWeeklyActivities = (activities: Tactivity[]) => {
     if(activities){
 
-      // get nearst sunday.
-      // if today is Saturday than moving to the next day Sunday and dispalying the next week 
       let currentDate = new Date()
-      // if(currentDate.getDay() === 6 )currentDate.setDate(new Date().getDate()+1 )
+
+      currentDate =checkIfAnyThingShecduleOnSaterday(activities,currentDate)
+      // console.log('after currentDate is :',new Date(currentDate).toLocaleDateString('he-IL'))
+
       if (currentDate.getDay() === 0) {
         const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
+        activitiesOfTheWeek.forEach(e=>
+          
+          console.log('activitiesOfTheWeek',new Date(e.date).toLocaleDateString('he-IL'))
+        )
         
         setActivities([...activitiesOfTheWeek])
         return 
       }
       
-      while (currentDate.getDay() > 0) {
+      // get nearst sunday.
+      while (currentDate.getDay() > 0) {// moving back to sunday
         currentDate.setDate(currentDate.getDate() - 1); // Move to the prev day
       }
       const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
+
       setActivities([...activitiesOfTheWeek])
       
     }

@@ -24,9 +24,7 @@ export function LesssonsInfoList({ onBooking, periodicAgendaId, handelLessonCanc
 
   useEffect(() => {
 
-    // console.log('currDate whan passing it to lesson in fo list',  currDate);
-    // console.log('activities in list of lessons : ', activities);
-
+    
     setDay(new Date(currDate).getDate())
     setMounth(new Date(currDate).getMonth() + 1)
     setYear(new Date(currDate).getFullYear())
@@ -57,7 +55,8 @@ export function LesssonsInfoList({ onBooking, periodicAgendaId, handelLessonCanc
         }
       })
     }
-
+    console.log('res :', res);
+    
     let sortRes = res.sort((a: Tactivity, b: Tactivity) => {
       if (!a.date || !b.date) return 0;
       if (a.hoursRange && b.hoursRange) {
