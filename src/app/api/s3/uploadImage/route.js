@@ -10,11 +10,11 @@ const s3Client = new S3Client({
     }
 })
 
-const uploadPdfToS3 = async (file, fileName) => {
+const uploadImageToS3 = async (file, fileName) => {
     const fileBuffer = file
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `Annuncements-images/${fileName}`,
+        Key: `Announcements-images/${fileName}`,
         Body: fileBuffer,
         ContentType: "Image"
     }
@@ -33,7 +33,7 @@ export async function POST(request) {
 
         }
         const buffer = Buffer.from(await file.arrayBuffer())
-        const fileName = await uploadPdfToS3(buffer, file.name)
+        const fileName = await uploadImageToS3(buffer, file.name)
 
         return NextResponse.json({ success: true, fileName });
 

@@ -142,6 +142,29 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
     }
 
+    const removeImageFromS3Bucket = async (fileName: string) => {
+        try {
+            const url = getUrl('s3/removeImage'); 
+            const res = await fetch(url, {
+                method: 'DELETE',
+                headers: { "Content-Type": "application/json" }, 
+                body: JSON.stringify({ fileName })
+            });
+    
+            if (res.ok) {
+                const data = await res.json(); // Parse the response JSON
+                console.log("Image removed successfully:", data);
+            } else {
+                const errorDetails = await res.json(); // Parse error details from response
+                console.error("Failed to remove image:", errorDetails);
+                throw new Error(errorDetails.message || "Failed to remove image from S3");
+            }
+        } catch (error) {
+            console.error("An error occurred while removing the image:", error);
+            throw error; // Rethrow the error for higher-level handling
+        }
+    };
+
     const addAnnouncement = (data: Tannouncement) => {
         setAnnouncements([...announcements, data])
         let txt = 'מודעה הוספה בהצלחה!'
@@ -185,7 +208,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
     const handelImgInput = (ev: any) => {
         const file = ev.target.files[0]
         let imgName = file.name // טלי.png
-        let imgLink = `https://yayayoga.s3.eu-north-1.amazonaws.com/Annuncements-images/${imgName}`
+        let imgLink = `https://yayayoga.s3.eu-north-1.amazonaws.com/Announcements-images/${imgName}`
         console.log('file', file);
 
         // Validate the file (e.g., type or size)
@@ -195,7 +218,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
         }
 
         if (file.size > 5 * 1024 * 1024) { // 5 MB limit
-            alert('File size exceeds 5 MB.');
+            alert('ישנה אפרות להעלות קביצים במגבלה של עד 5 מגה');
             return;
         }
         setImg(file)
@@ -244,21 +267,49 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
     }
 
     const removeAnnuncement = async (id: string) => {
+        const announcement = announcements.find(announcement => announcement.id === id)
+        
+        const getFileName = (url:string )=>{
+                let name = '';
+                let extension = '';
+                // Find the last dot (.) for the extension
+                const lastDotIndex = url.lastIndexOf('.');
+                if (lastDotIndex !== -1) {
+                    extension = url.slice(lastDotIndex + 1);
+                }
+                // Find the last slash (/) for the file name
+                const lastSlashIndex = url.lastIndexOf('/');
+                if (lastSlashIndex !== -1) {
+                    name = url.slice(lastSlashIndex + 1, lastDotIndex);
+                } else {
+                    // If there's no slash, assume the entire string before the dot is the name
+                    name = url.slice(0, lastDotIndex);
+                }
+            
+                console.log('Extension is:', extension);
+                const fileName = `${name}.${extension}`;
+                return fileName;
+            
+        }
+
+        const fileName = getFileName(announcement.img)
+        
+        console.log('fileName : ', fileName);
         const isConfirmed = confirm('האם אתה בטוח שברצונך להסיר מודעה?')
         if (isConfirmed) {
-
-            removeClientSideAnnuncement(id)
-
-            if (addAnnouncement.length === 1) {
+            removeImageFromS3Bucket(fileName)
+            
+            if (announcements.length === 1) {
                 const res = await clearBillboard(billboard._id)
                 console.log('res : ', res);
-
+                
             }
-
+            removeClientSideAnnuncement(id)
+            
         }
     }
     const removeClientSideAnnuncement = (id: string) => {
-
+        
         const announcement = announcements.find(announcement => announcement.id === id)
         const index = announcements.findIndex(announcement => announcement.id === id)
         announcements.splice(index, 1)
