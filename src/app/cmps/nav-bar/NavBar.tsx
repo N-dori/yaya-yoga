@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import MainMenu from './MainMenu'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { getFullUserByEmail, getUserByEmail } from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/app/store/features/userSlice'
@@ -15,10 +15,21 @@ import MenuSvg from '@/app/assets/svgs/MenuSvg'
 type Props = {}
 export default function NavBar({ }: Props) {
   const [isShown, setIsShown] = useState(false)
+  const [isHomePage, setIsHomePage] = useState(true)
   const [firstLetter, setfirstLetter] = useState("")
   const { data: session } = useSession()
   const router = useRouter();
+  const path = usePathname()
+  
 
+  useEffect(() => {
+   console.log('path is :',path);
+    path === '/'
+    ?
+    setIsHomePage(true)
+    :
+    setIsHomePage(false)
+  }, [path]);
 
   useEffect(() => {
     getUserFirstLetter()
@@ -43,7 +54,6 @@ export default function NavBar({ }: Props) {
       document.body.style.touchAction = ""; // Re-enable touch gestures
     }
   }, [isShown]);
-
 
 
   const handelLogoClicked = () => {
@@ -71,7 +81,8 @@ export default function NavBar({ }: Props) {
   return (
     <>
 
-      <nav className='nav-bar-conatiner flex-ac  full'>
+      <nav className='nav-bar-conatiner flex-ac  full'
+            style={isHomePage ? {position:'fixed',width:'100%'} : {}}>
         <section className='nav-bar-warpper flex-sb' >
 
           <div className='user-area-container flex-col'>
