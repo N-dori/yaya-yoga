@@ -193,6 +193,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
 
             <label className='input-label flex-col' htmlFor="desc">
                 תיאור הפעילות
+                <small>להפרדה לפסקאות הוסף /</small>
                 <textarea className='input-text' name='desc'
                     placeholder={!props.desc ? props.errorMsg : 'התיאור שלך...'}
                     style={props.descError ? { border: '1px solid red', color: 'red' } : {}}

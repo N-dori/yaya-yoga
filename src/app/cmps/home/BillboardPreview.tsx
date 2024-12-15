@@ -11,6 +11,10 @@ const getFormtaedtime = (time:Date) => {
 return `${hours}:${minutes}`
 }
 export default function BillboardPreview({ announcement }: ThisMounthPreviewProps) {
+    // const [paragraphs, setParagraphs] = useState<string[]>([])
+    const paragraphs =  announcement.desc.split('/')
+ 
+    
     return (
         <article className='this-mount-wrapper flex-col gap05'>
             <h3 className='this-mounth-event-title'>{announcement.title}</h3>
@@ -35,7 +39,10 @@ export default function BillboardPreview({ announcement }: ThisMounthPreviewProp
             <h5 className='this-mounth-event-date'>{getFormtaedtime(announcement.hours.start)+'-'+getFormtaedtime(announcement.hours.end)}</h5>
             }
             </div>
-            <p className='this-mounth-event-desc '>  {announcement.desc} </p>
+            {paragraphs.map(paragraph=>
+            <p className='this-mounth-event-desc '>  {paragraph} </p>
+
+            )}
            {(announcement.price!= 0)
             && <p className='this-mounth-event-desc '> מחיר : {announcement.price} ש"ח</p>
             }
