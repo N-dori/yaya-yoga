@@ -75,12 +75,7 @@ export default function WeeklySchedule({
       // console.log('after currentDate is :',new Date(currentDate).toLocaleDateString('he-IL'))
 
       if (currentDate.getDay() === 0) {
-        const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)
-        activitiesOfTheWeek.forEach(e=>
-          
-          console.log('activitiesOfTheWeek',new Date(e.date).toLocaleDateString('he-IL'))
-        )
-        
+        const activitiesOfTheWeek = creactWeeklyActivities(activities, currentDate)  
         setActivities([...activitiesOfTheWeek])
         return 
       }

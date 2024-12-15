@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
 import PeriodDates from './PeriodDates'
-import { Tactivity, TperiodicAgenda, TuserMsgProps } from '@/app/types/types'
+import { Tactivity, TperiodicAgenda, TuserMsgProps, Tworkshop } from '@/app/types/types'
 import { getUrl, makeId, stripTime } from '@/app/utils/util'
 import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
-import { callUserMsg, hideUserMsg,  } from '@/app/store/features/msgSlice'
+import { callUserMsg, hideUserMsg, } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
 
 export default function PeriodicAgendaCreation() {
@@ -18,7 +18,7 @@ export default function PeriodicAgendaCreation() {
     const [endPeriodicAgendaDate, setEndPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [periodicAgendaDates, setPeriodicAgendaDates] = useState<{ start: string, end: string }>({ start: '', end: '' })
     const [isPeriodicAgendaDates, setIsPeriodicAgendaDates] = useState<boolean>(false)
-    
+
     const [allDaysOfPeriod, setAllDaysOfPeriod] = useState<Date[]>()
     const [copyOfAllDaysOfPeriod, setCopyOfAllDaysOfPeriod] = useState<Date[]>([])
     const [periodLength, setPeriodLength] = useState<number>()
@@ -26,35 +26,42 @@ export default function PeriodicAgendaCreation() {
     // avtivities Repeations section
     const [isActivityRepeating, setIsActivityRepeating] = useState<boolean>(false)
     const [repeationNumber, setRrepeationNumber] = useState<number>(-1)
-    
-    
+    const [isWorkShop, setIsWorkShop] = useState<boolean>(false)
+    const [workshopTitle, setWorkshopTitle] = useState<string>('')
+    const [workshopSubTitle, setWorkshopSubTitle] = useState<string>('')
+    const [workshopDesc, setWorkshopDesc] = useState<string>('')
+    const [imgPreview, setImgPreview] = useState<string>('')
+    const [imgLink, setImgLink] = useState<string>('')
+    const [img, setImg] = useState<string>('')
+
+
     const [activityDate, setActivityDate] = useState<Date | null | undefined>(null)
-    
+
     const [activityStartTime, setActivityStartTime] = useState<Date | null | undefined>(null)
     const [activityEndTime, setActivityEndTime] = useState<Date | null | undefined>(null)
     const [activityName, setActivityName] = useState<string>('אשטנגה')
     const [activityType, setActivityType] = useState<string>('שיעור')
     const [activityTeacher, setActivityTeacher] = useState<string>('יאיר שורץ')
     const [activityLocation, setActivityLocation] = useState<string>('בית פעם רחוב הדקלים 92, פרדס חנה-כרכור')
-    
+
     const [isPreviewDisplayShown, setIsPreviewDisplayShown] = useState<boolean>(false)
     const [isMsgShown, setIsMsgShown] = useState<boolean>(false)
     const [userMsg, setUserMsg] = useState<TuserMsgProps>()
-    
+
     const [error, setError] = useState<string>('')
-    
+
     const [isWorkInProgress, setIsWorkInProgress] = useState<boolean>(true)
     const router = useRouter()
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         if (startPeriodicAgendaDate && endPeriodicAgendaDate) {
             getAllDaysOfPeriod(startPeriodicAgendaDate, endPeriodicAgendaDate)
         }
     }, [startPeriodicAgendaDate, endPeriodicAgendaDate])
-  
 
-    
+
+
 
     useEffect(() => {
         if (periodicAgendaDates.start && periodicAgendaDates.end) {
@@ -146,13 +153,13 @@ export default function PeriodicAgendaCreation() {
         }
         setPeriodicAgenda({ ...newPeriodicAgenda })
     }
+
     const addActivity = () => {
         let updatedPeriodicAgenda: TperiodicAgenda = { ...periodicAgenda }
-        console.log('activityName',activityName);
-        
+
         if (!activityDate || !activityStartTime || !activityEndTime || !activityName) {
             setError('יש למלא תאריך ושעות פעילות')
-            getUserMsg({ msg: 'הוספת פעילות נכשלה', isSucsses: false})
+            getUserMsg({ msg: 'הוספת פעילות נכשלה', isSucsses: false })
             setTimeout(() => { setError('') }, 5500);
             return
         }
@@ -225,11 +232,45 @@ export default function PeriodicAgendaCreation() {
             })
         }
         setPeriodicAgenda({ ...updatedPeriodicAgenda })
-        resetDateTime()
-        // callUserMsg({ sucsses: true, msg: singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה ` })
-        console.log('calling user messege', periodicAgenda);
-        getUserMsg({msg:singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה `, isSucsses:true })
 
+        resetDateTime()
+        console.log('calling user messege', periodicAgenda);
+        getUserMsg({ msg: singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה `, isSucsses: true })
+
+    }
+    const findWorkshopsAndUploadTheirImagesToS3 = async () => {
+        const workshopFound = periodicAgenda.activities.some(activity => activity.classOrWorkshop === 'סדנא')
+        if (!workshopFound) {
+            return
+        }
+        let workshops: Tworkshop[] = []
+
+        periodicAgenda.activities.forEach(activity => {
+            activity.classOrWorkshop === 'סדנא' ? workshops.push({ ...activity.workshop })
+                : ""
+        })
+        console.log(' workshops : ', workshops);
+        const promises = workshops.map(workshop => {
+            return uploadImagesTos3(workshop.img)
+
+        })
+        const uploadedImgs = Promise.all(promises)
+        console.log(' logging upload imgs : ', uploadedImgs);
+        return workshopFound
+    }
+
+    const uploadImagesTos3 = async (img: string) => {
+        const formData = new FormData();
+        formData.append('image', img);
+        console.log('formData : ', formData);
+        const url = getUrl('s3/uploadWorkshopImages/')
+        const res = await fetch(url, {
+            method: 'POST',
+            body: formData
+        },)
+        if (res.ok) {
+            return res.json()
+        }
     }
 
     const updateDateCounter = (date: Date | null, dates: Date[] | null | undefined) => {
@@ -255,6 +296,7 @@ export default function PeriodicAgendaCreation() {
 
         }
     }
+
     const removeSaturdays = () => {
         if (allDaysOfPeriod) {
             let numberOfSaturdays = 0
@@ -262,28 +304,30 @@ export default function PeriodicAgendaCreation() {
             let withOutSaturdays: Date[] = allDaysOfPeriod.filter(currDate => stripTime(currDate).getDay() !== 6)
             setDatesCounter(datesCounter + numberOfSaturdays)
             setAllDaysOfPeriod([...withOutSaturdays])
-            getUserMsg({msg:`${numberOfSaturdays} שבתות הוסרו בהצלחה  `, isSucsses:true })
+            getUserMsg({ msg: `${numberOfSaturdays} שבתות הוסרו בהצלחה  `, isSucsses: true })
 
         }
     }
+
     const createActivity = (date: any) => {
         return {
             id: makeId(),
             date: date,
-            name: activityName,
+            name: activityType === 'שיעור' ? activityName : workshopTitle,
             hoursRange: {
                 start: activityStartTime,
                 end: activityEndTime
             },
             classOrWorkshop: activityType,
+            workshop: workshopTitle ? { id: makeId(), title: workshopTitle, subTitle: workshopSubTitle, img, imgUrl: imgLink, desc: workshopDesc } : undefined,
             teacher: activityTeacher,
             location: activityLocation,
-            isCanceled:false,
-            reasonOfCancelation:'שיעור מבוטל',
+            isCanceled: false,
+            reasonOfCancelation: 'שיעור מבוטל',
             practitioners: []
         }
     }
-   
+
 
     const resetDateTime = () => {
         setActivityDate(null)
@@ -291,11 +335,32 @@ export default function PeriodicAgendaCreation() {
         setActivityEndTime(null)
     }
 
+    const deleteImgPropFromWorkshops = () => {
+        const updatedActivities = periodicAgenda.activities.map(activity => {
+            if (activity.classOrWorkshop === 'שיעור') {
+                return activity
+            }
+            if (activity.classOrWorkshop === 'סדנא') {
+                delete activity.workshop.img
+                return activity
+            }
+        })
+        console.log('updatedActivities', updatedActivities);
+
+        periodicAgenda.activities = updatedActivities
+        setPeriodicAgenda({ ...periodicAgenda })
+    }
+
     const createNewPeriodicAgenda = async () => {
         try {
+          const workshopFound =  await findWorkshopsAndUploadTheirImagesToS3()
+          if(workshopFound){
+              // delete img key from all the activities with the key img
+              deleteImgPropFromWorkshops() // deleting img key from activty.workshop because files cant pushed to mongo
+          }
             const url = getUrl('periodicAgenda/createPeriodicAgenda/')
-            console.log('url',url);
-            
+            console.log('url', url);
+
             const res = await fetch(url, {
                 method: 'POST',
                 headers: { "Content-type": "application/json" },
@@ -305,7 +370,7 @@ export default function PeriodicAgendaCreation() {
             if (res.ok) {
                 const { newPeriodicAgenda } = await res.json()
                 // callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
-                getUserMsg({msg:'לוח זמנים פורסם בהצלחה', isSucsses:true })
+                getUserMsg({ msg: 'לוח זמנים פורסם בהצלחה', isSucsses: true })
 
                 setTimeout(() => {
                     router.replace('/dashboard')
@@ -321,13 +386,14 @@ export default function PeriodicAgendaCreation() {
 
         }
     }
+
     const getUserMsg = (userMsg: TuserMsgProps) => {
-        console.log('userMsg',userMsg);
-        
-        window.scroll(0,0)
-        dispatch(callUserMsg({msg:userMsg.msg, isSucsses:userMsg.isSucsses}))
+        console.log('userMsg', userMsg);
+
+        window.scroll(0, 0)
+        dispatch(callUserMsg({ msg: userMsg.msg, isSucsses: userMsg.isSucsses }))
         setTimeout(() => {
-          dispatch(hideUserMsg())
+            dispatch(hideUserMsg())
         }, 3500);
     }
     const PeriodDatesProps = {
@@ -346,8 +412,8 @@ export default function PeriodicAgendaCreation() {
         endPeriodicAgendaDate,
         isWorkInProgress,
         setPeriodicAgenda,
-        isPreviewDisplayShown  ,
-        getUserMsg      
+        isPreviewDisplayShown,
+        getUserMsg
 
     }
     const PeriodicAgendaFromProps = {
@@ -360,7 +426,13 @@ export default function PeriodicAgendaCreation() {
         handelTimeChange,
 
         activityDate,
-
+        imgPreview, setImgPreview,
+        imgLink, setImgLink,
+        img, setImg,
+        setIsWorkShop, isWorkShop,
+        workshopTitle, setWorkshopTitle,
+        workshopSubTitle, setWorkshopSubTitle,
+        workshopDesc, setWorkshopDesc,
         isActivityRepeating,
         repeationNumber,
         handelDateChange,

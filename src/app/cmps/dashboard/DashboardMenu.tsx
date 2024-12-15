@@ -20,7 +20,7 @@ export default function DashboardMenu({ }: Props) {
             <p  onClick={()=>{handelRoute('/dashboard/create_periodic_agenda')}}>יצירת לוז תקופתי</p>
             <p  onClick={()=>{handelRoute('/dashboard/edit_periodic_agenda')}}>עריכת לוז נוכחי</p>
             <p  onClick={()=>{handelRoute('/dashboard/practitioners_list')}}>רשימת תלמידים</p>
-             <p onClick={()=>{handelRoute('/dashboard/create_announcement')}}>פרסום של ארוע/סדנא חדשה</p>
+             <p onClick={()=>{handelRoute('/dashboard/create_announcement')}}>פרסום של לוח מודעות</p>
             {/* <p>סיכום רכישות </p>
             <p>הזנת תקבולים</p> */}
         </section>

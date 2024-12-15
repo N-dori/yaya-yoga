@@ -40,11 +40,12 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
     useEffect(() => {
         if (session?.user?.email) {
-            console.log('path is++++++: ', path);
         }
     }, [activity.date, activity.isCanceled, activity.id, periodicAgendaId, currUser, currUser?.memberships?.length, path, currMembershipId])
     useEffect(() => {
         isActivityPassed()
+        console.log('activity.classOrWorkshop',activity.classOrWorkshop);
+        
     }, [])
 
     const handelClick = () => {
@@ -316,7 +317,6 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             let hours = activityTime.toLocaleTimeString('he-IL').split(':')[0]
             let minutes = activityTime.toLocaleTimeString('he-IL').split(':')[1]
             activityDate.setHours(+hours, +minutes, 0, 0);
-            console.log('activityStart : ', activityDate)
             const isTimePassed = activityDate < now
             setIsActivityHasPassed(isTimePassed)
         }
@@ -362,14 +362,20 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         // If neither condition returns false, return true
         return true;
     }
+
+    const handelWorkshop =(activity:Tactivity) => {
+ router.replace(`/workshopDetails/${activity.workshop.id}`)
+    }
     const PractitionersIndexProps = {
         practitioners: activity?.practitioners,
         askUserIfToRemoveHimFromActivity,
         checkActivityTime
     }
     return (
-        <li className='actitity-card-container flex-col clean'>
+        <li className='actitity-card-container flex-col clean'
+        style={activity.classOrWorkshop === 'סדנא'?{border:'1px solid #ee3b7e'}:{}}>
             <article className='p-1'>
+                {activity.classOrWorkshop==='סדנא'&& <span>-סדנא-</span>}
                 <LessonInfoHoursRange {...LessonInfoHoursRangeProps} />
                 {activity.isCanceled && <span > השיעור בוטל</span>}
 
@@ -390,8 +396,8 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                             </button> :
                                 <button disabled={isActivityHasPassed || activity.isCanceled} type='button' className='btn flex-jc-ac'
                                     style={isActivityHasPassed || activity.isCanceled ? { color: `var(--clr3)` } : {}}
-                                    onClick={() => handelSignInToClass()}>
-                                    {isLoading ? <Spinner /> : ` הרשמה`}
+                                    onClick={ activity.classOrWorkshop==='סדנא'?()=>handelWorkshop(activity):() => handelSignInToClass()}>
+                                    {isLoading ? <Spinner /> : activity.classOrWorkshop==='סדנא'? 'לפרטים':` הרשמה`}
                                 </button>}
                         </div>
                     </div>

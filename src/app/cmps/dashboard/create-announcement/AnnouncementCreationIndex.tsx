@@ -111,7 +111,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
             const formData = new FormData();
             formData.append('image', img);
             console.log('formData : ', formData);
-            const url = getUrl('s3/uploadImage/')
+            const url = getUrl('s3/uploadBillboardImage/')
             const res = await fetch(url, {
                 method: 'POST',
                 body: formData
@@ -205,7 +205,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
         }
     }
 
-    const handelImgInput = (ev: any) => {
+     const handelImgInput = (ev: any) => {
         const file = ev.target.files[0]
         let imgName = file.name // טלי.png
         let imgLink = `https://yayayoga.s3.eu-north-1.amazonaws.com/Announcements-images/${imgName}`

@@ -33,7 +33,7 @@ export default function RepeatingActivityRadioBtns({
     }
 
     return (
-        <fieldset className='fieldset-form'>
+        <fieldset className='fieldset-form p-1'>
             <legend>פעילות חזרתית?</legend>
             {opt.map(btn =>
                 <section key={btn.id}>

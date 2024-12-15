@@ -13,6 +13,13 @@ type PeriodicAgendaFromProps = {
     error: string
 
     activityDate: Date | null | undefined
+    img: string, setImg: (imgString: string) => void
+    imgLink: string, setImgLink: (imgLink: string) => void
+    imgPreview: string, setImgPreview: (imgPreview: string) => void
+
+    workshopTitle: string, setWorkshopTitle: (workshopTitle: string) => void,
+    workshopSubTitle: string, setWorkshopSubTitle: (workshopSubTitle: string) => void,
+    workshopDesc: string, setWorkshopDesc: (workshopDesc: string) => void,
 
     isActivityRepeating: boolean
     repeationNumber: number
@@ -43,69 +50,60 @@ type PeriodicAgendaFromProps = {
 
 }
 
-export default function PeriodicAgendaFrom({
-    activityStartTime,
-    activityEndTime,
-    periodicAgendaDates,
-    startPeriodicAgendaDate,
-    endPeriodicAgendaDate,
-
-    activityDate,
-    activityName,
-    setActivityName,
-    activityType,
-    setActivityType,
-    activityTeacher,
-    setActivityTeacher,
-    activityLocation,
-    setActivityLocation,
-    isActivityRepeating,
-    setIsActivityRepeating,
-    repeationNumber,
-    setRrepeationNumber,
-    handelDateChange,
-    handelTimeChange,
-
-    setIsPreviewDisplayShown,
-    createNewPeriodicAgenda,
-    addActivity,
-    removeSaturdays,
-    datesCounter,
-    periodLength,
-    allDaysOfPeriod,
+export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
+    const [options] = useState<string[]>(['אשטנגה', 'פראניאמה + אשטנגה', '108 ברכות שמש', 'ויניאסה', 'יסודות', 'האטה יוגה', 'פראניאמה'])
 
 
-    error,
-
-
-
-}: PeriodicAgendaFromProps) {
-    const [options] = useState<string[]>(['אשטנגה', 'פראניאמה + אשטנגה', '108 ברכות שמש', 'וינאסה', 'יסודות', 'האטה יוגה', 'פראניאמה'])
     const RepeatingActivityRadioBtnsProps = {
-        isActivityRepeating,
-        setIsActivityRepeating,
-        setRrepeationNumber,
-        repeationNumber,
-        removeSaturdays
+        isActivityRepeating: props.isActivityRepeating,
+        setIsActivityRepeating: props.setIsActivityRepeating,
+        setRrepeationNumber: props.setRrepeationNumber,
+        repeationNumber: props.repeationNumber,
+        removeSaturdays: props.removeSaturdays
     }
 
     const StartEndTimePickersProps = {
-        activityEndTime,
-        handelTimeChange,
-        activityStartTime,
-        error,
+        activityEndTime: props.activityEndTime,
+        handelTimeChange: props.handelTimeChange,
+        activityStartTime: props.activityStartTime,
+        error: props.error,
 
     }
+    const getFormatedDate = (date: string) => {
+        return new Date(date).toLocaleDateString('he-IL')
+    }
+    const handelImgInput = (ev: any) => {
+        const file = ev.target.files[0]
+        let imgName = file.name // טלי.png
+        let imgLink = `https://yayayoga.s3.eu-north-1.amazonaws.com/Workshop-images/${imgName}`
+        console.log('file', file);
 
+        // Validate the file (e.g., type or size)
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file.');
+            return;
+        }
 
+        if (file.size > 5 * 1024 * 1024) { // 5 MB limit
+            alert('ישנה אפרות להעלות קביצים במגבלה של עד 5 מגה');
+            return;
+        }
+        props.setImg(file)
+        props.setImgLink(imgLink)
+        const reader = new FileReader();
+        reader.onload = () => {
+            props.setImgPreview(reader.result as string); // Base64 preview
+        };
+        reader.readAsDataURL(file);
+    }
     return (
         <main className='periodic-agenda-form-container'>
             <div className='range-dates flex-jc-ac flex-col gap1 '>
                 <h4 >  <span className='circle mb-1'> שלב 2</span> יצירת פעילויות לתקופה </h4>
-                <h4>{periodicAgendaDates.start + " עד " + periodicAgendaDates.end}</h4>
-                <progress className='progress-bar' value={datesCounter} max={periodLength}>  </progress>
+                <h4>{getFormatedDate(props.periodicAgendaDates.start) + " עד " + getFormatedDate(props.periodicAgendaDates.end)}</h4>
+                <progress className='progress-bar' value={props.datesCounter} max={props.periodLength}>  </progress>
                 {
-                    allDaysOfPeriod ? allDaysOfPeriod.length ? <span>נשארו  {allDaysOfPeriod ? allDaysOfPeriod.length : ''} תאריכים למלא מתוך {periodLength}</span>
+                    props.allDaysOfPeriod ? props.allDaysOfPeriod.length ? <span>נשארו  {props.allDaysOfPeriod ? props.allDaysOfPeriod.length : ''} תאריכים למלא מתוך {props.periodLength}</span>
                         : <span className='all-dates-checked flex-jc-ac'> <CheckSvg /> פעילויות הוזנו לכל תקופת הפעילות</span> : ""
                 }
 
@@ -113,11 +111,11 @@ export default function PeriodicAgendaFrom({
             <form className='periodic-agenda-form flex-col gap1' >
                 <div className='flex-col gap1 flex-jc-ac'>
                     <DatePicker
-                        selected={activityDate}
-                        onChange={(currDate: Date | null) => handelDateChange(currDate)}
+                        selected={props.activityDate}
+                        onChange={(currDate: Date | null) => props.handelDateChange(currDate)}
                         dateFormat={'dd/MM/yyyy'}
-                        minDate={startPeriodicAgendaDate ? startPeriodicAgendaDate : undefined}
-                        maxDate={endPeriodicAgendaDate ? endPeriodicAgendaDate : undefined}
+                        minDate={props.startPeriodicAgendaDate ? props.startPeriodicAgendaDate : undefined}
+                        maxDate={props.endPeriodicAgendaDate ? props.endPeriodicAgendaDate : undefined}
                         placeholderText="בחר את תאריך הפעילות"
                         showIcon
                         locale={he}
@@ -126,48 +124,82 @@ export default function PeriodicAgendaFrom({
                     <StartEndTimePickers {...StartEndTimePickersProps} />
 
                 </div>
-                <RepeatingActivityRadioBtns {...RepeatingActivityRadioBtnsProps} />
-
-                <label  htmlFor={'activity-name'} className='flex-col ' >
-                    שם הפעילות:
-                    <input className='form-input' id={'activity-name '}
-                        type={'text'}
-                        list='options'
-                        onChange={(ev: any) => setActivityName(ev.target.value)}
-                    />
-
-                    <datalist id="options" className='form-input'>
-                        {options.map((option, index) => (
-                            <option key={index} value={option} />
-                        ))}
-                    </datalist>
-
-
-                </label>
-
                 <label htmlFor='activity-type' className='flex-col'>
                     סוג הפעילות:
                     <select className='form-input' name='activity-type' onChange={(e) =>
-                        setActivityType(e.target.value)} value={activityType} >
+                        props.setActivityType(e.target.value)} value={props.activityType} >
                         <option value={'שיעור'}>שיעור</option>
                         <option value={'סדנא'}>סדנא</option>
                     </select>
                 </label>
+                {props.activityType === 'סדנא' &&
+                    <fieldset className='fieldset-form p-1 flex-col '>
+                        <legend>פרטי הסדנא</legend>
+                        <label className='flex-col'>
+                     כותרת :
+                            <input className='form-input' name='workshop-title' onChange={(e) => props.setWorkshopTitle(e.target.value)} value={props.workshopTitle} />
+                        </label>
+                        <label className='flex-col'>
+                          תת כותרת:
+                            <input className='form-input' name='workshop-title' onChange={(e) => props.setWorkshopSubTitle(e.target.value)} value={props.workshopSubTitle} />
+                        </label>
+
+                        {props.imgPreview && (
+                            <div>
+                                <p className='mb-1'>תמונה שנבחרה</p>
+                                <img src={props.imgPreview} alt="Preview" style={{ maxWidth: '300px' }} />
+                            </div>
+                        )}
+                        <div className=' flex-col'>
+                            <input className='input-select-img' id='select-img' type='file' accept="image/*" name='select-img'
+                                onChange={(e: any) => handelImgInput(e)} />
+
+                            <label className='custom-input-select-img btn tac' htmlFor='select-img'
+                            >{'לחץ לבחירת תמונה'}</label>
+
+                        </div>
+                        <small>להפרדת הטקסט לפסקאות הוסף /</small>
+                        <textarea  className='workshop-desc' placeholder='תיאור הסדנא שלך ...' 
+                        onChange={(e) => props.setWorkshopDesc(e.target.value)} value={props.workshopDesc}/>
+                    </fieldset>
+                }
+
+                <RepeatingActivityRadioBtns {...RepeatingActivityRadioBtnsProps} />
+
+                {props.activityType === 'שיעור' &&
+                    <label htmlFor={'activity-name'} className='flex-col ' >
+                        שם הפעילות:
+                        <input className='form-input' id={'activity-name '}
+                            type={'text'}
+                            list='options'
+                            onChange={(ev: any) => props.setActivityName(ev.target.value)}
+                        />
+
+                        <datalist id="options" className='form-input'>
+                            {options.map((option, index) => (
+                                <option key={index} value={option} />
+                            ))}
+                        </datalist>
+
+
+                    </label>}
+
+
                 <label htmlFor='teacher' className='flex-col'>
                     מורה :
                     <select className='form-input' name='teacher' onChange={(e) =>
-                        setActivityTeacher(e.target.value)} value={activityTeacher} >
+                        props.setActivityTeacher(e.target.value)} value={props.activityTeacher} >
                         <option value={'יאיר שורץ'}>יאיר שורץ</option>
                         <option value={'טלי רודי'}>טלי רודי</option>
                     </select>
                 </label>
                 <label className='flex-col'>
                     מיקום :
-                    <input className='form-input' name='location' onChange={(e) => setActivityLocation(e.target.value)} value={activityLocation} />
+                    <input className='form-input' name='location' onChange={(e) => props.setActivityLocation(e.target.value)} value={props.activityLocation} />
                 </label>
-                <button className='form-btn flex-jc-ac pointer' type='button' onClick={addActivity}>הוסף פעילות </button>
-                <button className='form-btn flex-jc-ac pointer' type='button' onClick={() => setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
-                <button className='form-btn flex-jc-ac pointer' type='button' onClick={createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
+                <button className='form-btn flex-jc-ac pointer' type='button' onClick={props.addActivity}>הוסף פעילות </button>
+                <button className='form-btn flex-jc-ac pointer' type='button' onClick={() => props.setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
+                <button className='form-btn flex-jc-ac pointer' type='button' onClick={props.createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
             </form>
 
         </main>)

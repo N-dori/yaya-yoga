@@ -23,8 +23,15 @@
         border: 1px solid #b3b3bd;
         color: #747474;
     }
-  
-
+  .input-select-img{
+    display: none;
+  }
+  .fieldset-form{
+    gap:1em;
+  }
+.workshop-desc{
+    min-height: 200px;
+}
     .circle {
         padding: 10px;
         border-radius: 50%;

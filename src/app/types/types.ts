@@ -1,20 +1,30 @@
 export type Tactivity = {
     id: string,
     date: Date | null | undefined,
-    name: string,
+    name?: string,
     hoursRange: { start: Date | null | undefined, end: Date | null | undefined },
     classOrWorkshop: string,
+    workshop?: Tworkshop
     teacher: string,
     location: string,
     isCanceled: boolean,
     reasonOfCancelation: string,
     practitioners: Tpractitioner[] | undefined,
 }
+
 export type Tpractitioner = {
     id?: string,
     email?: string,
     name?: string,
-    membershipId:string
+    membershipId: string
+}
+export type Tworkshop = {
+    id: string,
+    title: string,
+    subTitle: string,
+    img?: string,
+    imgUrl?:string,
+    desc: string,
 }
 
 export type TperiodicAgenda = {
@@ -67,33 +77,33 @@ export type Tmembership =
 export type Tuser =
     {
         _id?: string,
-        name : string,
-        email : string ,
-        password?: string ,
+        name: string,
+        email: string,
+        password?: string,
         isNewUser: string,
         healthDeclaration: string,
-        userQuestionnaireId:string,
-        memberships?: string[] 
-         ,
-        isAdmin : boolean ,
+        userQuestionnaireId: string,
+        memberships?: string[]
+        ,
+        isAdmin: boolean,
     }
 
-export type Tannouncement = 
-{
-    id?:string
-    title: string ,
-    subTitle: string ,
-    date : Date | null | undefined,
-    hours ?: {start:Date,end:Date},
-    img: string ,
-    desc:string,
-    price?:number,
-} 
-export type TselectedHoursRange ={
-    start:Date
-    end:Date
+export type Tannouncement =
+    {
+        id?: string
+        title: string,
+        subTitle: string,
+        date: Date | null | undefined,
+        hours?: { start: Date, end: Date },
+        img: string,
+        desc: string,
+        price?: number,
+    }
+export type TselectedHoursRange = {
+    start: Date
+    end: Date
 }
-export type Tbillboard ={
-    _id?:string
-    announcements:Tannouncement[]
+export type Tbillboard = {
+    _id?: string
+    announcements: Tannouncement[]
 }

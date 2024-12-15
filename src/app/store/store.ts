@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import msgSlice from './features/msgSlice'
 import  alertSlice  from './features/alertBoxSlice'
 import userSlice  from './features/userSlice'
+import periodicAgendaSilce  from './features/periodicAgendaSilce'
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       userMsgSlice:msgSlice,
       alertBoxSlice:alertSlice,
       currUserSlice:userSlice,
+      periodicAgendaSilce:periodicAgendaSilce,
     }
   })
 }
