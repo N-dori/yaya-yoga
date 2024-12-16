@@ -77,6 +77,10 @@ const activitySchema = new Schema({
 
     workshop:workshopSchema,
 
+    workshopId: {
+        type: String,
+
+    },
     teacher: {
         type: String,
 

@@ -364,7 +364,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
     }
 
     const handelWorkshop =(activity:Tactivity) => {
- router.replace(`/workshopDetails/${activity.workshop.id}`)
+ router.replace(`/workshops/${activity.workshop.id}`)
     }
     const PractitionersIndexProps = {
         practitioners: activity?.practitioners,

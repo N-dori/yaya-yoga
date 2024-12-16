@@ -1,3 +1,5 @@
+import { Tworkshop } from "../types/types";
+
 export function makeId(length = 6) {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   var txt = ''
@@ -12,12 +14,14 @@ export const stripTime = (date: Date | string): Date => {
   const strippedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   return strippedDate;
 };
+
 export const getBaseUrl = () => {
 
   const baseUrl = process.env.NODE_ENV === 'development' ?
     process.env.NEXT_PUBLIC_DEV_URL : process.env.NEXT_PUBLIC_PRUD_URL
   return baseUrl
 }
+
 export const getUrl = (endPoint: string) => {
 
   const baseUrl = process.env.NODE_ENV === 'development' ?
@@ -138,9 +142,24 @@ export const getPreiodicAgenda = async () => {
   } else {
     throw new Error('faild to get a new periodic Agenda')
   }
-
+  
 }
+export const createNewWorkShop = async (workshop:Tworkshop)=>{
+  const url = getUrl('workshop/createWorkshop/')
+  
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ workshop })
+  })
+  if(res.ok){
+    return res.json()
+    
+  }else {
+    throw new Error('faild to get a new workshop')
 
+  }
+}
 export const getBillboard = async () => {
 
   const url = getUrl('announcement/getBillboard')

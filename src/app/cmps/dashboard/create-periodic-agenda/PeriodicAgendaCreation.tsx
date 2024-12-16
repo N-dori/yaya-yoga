@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
 import PeriodDates from './PeriodDates'
 import { Tactivity, TperiodicAgenda, TuserMsgProps, Tworkshop } from '@/app/types/types'
-import { getUrl, makeId, stripTime } from '@/app/utils/util'
+import { createNewWorkShop, getUrl, makeId, stripTime } from '@/app/utils/util'
 import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
 import { callUserMsg, hideUserMsg, } from '@/app/store/features/msgSlice'
@@ -30,6 +30,7 @@ export default function PeriodicAgendaCreation() {
     const [workshopTitle, setWorkshopTitle] = useState<string>('')
     const [workshopSubTitle, setWorkshopSubTitle] = useState<string>('')
     const [workshopDesc, setWorkshopDesc] = useState<string>('')
+    const [lastDateForRegistration, setLastDateForRegistration] = useState<Date>(null)
     const [imgPreview, setImgPreview] = useState<string>('')
     const [imgLink, setImgLink] = useState<string>('')
     const [img, setImg] = useState<string>('')
@@ -234,14 +235,17 @@ export default function PeriodicAgendaCreation() {
         setPeriodicAgenda({ ...updatedPeriodicAgenda })
 
         resetDateTime()
+        resetWorkShopState()
         console.log('calling user messege', periodicAgenda);
         getUserMsg({ msg: singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה `, isSucsses: true })
 
     }
+
+
     const findWorkshopsAndUploadTheirImagesToS3 = async () => {
         const workshopFound = periodicAgenda.activities.some(activity => activity.classOrWorkshop === 'סדנא')
         if (!workshopFound) {
-            return
+            return false
         }
         let workshops: Tworkshop[] = []
 
@@ -319,7 +323,7 @@ export default function PeriodicAgendaCreation() {
                 end: activityEndTime
             },
             classOrWorkshop: activityType,
-            workshop: workshopTitle ? { id: makeId(), title: workshopTitle, subTitle: workshopSubTitle, img, imgUrl: imgLink, desc: workshopDesc } : undefined,
+            workshop: workshopTitle ? { id: makeId(), title: workshopTitle, subTitle: workshopSubTitle, img, imgUrl: imgLink, desc: workshopDesc, activityStartTime, activityEndTime, date , lastDateForRegistration } : undefined,
             teacher: activityTeacher,
             location: activityLocation,
             isCanceled: false,
@@ -334,6 +338,12 @@ export default function PeriodicAgendaCreation() {
         setActivityStartTime(null)
         setActivityEndTime(null)
     }
+    const resetWorkShopState = () => {
+        setWorkshopDesc('')
+        setWorkshopSubTitle('')
+        setWorkshopTitle('')
+        setImgPreview('')
+    } 
 
     const deleteImgPropFromWorkshops = () => {
         const updatedActivities = periodicAgenda.activities.map(activity => {
@@ -350,16 +360,53 @@ export default function PeriodicAgendaCreation() {
         periodicAgenda.activities = updatedActivities
         setPeriodicAgenda({ ...periodicAgenda })
     }
+    
+    const createNewWorkshops = async (workshops: Tworkshop[]) => {
+        const promises = workshops.map(workshop => {
+            return createNewWorkShop(workshop)
+        })
+        const res = Promise.all(promises)
+        console.log('workshops', res);
+
+    }
+
+    const getWorkshopsAndPostToDataBase =async () => {
+     let  workshops :Tworkshop[]= []  
+      periodicAgenda.activities.forEach(activity =>
+        {
+            if(activity.classOrWorkshop ==='סדנא'){
+                workshops.push(activity.workshop) 
+        }})
+        
+        createNewWorkshops(workshops)
+    }
+
+     const modifyWorkshopPropAtActivities = () => {
+        periodicAgenda.activities.forEach(activity => {
+            if(activity.classOrWorkshop ==='סדנא'){
+                const workshopId =  activity.workshop.id
+                activity.workshopId=workshopId
+                delete activity.workshop
+                
+        }
+        })
+        setPeriodicAgenda({...periodicAgenda})
+     }
 
     const createNewPeriodicAgenda = async () => {
         try {
-          const workshopFound =  await findWorkshopsAndUploadTheirImagesToS3()
-          if(workshopFound){
-              // delete img key from all the activities with the key img
-              deleteImgPropFromWorkshops() // deleting img key from activty.workshop because files cant pushed to mongo
-          }
+            const workshopFound = await findWorkshopsAndUploadTheirImagesToS3()
+            if (workshopFound) {
+                // delete img key from all the activities with the key img
+                deleteImgPropFromWorkshops() // deleting img key from activty.workshop because files cant pushed to mongo
+              // find all workshops and creact new at mongo
+              await getWorkshopsAndPostToDataBase()
+              //delete the workshop key from all of the activities and
+              // leave just the id under workshoId to connect them if needed
+                modifyWorkshopPropAtActivities()
+
+            }
             const url = getUrl('periodicAgenda/createPeriodicAgenda/')
-            console.log('url', url);
 
             const res = await fetch(url, {
                 method: 'POST',
@@ -383,7 +430,6 @@ export default function PeriodicAgendaCreation() {
 
         } catch (err) {
             console.log(err);
-
         }
     }
 
@@ -433,6 +479,7 @@ export default function PeriodicAgendaCreation() {
         workshopTitle, setWorkshopTitle,
         workshopSubTitle, setWorkshopSubTitle,
         workshopDesc, setWorkshopDesc,
+        lastDateForRegistration, setLastDateForRegistration,
         isActivityRepeating,
         repeationNumber,
         handelDateChange,

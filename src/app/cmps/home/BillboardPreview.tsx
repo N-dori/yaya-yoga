@@ -41,7 +41,6 @@ export default function BillboardPreview({ announcement }: ThisMounthPreviewProp
             </div>
             {paragraphs.map(paragraph=>
             <p className='this-mounth-event-desc '>  {paragraph} </p>
-
             )}
            {(announcement.price!= 0)
             && <p className='this-mounth-event-desc '> מחיר : {announcement.price} ש"ח</p>

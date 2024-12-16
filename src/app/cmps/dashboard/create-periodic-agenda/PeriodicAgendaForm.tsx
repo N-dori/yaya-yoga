@@ -46,7 +46,8 @@ type PeriodicAgendaFromProps = {
     datesCounter: number
     periodLength: number | undefined
     allDaysOfPeriod: Date[] | undefined
-
+    lastDateForRegistration: Date,
+    setLastDateForRegistration: (date: Date) => void
 
 }
 
@@ -136,11 +137,11 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
                     <fieldset className='fieldset-form p-1 flex-col '>
                         <legend>פרטי הסדנא</legend>
                         <label className='flex-col'>
-                     כותרת :
+                            כותרת :
                             <input className='form-input' name='workshop-title' onChange={(e) => props.setWorkshopTitle(e.target.value)} value={props.workshopTitle} />
                         </label>
                         <label className='flex-col'>
-                          תת כותרת:
+                            תת כותרת:
                             <input className='form-input' name='workshop-title' onChange={(e) => props.setWorkshopSubTitle(e.target.value)} value={props.workshopSubTitle} />
                         </label>
 
@@ -156,11 +157,19 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
 
                             <label className='custom-input-select-img btn tac' htmlFor='select-img'
                             >{'לחץ לבחירת תמונה'}</label>
-
                         </div>
+                        <DatePicker
+                        selected={props.lastDateForRegistration}
+                        onChange={(currDate: Date | null) => props.setLastDateForRegistration(currDate)}
+                        dateFormat={'dd/MM/yyyy'}
+                        placeholderText="תאריך אחרון להרשמה"
+                        showIcon
+                        locale={he}
+
+                    />
                         <small>להפרדת הטקסט לפסקאות הוסף /</small>
-                        <textarea  className='workshop-desc' placeholder='תיאור הסדנא שלך ...' 
-                        onChange={(e) => props.setWorkshopDesc(e.target.value)} value={props.workshopDesc}/>
+                        <textarea className='workshop-desc' placeholder='תיאור הסדנא שלך ...'
+                            onChange={(e) => props.setWorkshopDesc(e.target.value)} value={props.workshopDesc} />
                     </fieldset>
                 }
 
@@ -180,10 +189,7 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
                                 <option key={index} value={option} />
                             ))}
                         </datalist>
-
-
                     </label>}
-
 
                 <label htmlFor='teacher' className='flex-col'>
                     מורה :

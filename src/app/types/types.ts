@@ -5,6 +5,7 @@ export type Tactivity = {
     hoursRange: { start: Date | null | undefined, end: Date | null | undefined },
     classOrWorkshop: string,
     workshop?: Tworkshop
+    workshopId?:string
     teacher: string,
     location: string,
     isCanceled: boolean,
@@ -25,6 +26,10 @@ export type Tworkshop = {
     img?: string,
     imgUrl?:string,
     desc: string,
+    activityStartTime:Date,
+    activityEndTime:Date,
+    lastDateForRegistration ?:Date,
+    date:Date
 }
 
 export type TperiodicAgenda = {

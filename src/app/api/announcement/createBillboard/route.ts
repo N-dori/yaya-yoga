@@ -22,6 +22,7 @@ export async function POST (request) {
                 { new: true, upsert: true } // Create if not exists, return updated document
               );
               revalidatePath('/')
+              revalidatePath('/dashboard/create_announcement')
             }
             return NextResponse.json({message: "billboard was updated/overwirtten",updatedDoc }, {status: 201 } )
     }else{

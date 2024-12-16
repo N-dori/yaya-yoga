@@ -7,12 +7,11 @@ type Props = {}
 
 export default async function page({}: Props) {
   const currBillboard = await getBillboard()
-  const billboard =currBillboard.billboard
+  const billboard: Tbillboard=currBillboard.billboard
   return (
     <main className='announcement-creation-page-container  gc2'>
         <h1 className='tac p-1'> יצירת לוח מודעות</h1>
         <AnnouncementCreationIndex billboard={billboard}/>
-
     </main>
   )
 }
