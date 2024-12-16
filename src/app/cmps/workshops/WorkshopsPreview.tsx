@@ -1,30 +1,32 @@
 import { Tworkshop } from '@/app/types/types'
 import { getFormatedDate, getFormatedTime } from '@/app/utils/util'
-import { redirect } from 'next/dist/server/api-utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 type WorkshopsPreviewProps = {
-  
+  isDetailsMode:boolean
   workshop: Tworkshop
+  
 }
 
 
-export default function WorkshopsPreview({ workshop }: WorkshopsPreviewProps) {
+export default function WorkshopsPreview({ workshop, isDetailsMode }: WorkshopsPreviewProps) {
 
   const paragraphs = workshop.desc.split('/')
 
   return (
-    <Link className='workshop-card-container flex-col gap1 clean ' href={`workshops/${workshop.id}`} >
+    <article className='workshop-card-container flex-col gap1 clean ' >
 
-      <h2 className='title tac'>{workshop.title}</h2>
+      <h2 className=' tac'>{workshop.title}</h2>
       <h4 className='sub-title'>{workshop.subTitle}</h4>
       <section>
-      {/* <div className='flex-sb'>
+
+     { isDetailsMode&&
+     <div className='flex-sb'>
         <p className='date bold'>{getFormatedDate(workshop.date)}</p>
         <p className='hours bold'>{getFormatedTime(workshop.activityStartTime)} - {getFormatedTime(workshop.activityEndTime)}</p>
-      </div> */}
+      </div>}
 
       <Image className='work-shop-image' src={workshop.imgUrl} alt={'imageOfWorkshop'}
         style={{ width: '100%' }}
@@ -34,16 +36,16 @@ export default function WorkshopsPreview({ workshop }: WorkshopsPreviewProps) {
       />
       </section>
    
-      <span> תאריך אחרון להרשמה  {getFormatedDate(workshop.lastDateForRegistration)}</span>
+      <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormatedDate(workshop.lastDateForRegistration)}</span></span>
     {
       paragraphs.map(paragraph=>
-        <p className='paragraph content'>{paragraph}</p>
+        <p className={isDetailsMode?'paragraph':' content'}>{paragraph}</p>
       )
     }
 
-<div className="blur-overlay flex-jc-ac">
-    <span className="more">למידע נוסף</span>
-  </div>
-    </Link>
+{!isDetailsMode&&<div className="blur-overlay flex-jc-ac">
+    <Link className="more" href={`workshops/${workshop.id}`}>למידע נוסף</Link>
+  </div>}
+    </article>
   )
 }

@@ -15,12 +15,14 @@
         padding: 15px;
         border-radius: 4px;
         .content {
-            padding: 10px;
-            line-height: 1.5;
+            padding: 1em;
+            line-height: 1.5em;
             font-size: 14px;
             height: 100%; /* Ensure it can overflow */
             overflow: hidden; /* For good measure */
-          }
+            margin-bottom: 2em;
+        }
+      
           .blur-overlay {
             position: absolute;
             bottom: 0;
@@ -42,4 +44,19 @@
 }
 .workshops-page-container>*{
   color: #222;
+}
+.workshop-details-container {
+    .title{
+        text-decoration: overline;
+    }
+    .paragraph{
+        overflow: auto; 
+        text-align: justify;
+        padding: 5px;
+      }
+}
+.last-date{
+    padding: .5em;
+    background: linear-gradient( rgba(255, 255, 255, 0),var(--clr7)) ;
+     color: var(--clr5);
 }

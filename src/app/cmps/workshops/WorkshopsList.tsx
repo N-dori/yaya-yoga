@@ -12,7 +12,8 @@ export default function WorkshopsList({workshops}: WorkshopsListProps) {
 
 
   const WorkshopsPreviewProps={
-    workshop:workshops[0]
+    workshop:workshops[0],
+    isDetailsMode:false
   }
   return (
    <WorkshopsPreview {...WorkshopsPreviewProps}/>

@@ -9,9 +9,9 @@ export default async  function page({params}) {
 const workshop = await getWorkshop(params.id)
   return (
     <main className='workshop-details-container  gc2'>
-    <h1 className='title tac'>YAYA YOGA</h1>
-      <h2>פרטי סדנא</h2>
-      <WorkshopsPreview workshop={workshop}/>
+    <h1 className='title tac mt-1'>YAYA YOGA</h1>
+      <h2 className='mb-1 tac'>סדנאות</h2>
+      <WorkshopsPreview workshop={workshop} isDetailsMode={true}/>
 
     </main>
   )
