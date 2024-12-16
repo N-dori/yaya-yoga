@@ -11,7 +11,7 @@ const workshop = await getWorkshop(params.id)
     <main className='workshop-details-container  gc2'>
     <h1 className='title tac mt-1'>YAYA YOGA</h1>
       <h2 className='mb-1 tac'>סדנאות</h2>
-      <WorkshopsPreview workshop={workshop} isDetailsMode={true}/>
+     { workshop&&<WorkshopsPreview workshop={workshop} isDetailsMode={true}/>}
 
     </main>
   )
