@@ -5,6 +5,7 @@ import { StartEndTimePickers } from './StartEndTimePickers'
 import { he } from 'date-fns/locale';
 import CheckSvg from '@/app/assets/svgs/CheckSvg'
 import RepeatingActivityRadioBtns from './RepeatingActivityRadioBtns'
+import { getFormatedDate } from '@/app/utils/util';
 
 type PeriodicAgendaFromProps = {
     activityEndTime: Date | null | undefined
@@ -70,9 +71,8 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
         error: props.error,
 
     }
-    const getFormatedDate = (date: string) => {
-        return new Date(date).toLocaleDateString('he-IL')
-    }
+   
+
     const handelImgInput = (ev: any) => {
         const file = ev.target.files[0]
         let imgName = file.name // טלי.png

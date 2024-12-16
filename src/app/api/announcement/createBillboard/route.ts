@@ -21,9 +21,9 @@ export async function POST (request) {
                 { _id, announcements },
                 { new: true, upsert: true } // Create if not exists, return updated document
               );
-              revalidatePath('/')
-              revalidatePath('/dashboard/create_announcement')
             }
+            revalidatePath('/')
+            revalidatePath('/dashboard/create_announcement')
             return NextResponse.json({message: "billboard was updated/overwirtten",updatedDoc }, {status: 201 } )
     }else{
          billboard =  await Billboard.create({announcements})

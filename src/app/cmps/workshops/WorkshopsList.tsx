@@ -1,9 +1,22 @@
+
+import { Tworkshop } from '@/app/types/types'
 import React from 'react'
+import WorkshopsPreview from './WorkshopsPreview'
 
-type WorkshopsListProps = {}
+type WorkshopsListProps = {
+  workshops:Tworkshop[]
+}
 
-export default function WorkshopsList({}: WorkshopsListProps) {
+export default function WorkshopsList({workshops}: WorkshopsListProps) {
+
+
+
+  const WorkshopsPreviewProps={
+    workshop:workshops[0]
+  }
   return (
-    <div>WorkshopsList</div>
+   <WorkshopsPreview {...WorkshopsPreviewProps}/>
+ 
+
   )
 }

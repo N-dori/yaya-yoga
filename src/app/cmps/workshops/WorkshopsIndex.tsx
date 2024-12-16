@@ -1,9 +1,21 @@
-import React from 'react'
+'use client'
+import { Tworkshop } from '@/app/types/types'
+import React, { useState } from 'react'
+import WorkshopsList from './WorkshopsList'
 
-type WorkshopsIndexProps = {}
+type WorkshopsIndexProps = {
+  workshops:Tworkshop[]
+}
 
-export default function WorkshopsIndex({}: WorkshopsIndexProps) {
+export default function WorkshopsIndex({workshops}: WorkshopsIndexProps) {
+
+  const WorkshopsListProps ={
+    workshops
+  }
   return (
-    <div>WorkshopsIndex</div>
+    <section className='p-1'>
+      <WorkshopsList {...WorkshopsListProps}/>
+
+    </section>
   )
 }

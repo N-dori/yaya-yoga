@@ -12,7 +12,7 @@ export async function POST () {
      return NextResponse.json(users, {status: 201 } )
      
     }
-    return NextResponse.json({message:'users could not be found yet'}, {status: 201 } )
+    return NextResponse.json({message:'users could not be found yet'}, {status: 404 } )
     
  }catch ( err ) {
     console.log('had a problem finding users', err);

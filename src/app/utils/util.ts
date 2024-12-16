@@ -15,6 +15,16 @@ export const stripTime = (date: Date | string): Date => {
   return strippedDate;
 };
 
+export const getFormatedDate = (date: string|Date) => {
+  return new Date(date).toLocaleDateString('he-IL')
+}
+export const getFormatedTime = (date: string|Date) => {
+  let fullTime =new Date(date).toLocaleTimeString('he-IL').split(':')
+  let hours =fullTime[0] 
+  let minutes =fullTime[1] 
+  return `${hours}:${minutes}`
+}
+
 export const getBaseUrl = () => {
 
   const baseUrl = process.env.NODE_ENV === 'development' ?
@@ -62,6 +72,24 @@ export const getUser = async (_id: String) => {
 
   return user
 }
+export const getWorkshop = async (id: String) => {
+  const url = getUrl('workshop/getWorkshop/')
+
+  const res = await fetch(url, {
+
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ id })
+  })
+  if(res.ok){
+    const workshop = await res.json()
+    console.log(' my workshop in utils getworkshopl = ', workshop);
+    return workshop
+
+  }
+
+}
+
 export const getUsers = async () => {
   const url = getUrl('user/getUsers/')
 
@@ -160,6 +188,25 @@ export const createNewWorkShop = async (workshop:Tworkshop)=>{
 
   }
 }
+export const getWorkshops = async () => {
+
+  const url = getUrl('workshop/getWorkshops')
+try {
+   const res = await fetch(url, {
+    method: 'GET',
+    headers: { "Content-type": "application/json" },
+  })
+  if (res.ok) {
+    const workshops =  await res.json()
+    return workshops
+}}
+ catch (error) {
+  console.log('faild to get workshops',error);
+  
+}
+ 
+
+}
 export const getBillboard = async () => {
 
   const url = getUrl('announcement/getBillboard')
@@ -178,6 +225,7 @@ export const getBillboard = async () => {
   }
 
 }
+
 export const clearBillboard = async (_id: string) => {
 
   const url = getUrl('announcement/removeBillboard')
