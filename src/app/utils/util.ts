@@ -58,6 +58,10 @@ export const getUserByEmail = async (email: String) => {
 
   return miniUser
 }
+
+export const getDateType = (givenDate :Date|string) => {
+  return new Date(givenDate)
+}
 export const getUser = async (_id: String) => {
   const url = getUrl('user/getUser/')
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
 import PeriodDates from './PeriodDates'
 import { Tactivity, TperiodicAgenda, TuserMsgProps, Tworkshop } from '@/app/types/types'
-import { createNewWorkShop, getUrl, makeId, stripTime } from '@/app/utils/util'
+import { createNewWorkShop, getDateType, getPreiodicAgenda, getUrl, makeId, stripTime } from '@/app/utils/util'
 import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
 import { callUserMsg, hideUserMsg, } from '@/app/store/features/msgSlice'
@@ -13,19 +13,22 @@ import { useDispatch } from 'react-redux'
 export default function PeriodicAgendaCreation() {
     // this state contains all the info regarding the period-a quoter  
     const [periodicAgenda, setPeriodicAgenda] = useState<TperiodicAgenda>()
+
+    const [isEditCurrPeriodicAgenda, setIsEditCurrPeriodicAgenda ] = useState<boolean>(false)
+    
     //first 4 states realted to Dates of period
     const [startPeriodicAgendaDate, setStartPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [endPeriodicAgendaDate, setEndPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [periodicAgendaDates, setPeriodicAgendaDates] = useState<{ start: string, end: string }>({ start: '', end: '' })
     const [isPeriodicAgendaDates, setIsPeriodicAgendaDates] = useState<boolean>(false)
-
+    // avtivities Repeations section
     const [allDaysOfPeriod, setAllDaysOfPeriod] = useState<Date[]>()
     const [copyOfAllDaysOfPeriod, setCopyOfAllDaysOfPeriod] = useState<Date[]>([])
     const [periodLength, setPeriodLength] = useState<number>()
     const [datesCounter, setDatesCounter] = useState<number>(0)
-    // avtivities Repeations section
     const [isActivityRepeating, setIsActivityRepeating] = useState<boolean>(false)
     const [repeationNumber, setRrepeationNumber] = useState<number>(-1)
+
     const [isWorkShop, setIsWorkShop] = useState<boolean>(false)
     const [workshopTitle, setWorkshopTitle] = useState<string>('')
     const [workshopSubTitle, setWorkshopSubTitle] = useState<string>('')
@@ -57,7 +60,10 @@ export default function PeriodicAgendaCreation() {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log('startPeriodicAgendaDate && endPeriodicAgendaDate out ');
+        
         if (startPeriodicAgendaDate && endPeriodicAgendaDate) {
+            console.log('startPeriodicAgendaDate && endPeriodicAgendaDate in ');
             getAllDaysOfPeriod(startPeriodicAgendaDate, endPeriodicAgendaDate)
         }
     }, [startPeriodicAgendaDate, endPeriodicAgendaDate])
@@ -108,7 +114,6 @@ export default function PeriodicAgendaCreation() {
             if (!isNaN(time.getTime())) {
                 if (startEnd === 'start') {
                     if (activityEndTime && time) {
-                        console.log('hi');
                         const isValid = chackTimeValid(new Date(time).getTime(), new Date(activityEndTime).getTime())
                         if (isValid) {
                             setActivityStartTime(currDate)
@@ -244,6 +249,7 @@ export default function PeriodicAgendaCreation() {
 
 
     const findWorkshopsAndUploadTheirImagesToS3 = async () => {
+        // if(isEditCurrPeriodicAgenda)
         const workshopFound = periodicAgenda.activities.some(activity => activity.classOrWorkshop === 'סדנא')
         if (!workshopFound) {
             return false
@@ -251,16 +257,23 @@ export default function PeriodicAgendaCreation() {
         let workshops: Tworkshop[] = []
 
         periodicAgenda.activities.forEach(activity => {
-            activity.classOrWorkshop === 'סדנא' ? workshops.push({ ...activity.workshop })
-                : ""
+            if(activity.workshop){
+                activity.classOrWorkshop === 'סדנא' ? workshops.push({ ...activity.workshop })
+                    : ""
+                
+            }
         })
         console.log(' workshops : ', workshops);
-        const promises = workshops.map(workshop => {
-            return uploadImagesTos3(workshop.img)
+        if(workshops.length){
+            const promises = workshops.map(workshop => {
+                return uploadImagesTos3(workshop.img)
+    
+            })
 
-        })
-        const uploadedImgs = Promise.all(promises)
-        console.log(' logging upload imgs : ', uploadedImgs);
+            const uploadedImgs = Promise.all(promises)
+            console.log(' logging upload imgs : ', uploadedImgs);
+        }
+
         return workshopFound
     }
 
@@ -352,8 +365,12 @@ export default function PeriodicAgendaCreation() {
                 return activity
             }
             if (activity.classOrWorkshop === 'סדנא') {
-                delete activity.workshop.img
-                return activity
+                if(activity.workshop){
+                    delete activity.workshop.img// do not upload the image itself
+                    return activity
+                }else{
+                    return activity
+                }
             }
         })
         console.log('updatedActivities', updatedActivities);
@@ -363,11 +380,14 @@ export default function PeriodicAgendaCreation() {
     }
     
     const createNewWorkshops = async (workshops: Tworkshop[]) => {
-        const promises = workshops.map(workshop => {
-            return createNewWorkShop(workshop)
-        })
-        const res = Promise.all(promises)
-        console.log('workshops', res);
+        if(workshops.length){
+            const promises = workshops.map(workshop => {
+                return createNewWorkShop(workshop)
+            })
+            const res = Promise.all(promises)
+            console.log('workshops', res);
+
+        }
 
     }
 
@@ -376,7 +396,9 @@ export default function PeriodicAgendaCreation() {
       periodicAgenda.activities.forEach(activity =>
         {
             if(activity.classOrWorkshop ==='סדנא'){
-                workshops.push(activity.workshop) 
+                if(activity.workshop){
+                    workshops.push(activity.workshop) 
+                }
         }})
         
         createNewWorkshops(workshops)
@@ -385,9 +407,12 @@ export default function PeriodicAgendaCreation() {
      const modifyWorkshopPropAtActivities = () => {
         periodicAgenda.activities.forEach(activity => {
             if(activity.classOrWorkshop ==='סדנא'){
-                const workshopId =  activity.workshop.id
-                activity.workshopId=workshopId
-                delete activity.workshop
+                if(activity.workshop){
+                    const workshopId =  activity.workshop.id
+                    activity.workshopId=workshopId
+                    delete activity.workshop
+
+                }
                 
         }
         })
@@ -443,6 +468,22 @@ export default function PeriodicAgendaCreation() {
             dispatch(hideUserMsg())
         }, 3500);
     }
+
+    const handelEditMode = async () => {
+        setIsEditCurrPeriodicAgenda(true)
+        const res = await getPreiodicAgenda()
+        if(res){
+            const currPeriodicAgenda :TperiodicAgenda = res.periodicAgenda
+
+            console.log('currPeriodicAgenda',currPeriodicAgenda);
+            setPeriodicAgenda({...currPeriodicAgenda})
+            setStartPeriodicAgendaDate(getDateType(currPeriodicAgenda.date.start))
+            setEndPeriodicAgendaDate(getDateType(currPeriodicAgenda.date.end))
+            setIsPeriodicAgendaDates(true)
+        }
+        
+    }
+
     const PeriodDatesProps = {
         setStartPeriodicAgendaDate,
         setEndPeriodicAgendaDate,
@@ -464,6 +505,9 @@ export default function PeriodicAgendaCreation() {
 
     }
     const PeriodicAgendaFromProps = {
+        periodicAgenda,
+        isEditCurrPeriodicAgenda,
+
         isMsgShown,
         userMsg,
         setIsMsgShown,
@@ -513,7 +557,14 @@ export default function PeriodicAgendaCreation() {
 
     return (
         !isPeriodicAgendaDates ?
+            <>
             <PeriodDates {...PeriodDatesProps} />
+            <section className='flex-col flex-jc-ac gap1' >
+            <span className='slash mt-1 mb-1'>/</span>
+            <button type='button' className='btn' onClick={handelEditMode} >לעריכה של לוז נוכחי</button>
+
+            </section>
+            </>
             :
             isPreviewDisplayShown ?
                 <PeriodicAgendaPreviewDisplay {...PreviewDisplayProps} />

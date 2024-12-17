@@ -33,7 +33,7 @@ export default function PeriodDates({ periodicAgendaDates
     return (
         <section className='periodic-agenga-dates-container flex-col flex-jc-ac gap1'>
            <h1 className='headline tac mb-1'>יצירת לוז תקופתי </h1>
-            <h4 className=' headline mb-1'> <span className="circle">שלב 1</span> יצירת תקופת פעילות </h4>
+            <h4 className=' headline mb-1'> <span className="circle">שלב 1</span> יצירת תקופת פעילות חדשה </h4>
             <label className='flex-jc-ac'>
                 תאריך תחילת תקופה :       </label>
                 <DatePicker

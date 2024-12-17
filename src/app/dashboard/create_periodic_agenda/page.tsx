@@ -9,7 +9,6 @@ export default function createPeriodicAgenda(props:any, searchParams:any) {
   return (
     <main className='create-periodic-agenda-container gc2 '>
 
-
      <PeriodicAgendaCreation/>
     
       </main>

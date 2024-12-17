@@ -40,8 +40,8 @@ export default function WorkshopsPreview({ workshop, isDetailsMode }: WorkshopsP
       <p className='price bold'>מחיר: {workshop.price} ש"ח</p>
       <p className='location bold'>{workshop.activityLocation} </p>
     {
-      paragraphs.map(paragraph=>
-        <p className={isDetailsMode?'paragraph':' content'}>{paragraph}</p>
+      paragraphs.map((paragraph,i)=>
+        <p key={i} className={isDetailsMode?'paragraph':' content'}>{paragraph}</p>
       )
     }
 

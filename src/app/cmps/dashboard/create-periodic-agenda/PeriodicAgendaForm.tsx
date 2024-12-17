@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { StartEndTimePickers } from './StartEndTimePickers'
@@ -6,8 +6,12 @@ import { he } from 'date-fns/locale';
 import CheckSvg from '@/app/assets/svgs/CheckSvg'
 import RepeatingActivityRadioBtns from './RepeatingActivityRadioBtns'
 import { getFormatedDate } from '@/app/utils/util';
+import { TperiodicAgenda } from '@/app/types/types';
 
 type PeriodicAgendaFromProps = {
+    periodicAgenda:TperiodicAgenda
+    isEditCurrPeriodicAgenda:boolean
+
     activityEndTime: Date | null | undefined
     activityStartTime: Date | null | undefined
     handelTimeChange: (currDate: Date | null | undefined, startEnd: string) => void
@@ -40,7 +44,7 @@ type PeriodicAgendaFromProps = {
     setIsPreviewDisplayShown: (b: boolean) => void
     createNewPeriodicAgenda: () => void
     addActivity: () => void
-    removeSaturdays: () => void
+    removeSaturdays?: () => void
 
     periodicAgendaDates: { start: string, end: string }
     startPeriodicAgendaDate: Date | null | undefined
@@ -56,7 +60,11 @@ type PeriodicAgendaFromProps = {
 export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
     const [options] = useState<string[]>(['אשטנגה', 'פראניאמה + אשטנגה', '108 ברכות שמש', 'ויניאסה', 'יסודות', 'האטה יוגה', 'פראניאמה'])
 
-
+    useEffect(() => {
+      console.log('PA-------------',props.periodicAgenda);
+      
+    }, [])
+    
     const RepeatingActivityRadioBtnsProps = {
         isActivityRepeating: props.isActivityRepeating,
         setIsActivityRepeating: props.setIsActivityRepeating,
@@ -101,13 +109,20 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
     return (
         <main className='periodic-agenda-form-container'>
             <div className='range-dates flex-jc-ac flex-col gap1 '>
-                <h4 >  <span className='circle mb-1'> שלב 2</span> יצירת פעילויות לתקופה </h4>
-                <h4>{getFormatedDate(props.periodicAgendaDates.start) + " עד " + getFormatedDate(props.periodicAgendaDates.end)}</h4>
+                <h4 >  <span className='circle mb-1'> שלב 2</span> {props.isEditCurrPeriodicAgenda?'עריכת פעילויות לתקופה':'יצירת פעילויות לתקופה'} </h4>
+                <h4>{getFormatedDate(props.periodicAgenda.date.start) + " עד " + getFormatedDate(props.periodicAgenda.date.end)}</h4>
+               {!props.isEditCurrPeriodicAgenda?
+               <section className='flex-jc-ac flex-col gap1'>
+                
                 <progress className='progress-bar' value={props.datesCounter} max={props.periodLength}>  </progress>
-                {
-                    props.allDaysOfPeriod ? props.allDaysOfPeriod.length ? <span>נשארו  {props.allDaysOfPeriod ? props.allDaysOfPeriod.length : ''} תאריכים למלא מתוך {props.periodLength}</span>
-                        : <span className='all-dates-checked flex-jc-ac'> <CheckSvg /> פעילויות הוזנו לכל תקופת הפעילות</span> : ""
-                }
+                 {
+                     props.allDaysOfPeriod ? 
+                     props.allDaysOfPeriod.length ? 
+                     <span>נשארו  {props.allDaysOfPeriod ? props.allDaysOfPeriod.length : ''} תאריכים למלא מתוך {props.periodLength}</span>
+                     : <span className='all-dates-checked flex-jc-ac'> <CheckSvg /> פעילויות הוזנו לכל תקופת הפעילות</span> : ""
+                    }
+                    </section>:
+                    <p>  הוספת פעילויות + </p>}
 
             </div>
             <form className='periodic-agenda-form flex-col gap1' >

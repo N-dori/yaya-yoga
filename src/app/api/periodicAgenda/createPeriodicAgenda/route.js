@@ -1,20 +1,35 @@
 import connectMongoDB from '@/app/libs/mongoDB';
-import PeriodicAgenda from '../../../models/periodicAgenda'
+import PeriodicAgenda from '../../../models/periodicAgenda';
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
-export async function POST (request) {
+export async function POST(request) {
+  try {
+    const { periodicAgenda } = await request.json();
 
-    try {
-   
-        const { periodicAgenda }  = await request.json()
-   
-         console.log('going to creact new Periodic Agenda :', periodicAgenda );
-         await connectMongoDB ()
-        
-        const newPeriodicAgenda =  await PeriodicAgenda.create({...periodicAgenda})
-        return NextResponse.json({newPeriodicAgenda} , {status: 201 } )
-    }catch(err){
-        console.log('had problem to create a Periodic Agenda ',err);
-      }
-    
+
+    await connectMongoDB();
+
+    let newPeriodicAgenda;
+
+    if (periodicAgenda._id) {
+      // Replace an existing document based on the provided _id
+      newPeriodicAgenda = await PeriodicAgenda.findOneAndReplace(
+        { _id: periodicAgenda._id }, // Filter: Find the document by _id
+        periodicAgenda,             // Replacement data
+        { new: true, upsert: true } // Options: Return the updated document; create if not found
+      );
+    } else {
+      // Create a new document
+      newPeriodicAgenda = await PeriodicAgenda.create(periodicAgenda);
     }
+revalidatePath('/weekly_schedule')
+    return NextResponse.json({ newPeriodicAgenda }, { status: 201 });
+  } catch (err) {
+    console.error('Error handling Periodic Agenda:', err);
+    return NextResponse.json(
+      { error: 'Failed to handle Periodic Agenda request' },
+      { status: 500 }
+    );
+  }
+}
