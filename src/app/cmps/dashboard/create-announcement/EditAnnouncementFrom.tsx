@@ -51,6 +51,8 @@ type EditAnnouncementFromProps = {
     workshops:Tworkshop[]
     isLoading:boolean
 
+    setImgLink:(imgLink:string) => void
+    imgLink:string
 
 }
 
