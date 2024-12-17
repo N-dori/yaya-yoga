@@ -30,6 +30,8 @@ export type Tworkshop = {
     activityEndTime:Date,
     lastDateForRegistration ?:Date,
     date:Date
+    price:number|string
+    activityLocation:string
 }
 
 export type TperiodicAgenda = {
@@ -103,6 +105,7 @@ export type Tannouncement =
         img: string,
         desc: string,
         price?: number,
+        workshopId?:string
     }
 export type TselectedHoursRange = {
     start: Date

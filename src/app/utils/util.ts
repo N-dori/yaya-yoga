@@ -83,11 +83,30 @@ export const getWorkshop = async (id: String) => {
   })
   if(res.ok){
     const workshop = await res.json()
-    console.log(' my workshop in utils getworkshopl = ', workshop);
     return workshop
-
+    
   }
+  
+}
 
+export const uploadBillboardImage =async ( formData :FormData) =>{
+  try {
+    
+  } catch (error) {
+    console.log(' my formData in utils uploadBillboardImage = ', formData);
+    
+  }
+  const url = getUrl('s3/uploadBillboardImage/')
+            const res = await fetch(url, {
+                method: 'POST',
+                body: formData
+            },
+            )
+            if (res.ok) {
+              return true
+            }else{
+              false
+            }
 }
 
 export const getUsers = async () => {

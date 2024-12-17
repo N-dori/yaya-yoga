@@ -7,7 +7,9 @@
     direction: initial;
     overflow: hidden;
     background: linear-gradient(var(--clr7), var(--clr8));
-
+.headline{
+    text-decoration: overline;
+}
     .nav-bar-warpper {
         width: 100%;
 
@@ -69,7 +71,7 @@
 
     .main-menu-list-conatiner {
 
-        padding-top: 4em;
+        padding-top: 2em;
         font-size: .9em;
         padding-bottom: 0px;
 
@@ -97,7 +99,7 @@
     .menu-list>* {
         display: flex;
         align-items: center;
-        padding-block: 1em;
+        padding-block: .9em;
         cursor: pointer;
         border-bottom: 1px solid var(--clr2);
         text-align: justify;

@@ -28,6 +28,12 @@ const workshopSchema = new Schema({
     lastDateForRegistration: {
         type: String,
     },
+    price:{
+        type:String || Number
+    },
+    activityLocation:{
+        type:String 
+    }
 
 })
 

@@ -21,7 +21,8 @@ type PeriodicAgendaFromProps = {
     workshopTitle: string, setWorkshopTitle: (workshopTitle: string) => void,
     workshopSubTitle: string, setWorkshopSubTitle: (workshopSubTitle: string) => void,
     workshopDesc: string, setWorkshopDesc: (workshopDesc: string) => void,
-
+    price:string|number,
+    setPrice:(num:string|number)=>void
     isActivityRepeating: boolean
     repeationNumber: number
     handelDateChange: (date: Date | null | undefined) => void
@@ -170,6 +171,10 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
                         <small>להפרדת הטקסט לפסקאות הוסף /</small>
                         <textarea className='workshop-desc' placeholder='תיאור הסדנא שלך ...'
                             onChange={(e) => props.setWorkshopDesc(e.target.value)} value={props.workshopDesc} />
+                   <label  className='flex-col'>
+                    מחיר :
+                    <input className='form-input' name='price' type='number' onChange={(e) => props.setPrice(e.target.value)} value={props.price} />
+                </label>
                     </fieldset>
                 }
 

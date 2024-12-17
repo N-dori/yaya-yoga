@@ -1,4 +1,5 @@
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 
@@ -28,7 +29,8 @@ export async function DELETE(request) {
         }
 
       await deleteImageFromS3(fileName);
-
+      revalidatePath('/')
+      revalidatePath('/dashboard/create_announcement')
         return NextResponse.json({ success: true, message: "File deleted successfully" });
     } catch (err) {
         console.error('Error deleting file:', err);

@@ -31,7 +31,8 @@ export default async function page({}: Props) {
 
   return (
     <main className='workshops-page-container gc2'>
-      <h1 className='tac '>סדנאות</h1>
+   <h1 className='title tac mt-1'>YAYA YOGA</h1>
+   <h2 className='mb-1 tac'>סדנאות</h2>
      {workshopsGruopedByTitle&&
         workshopsGruopedByTitle.map((groupOfWorkshopsOfTheSameTitle,i)=>
       <WorkshopsIndex key={i} workshops={groupOfWorkshopsOfTheSameTitle}/>

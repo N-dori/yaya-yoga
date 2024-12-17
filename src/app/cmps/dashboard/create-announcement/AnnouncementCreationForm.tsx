@@ -1,5 +1,5 @@
 'use client'
-import { Tannouncement, TselectedHoursRange } from '@/app/types/types'
+import { Tannouncement, TselectedHoursRange, Tworkshop } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
 import MyAnnouncementIndex from './MyAnnouncementIndex'
@@ -55,14 +55,14 @@ type AnnouncementCreationFormProps = {
     handelPublishAnnuncement: () => void
     isLoading: boolean
     removeAnnuncement:(id:string) => void
+    workshops:Tworkshop[]
+
+    setImgLink:(imgLink:string) => void
+    imgLink:string
+    
 }
 
 export default function AnnouncementCreationForm(props: AnnouncementCreationFormProps) {
-
-
-
-
-
 
 
     const AnnouncementFormProps = {
@@ -86,12 +86,15 @@ export default function AnnouncementCreationForm(props: AnnouncementCreationForm
                 <section className='my-announcement-preview flex-col'>
                     <h3>המודעות שלי</h3>
                     {props.announcements &&
-                        <MyAnnouncementIndex announcements={props.announcements} removeAnnuncement={props.removeAnnuncement}setCurrAnnuncement={props.setCurrAnnuncement}
+                        <MyAnnouncementIndex announcements={props.announcements} 
+                        removeAnnuncement={props.removeAnnuncement}
+                        setCurrAnnuncement={props.setCurrAnnuncement}
                         />
                     }
                     <button onClick={props.handelPublishAnnuncement} className='publish-billbord-btn btn flex-jc-ac'>
                         {props.isLoading ? <Spinner /> : 'פרסם לוח מודעות'}</button>
-                </section>}
+                </section>
+            }
             <AnnouncementForm {...AnnouncementFormProps} />
 
         </section>

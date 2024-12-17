@@ -9,10 +9,10 @@ memberships:Tmembership[]
 
 export default function MyMembershipsList({memberships}: MyMembershipListProps) {
   return (
-    memberships?
+    memberships && memberships.length>0?
     <ul className='my-membership-wrapper flex-col gap05'>
         {memberships.map((membership,i) => 
-        <MyMembershipPreview key={membership._id} membership={membership} i={i}/>)}
+        <MyMembershipPreview key={membership?._id} membership={membership} i={i}/>)}
     </ul>
     :
     <section className='flex-col flex-ac gap1'>

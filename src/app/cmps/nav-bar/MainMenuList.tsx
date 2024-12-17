@@ -38,7 +38,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
   }
   return (
     <section className='main-menu-list-conatiner flex-ac flex-col tac'>
-      <h2 className='headline'>יאיא יוגה</h2>
+      <h2 className='headline'>YAYA-YOGA</h2>
         <ul className='menu-list grid clean '>
           {session?.user?.name?
           <>
@@ -59,7 +59,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
         <li className='gr5 flex-sb' onClick={()=> handelClick('/workshops')}>סדנאות <YogaSvg/></li>
 {   isAdmin&&  <li className='gr6 flex-sb' onClick={()=> handelClick('/dashboard')}>ניהול מערכת <PencilSvg/></li>}
         <li className='pointer gr7 flex-sb' onClick={handleSignOut}>יציאה מהחשבון <SignoutSvg/></li>
-        <CloseMenuSvg isShown={isShown} setIsShown={setIsShown} />
+        <CloseMenuSvg  isShown={isShown} setIsShown={setIsShown} />
         </ul>
       
         </section>

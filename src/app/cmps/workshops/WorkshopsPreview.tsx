@@ -18,7 +18,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode }: WorkshopsP
   return (
     <article className='workshop-card-container flex-col gap1 clean ' >
 
-      <h2 className=' tac'>{workshop.title}</h2>
+      <h2 className='workshop-title tac'>{workshop.title}</h2>
       <h4 className='sub-title'>{workshop.subTitle}</h4>
       <section>
 
@@ -37,15 +37,19 @@ export default function WorkshopsPreview({ workshop, isDetailsMode }: WorkshopsP
       </section>
    
       <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormatedDate(workshop.lastDateForRegistration)}</span></span>
+      <p className='price bold'>מחיר: {workshop.price} ש"ח</p>
+      <p className='location bold'>{workshop.activityLocation} </p>
     {
       paragraphs.map(paragraph=>
         <p className={isDetailsMode?'paragraph':' content'}>{paragraph}</p>
       )
     }
 
-{!isDetailsMode&&<div className="blur-overlay flex-jc-ac">
+{!isDetailsMode&&
+  <div className="blur-overlay flex-jc-ac">
     <Link className="more" href={`workshops/${workshop.id}`}>למידע נוסף</Link>
-  </div>}
+  </div>
+}
     </article>
   )
 }

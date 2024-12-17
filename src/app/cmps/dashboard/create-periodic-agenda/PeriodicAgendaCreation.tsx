@@ -34,6 +34,7 @@ export default function PeriodicAgendaCreation() {
     const [imgPreview, setImgPreview] = useState<string>('')
     const [imgLink, setImgLink] = useState<string>('')
     const [img, setImg] = useState<string>('')
+    const [price, setPrice] = useState<string|number>('')
 
 
     const [activityDate, setActivityDate] = useState<Date | null | undefined>(null)
@@ -323,7 +324,7 @@ export default function PeriodicAgendaCreation() {
                 end: activityEndTime
             },
             classOrWorkshop: activityType,
-            workshop: workshopTitle ? { id: makeId(), title: workshopTitle, subTitle: workshopSubTitle, img, imgUrl: imgLink, desc: workshopDesc, activityStartTime, activityEndTime, date , lastDateForRegistration } : undefined,
+            workshop: workshopTitle ? { id: makeId(), title: workshopTitle, subTitle: workshopSubTitle, img, imgUrl: imgLink, desc: workshopDesc, activityStartTime, activityEndTime, date , lastDateForRegistration,price ,activityLocation} : undefined,
             teacher: activityTeacher,
             location: activityLocation,
             isCanceled: false,
@@ -472,6 +473,7 @@ export default function PeriodicAgendaCreation() {
         handelTimeChange,
 
         activityDate,
+        price, setPrice,
         imgPreview, setImgPreview,
         imgLink, setImgLink,
         img, setImg,

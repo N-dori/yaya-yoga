@@ -1,10 +1,10 @@
 'use client'
-import { Tannouncement, Tbillboard, TselectedHoursRange } from '@/app/types/types'
+import { Tannouncement, Tbillboard, TselectedHoursRange, Tworkshop } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import AnnouncementCreationForm from './AnnouncementCreationForm'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
-import { clearBillboard, getUrl, makeId, scrollUp } from '@/app/utils/util'
+import { clearBillboard, getUrl, getWorkshops, makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
 import EditAnnouncementFrom from './EditAnnouncementFrom'
 
 type AnnouncementCreationIndexProps = {
@@ -36,19 +36,41 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
     const [isfirstTimeCmpMounts, setIsfirstTimeCmpMounts] = useState(true)
 
     const [selectedDate, setSelectedDate] = useState(null)
+    const [workshops, setWorkshops] = useState<Tworkshop[]>(null)
     const dispatch = useDispatch()
 
 
     useEffect(() => {
         if (isfirstTimeCmpMounts) {
             loadBillboard()
+            loadWorkshops()
         }
     }, [])
+    const loadWorkshops = async () => {
+        const workshops = await getWorkshops()
+        if (workshops) {
+            console.log('getting wor..', workshops);
+
+            setWorkshops(workshops)
+        }
+    }
     const loadBillboard = () => {
         if (billboard) {
             setAnnouncements([...billboard.announcements])
             setIsfirstTimeCmpMounts(false)
         }
+    }
+
+    const linkAnnouncementToWorkshop = (data:Tannouncement) => {
+        
+
+        const workshopFound = workshops?.find(workshop => workshop.title.trim() === data.title.trim())
+        console.log('workshopFound', workshopFound);
+        if (workshopFound) {
+            data.workshopId = workshopFound.id
+        }
+        console.log('data', data);
+        return data
     }
 
     const getUserMsg = (txt: string, isSucsses: boolean) => {
@@ -111,21 +133,19 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
             const formData = new FormData();
             formData.append('image', img);
             console.log('formData : ', formData);
-            const url = getUrl('s3/uploadBillboardImage/')
-            const res = await fetch(url, {
-                method: 'POST',
-                body: formData
-            },
-            )
-            if (res.ok) {
+           const res =  await uploadBillboardImage(formData)
+            
+            if (res) {
+
                 const data: Tannouncement = {
                     id: makeId(),
-                    title, subTitle, img: imgLink, date, hours, desc, price,
+                    title, subTitle, img: imgLink, date, hours, desc, price, workshopId:undefined
                 }
                 console.log('data : ', data);
                 addAnnouncement(data)
                 resetForm()
                 scrollUp()
+
                 setIsLoading(false)
                 console.log('woow it worked now save it to in to array of announcements');
 
@@ -144,13 +164,13 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
     const removeImageFromS3Bucket = async (fileName: string) => {
         try {
-            const url = getUrl('s3/removeImage'); 
+            const url = getUrl('s3/removeImage');
             const res = await fetch(url, {
                 method: 'DELETE',
-                headers: { "Content-Type": "application/json" }, 
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ fileName })
             });
-    
+
             if (res.ok) {
                 const data = await res.json(); // Parse the response JSON
                 console.log("Image removed successfully:", data);
@@ -166,11 +186,16 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
     };
 
     const addAnnouncement = (data: Tannouncement) => {
-        setAnnouncements([...announcements, data])
+        //if title of Announcement matchs === title of workshop 
+        // add to announcement workshopId for it can link to details page
+     const updatedData=  linkAnnouncementToWorkshop(data)
+
+        setAnnouncements([...announcements, updatedData])
         let txt = 'מודעה הוספה בהצלחה!'
         getUserMsg(txt, true)
 
     }
+
     const resetForm = () => {
         setTitle('')
         setSubTitle('')
@@ -182,6 +207,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
         setPrice(0)
         setDesc('')
     }
+
     const creacteBillboard = async () => {
         setIsLoading(true)
         const url = getUrl('announcement/createBillboard/')
@@ -196,7 +222,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
             let txt = 'לוח מודעות פורסם בהצלחה'
             getUserMsg(txt, true)
             setIsLoading(false)
-          
+
         } else {
             let txt = 'הייתה בעיה לפרסם לוח מודעות נסה מאוחר יותר'
             getUserMsg(txt, false)
@@ -205,7 +231,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
         }
     }
 
-     const handelImgInput = (ev: any) => {
+    const handelImgInput = (ev: any) => {
         const file = ev.target.files[0]
         let imgName = file.name // טלי.png
         let imgLink = `https://yayayoga.s3.eu-north-1.amazonaws.com/Announcements-images/${imgName}`
@@ -252,8 +278,9 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
     }
 
     const updateAnnouncement = (announcement: Tannouncement) => {
+      const updatedAnnouncement =  linkAnnouncementToWorkshop(announcement)
         const index = announcements.findIndex(currAnnouncement => currAnnouncement.id === announcement.id)
-        announcements.splice(index, 1, announcement)
+        announcements.splice(index, 1, updatedAnnouncement)
         setAnnouncements([...announcements])
     }
 
@@ -268,48 +295,48 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
     const removeAnnuncement = async (id: string) => {
         const announcement = announcements.find(announcement => announcement.id === id)
-        
-        const getFileName = (url:string )=>{
-                let name = '';
-                let extension = '';
-                // Find the last dot (.) for the extension
-                const lastDotIndex = url.lastIndexOf('.');
-                if (lastDotIndex !== -1) {
-                    extension = url.slice(lastDotIndex + 1);
-                }
-                // Find the last slash (/) for the file name
-                const lastSlashIndex = url.lastIndexOf('/');
-                if (lastSlashIndex !== -1) {
-                    name = url.slice(lastSlashIndex + 1, lastDotIndex);
-                } else {
-                    // If there's no slash, assume the entire string before the dot is the name
-                    name = url.slice(0, lastDotIndex);
-                }
-            
-                console.log('Extension is:', extension);
-                const fileName = `${name}.${extension}`;
-                return fileName;
-            
+
+        const getFileName = (url: string) => {
+            let name = '';
+            let extension = '';
+            // Find the last dot (.) for the extension
+            const lastDotIndex = url.lastIndexOf('.');
+            if (lastDotIndex !== -1) {
+                extension = url.slice(lastDotIndex + 1);
+            }
+            // Find the last slash (/) for the file name
+            const lastSlashIndex = url.lastIndexOf('/');
+            if (lastSlashIndex !== -1) {
+                name = url.slice(lastSlashIndex + 1, lastDotIndex);
+            } else {
+                // If there's no slash, assume the entire string before the dot is the name
+                name = url.slice(0, lastDotIndex);
+            }
+
+            console.log('Extension is:', extension);
+            const fileName = `${name}.${extension}`;
+            return fileName;
+
         }
 
         const fileName = getFileName(announcement.img)
-        
+
         console.log('fileName : ', fileName);
         const isConfirmed = confirm('האם אתה בטוח שברצונך להסיר מודעה?')
         if (isConfirmed) {
             removeImageFromS3Bucket(fileName)
-            
+
             if (announcements.length === 1) {
                 const res = await clearBillboard(billboard._id)
                 console.log('res : ', res);
-                
+
             }
             removeClientSideAnnuncement(id)
-            
+
         }
     }
     const removeClientSideAnnuncement = (id: string) => {
-        
+
         const announcement = announcements.find(announcement => announcement.id === id)
         const index = announcements.findIndex(announcement => announcement.id === id)
         announcements.splice(index, 1)
@@ -341,6 +368,8 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
         imgPreview, setImgPreview,
         errorMsg, setErrorMsg,
 
+        workshops,
+
         selectedDate, setSelectedDate,
         isLoading,
         handelSubmitAnnouncement,
@@ -355,11 +384,11 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
     }
     return (
 
-            !currAnnuncement ?
+        !currAnnuncement ?
 
-                <AnnouncementCreationForm {...AnnouncementCreationFormProps} />
-                :
-                <EditAnnouncementFrom {...AnnouncementCreationFormProps} />
-            
+            <AnnouncementCreationForm {...AnnouncementCreationFormProps} />
+            :
+            <EditAnnouncementFrom {...AnnouncementCreationFormProps} />
+
     )
 }

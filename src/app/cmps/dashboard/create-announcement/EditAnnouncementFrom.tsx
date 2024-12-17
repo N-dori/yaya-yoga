@@ -1,4 +1,4 @@
-import { Tannouncement, TselectedHoursRange } from '@/app/types/types'
+import { Tannouncement, TselectedHoursRange, Tworkshop } from '@/app/types/types'
 import React from 'react'
 import AnnouncementForm from './AnnouncementForm'
 
@@ -47,7 +47,10 @@ type EditAnnouncementFromProps = {
     currAnnuncement: Tannouncement
     resetForm:()=>void
     updateAnnouncement:(annuncement:Tannouncement)=>void
+    
+    workshops:Tworkshop[]
     isLoading:boolean
+
 
 }
 

@@ -34,6 +34,9 @@ const announcementSceama = new Schema ({
     price: {
         type: Number,
     } ,
+    workshopId:{
+        type:String
+    } ,
 },
 
 {

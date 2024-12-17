@@ -1,4 +1,5 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 
@@ -34,7 +35,7 @@ export async function POST(request) {
         }
         const buffer = Buffer.from(await file.arrayBuffer())
         const fileName = await uploadImageToS3(buffer, file.name)
-
+        revalidatePath('dashboard/create_announcement')
         return NextResponse.json({ success: true, fileName });
 
     } catch (err) {

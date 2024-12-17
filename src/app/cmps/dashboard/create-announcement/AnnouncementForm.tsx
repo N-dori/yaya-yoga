@@ -1,6 +1,6 @@
 import { clockSvg } from '@/app/assets/svgs/ClockSvg'
-import { Tannouncement, TselectedHoursRange } from '@/app/types/types'
-import { makeId } from '@/app/utils/util'
+import { Tannouncement, TselectedHoursRange, Tworkshop } from '@/app/types/types'
+import { makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
 import { he } from 'date-fns/locale'
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
@@ -41,6 +41,8 @@ type AnnouncementFormProps = {
     setImgPreview: (imgPreview: string) => void
     errorMsg: string
     setErrorMsg: (errorMsg: string) => void
+    setImgLink:(imgLink:string) => void
+    imgLink:string
 
     selectedDate: Date,
     setSelectedDate: (selectedDate: Date) => void
@@ -53,10 +55,11 @@ type AnnouncementFormProps = {
     resetForm: () => void
     updateAnnouncement: (announcement: Tannouncement) => void
     isLoading: boolean
+    workshops:Tworkshop[]
 }
 
 export default function AnnouncementForm(props: AnnouncementFormProps) {
-
+    const [workshopsTitles, setWorkshopsTitles] = useState<string[]>()
     useEffect(() => {
         if (props.currAnnuncement) {
             props.setTitle(props.currAnnuncement.title)
@@ -68,10 +71,18 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
             props.setPrice(props.currAnnuncement.price)
             props.setSelectedDate(props.currAnnuncement.date)
         }
-    }, [props.currAnnuncement])
+        getWorkshopsTitles()
+    }, [props.currAnnuncement,props?.workshops])
 
+    const getWorkshopsTitles = () => {
+       
+       let titles:string[]=  props?.workshops?.map(workshop=>workshop.title ) 
+       const titlesNoDuplicates = Array.from(new Set(titles))             
+        setWorkshopsTitles(titlesNoDuplicates) 
+    }
 
-    const handelSaveChanges = () => {
+    const handelSaveChanges = async () => {
+       
         let annuncement: Tannouncement = {
             id: props.currAnnuncement.id,
             title: props.title,
@@ -85,6 +96,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
         props.updateAnnouncement(annuncement)
         props.setCurrAnnuncement(null)
         props.resetForm()
+        scrollUp()
     }
     return (
         <form className='announcement-creation-form flex-col gap1' onSubmit={props.handelSubmitAnnouncement}>
@@ -95,21 +107,32 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                 <h3 className='tac'>עריכת מודעה</h3> 
                 <svg onClick={() => { props.setCurrAnnuncement(null); props.resetForm() }}
                 className='backSvg pointer'
-                xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg>
+                xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#5f6368">
+                    <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" /></svg>
 
             </section>
             
             : 
             <h3>טופס יצירת מודעה</h3>}
 
-            <label className='input-label flex-col' htmlFor="title" >
-                כותרת
-                <input className='input-text' type='text' name='title'
-                    style={props.titleInError ? { border: '1px solid red' } : {}}
-                    placeholder={props.errorMsg ? props.errorMsg : ''}
-                    value={props.title} onChange={(e: any) => props.setTitle(e.target.value)}
-                />
-            </label>
+        
+            <label htmlFor={'title'} className='input-label flex-col ' >
+            כותרת:
+                        <input className='input-text' id={'title '}
+                         style={props.titleInError ? { border: '1px solid red' } : {}}
+                         placeholder={props.errorMsg ? props.errorMsg : ''}
+                            type={'text'}
+                            list='options'
+                            value={props.title}
+                            onChange={(ev: any) => props.setTitle(ev.target.value)}
+                        />
+
+                        <datalist id="options" className='input-text'>
+                            {workshopsTitles?.map((title, index) => (
+                                <option key={index} value={title} />
+                            ))}
+                        </datalist>
+                    </label>
 
             <label className='input-label flex-col' htmlFor="subtitle">
                 כותרת משנה
@@ -180,6 +203,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                 </div>
             )}
 
+        {!props.isOnEditMode&&
             <div className=' flex-col'>
                 <input className='input-select-img' id='select-img' type='file' accept="image/*" name='select-img'
                     style={props.imgInError ? { border: '1px solid red' } : {}}
@@ -189,7 +213,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
                     style={(props.errorMsg && !props.imgPreview) ? { color: 'red' } : {}}
                 >{(props.errorMsg && !props.imgPreview) ? props.errorMsg : 'לחץ לבחירת תמונה'}</label>
 
-            </div>
+            </div>}
 
             <label className='input-label flex-col' htmlFor="desc">
                 תיאור הפעילות
