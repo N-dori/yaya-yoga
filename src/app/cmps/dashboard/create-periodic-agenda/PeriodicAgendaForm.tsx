@@ -60,11 +60,7 @@ type PeriodicAgendaFromProps = {
 export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
     const [options] = useState<string[]>(['אשטנגה', 'פראניאמה + אשטנגה', '108 ברכות שמש', 'ויניאסה', 'יסודות', 'האטה יוגה', 'פראניאמה'])
 
-    useEffect(() => {
-      console.log('PA-------------',props.periodicAgenda);
-      
-    }, [])
-    
+ 
     const RepeatingActivityRadioBtnsProps = {
         isActivityRepeating: props.isActivityRepeating,
         setIsActivityRepeating: props.setIsActivityRepeating,
@@ -86,7 +82,6 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
         const file = ev.target.files[0]
         let imgName = file.name // טלי.png
         let imgLink = `https://yayayoga.s3.eu-north-1.amazonaws.com/Workshop-images/${imgName}`
-        console.log('file', file);
 
         // Validate the file (e.g., type or size)
         if (!file.type.startsWith('image/')) {
@@ -122,7 +117,7 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
                      : <span className='all-dates-checked flex-jc-ac'> <CheckSvg /> פעילויות הוזנו לכל תקופת הפעילות</span> : ""
                     }
                     </section>:
-                    <p>  הוספת פעילויות + </p>}
+                    <p>  הוספת פעילויות  +</p>}
 
             </div>
             <form className='periodic-agenda-form flex-col gap1' >
@@ -224,8 +219,9 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
                     <input className='form-input' name='location' onChange={(e) => props.setActivityLocation(e.target.value)} value={props.activityLocation} />
                 </label>
                 <button className='form-btn flex-jc-ac pointer' type='button' onClick={props.addActivity}>הוסף פעילות </button>
-                <button className='form-btn flex-jc-ac pointer' type='button' onClick={() => props.setIsPreviewDisplayShown(true)}> תצוגה מקדימה</button>
-                <button className='form-btn flex-jc-ac pointer' type='button' onClick={props.createNewPeriodicAgenda}>סיים ופרסם לוז תקופתי</button>
+                <button className='form-btn flex-jc-ac pointer' type='button' onClick={() => props.setIsPreviewDisplayShown(true)}> ביטול שיעור</button>
+                <button className='form-btn flex-jc-ac pointer' type='button' 
+                onClick={props.createNewPeriodicAgenda}>{props.isEditCurrPeriodicAgenda?'עדכן לוז תקופתי':'סיים ופרסם לוז תקופתי'}</button>
             </form>
 
         </main>)

@@ -421,11 +421,14 @@ export default function PeriodicAgendaCreation() {
 
     const createNewPeriodicAgenda = async () => {
         try {
-            const workshopFound = await findWorkshopsAndUploadTheirImagesToS3()
-            if (workshopFound) {
+            const isOk = confirm(' רק בודק, בטוח שברצונך לפרסם לוז תקופתי?')
+          if(isOk){
+
+              const workshopFound = await findWorkshopsAndUploadTheirImagesToS3()
+              if (workshopFound) {
                 // delete img key from all the activities with the key img
                 deleteImgPropFromWorkshops() // deleting img key from activty.workshop because files cant pushed to mongo
-              // find all workshops and creact new at mongo
+                // find all workshops and creact new at mongo
               await getWorkshopsAndPostToDataBase()
               //delete the workshop key from all of the activities and
               // leave just the id under workshoId to connect them if needed
@@ -439,7 +442,7 @@ export default function PeriodicAgendaCreation() {
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({ periodicAgenda })
             })
-
+            
             if (res.ok) {
                 const { newPeriodicAgenda } = await res.json()
                 // callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
@@ -449,11 +452,12 @@ export default function PeriodicAgendaCreation() {
                     router.replace('/dashboard')
                 }, 1000);
                 console.log('created a new Periodic Agenda', newPeriodicAgenda)
-
+                
             } else {
                 throw new Error('faild to create a new periodic Agenda')
             }
-
+            
+        }
         } catch (err) {
             console.log(err);
         }
