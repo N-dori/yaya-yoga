@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, sendEmail, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
+import { getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId, pushPractionerToActivity, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, sendEmail, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { usePathname, useRouter } from 'next/navigation'
@@ -195,30 +195,20 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
 
     const addPractitionerToActivity = async (membershipId: string) => {
-        console.log('addin  Practitioner To Activity with membership num :', membershipId);
-        const url = getUrl('periodicAgenda/updatePeriodicAgendaPractitioners')
-        const res = await fetch(url, {
-            method: 'PUT',
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({
-                id: makeId(8),
-                periodicAgendaId,
-                activityId: activity.id,
-                membershipId,
-                email: session?.user?.email,
-                name: session?.user?.name
-            })
-        })
-        if (res.ok) {
-            console.log('adding Practitioner To Activity', await res.json());
-
+        const id =makeId(8)
+        const activityId =activity.id
+        const email =session?.user?.email
+        const name =session?.user?.name
+     const res = await pushPractionerToActivity( id ,periodicAgendaId, 
+                                                        activityId,
+                                                        membershipId,
+                                                        email ,
+                                                        name)
+        if (res) {
             let txt = `הרשמתך לשיעור ${activity.name} עברה בהצלחה נתראה על המזרן 🙏 `
             getUserMsg(txt, true)
             updateClientSideActivities(membershipId)
             setIsLoading(false)
-
-
-
         } else {
             let txt = `הייתה בעייה ברישום לשיעור, נסו מאוחר יותר`
             getUserMsg(txt, true)

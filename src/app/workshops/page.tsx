@@ -8,6 +8,8 @@ type Props = {}
 export default async function page({}: Props) {
 
   const workshops:Tworkshop[] = await getWorkshops()
+  // console.log('w***',workshops);
+  
   let workshopsGruopedByTitle : Tworkshop[][] =[]
   if(workshops){
 

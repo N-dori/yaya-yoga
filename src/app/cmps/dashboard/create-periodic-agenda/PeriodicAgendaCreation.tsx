@@ -9,6 +9,7 @@ import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
 import { callUserMsg, hideUserMsg, } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
+import EditPeriodOrCreateNew from './EditPeriodOrCreateNew'
 
 export default function PeriodicAgendaCreation() {
     // this state contains all the info regarding the period-a quoter  
@@ -328,8 +329,9 @@ export default function PeriodicAgendaCreation() {
     }
 
     const createActivity = (date: any) => {
+        const id =makeId()
         return {
-            id: makeId(),
+            id,
             date: date,
             name: activityType === 'שיעור' ? activityName : workshopTitle,
             hoursRange: {
@@ -337,7 +339,7 @@ export default function PeriodicAgendaCreation() {
                 end: activityEndTime
             },
             classOrWorkshop: activityType,
-            workshop: workshopTitle ? { id: makeId(), title: workshopTitle, subTitle: workshopSubTitle, img, imgUrl: imgLink, desc: workshopDesc, activityStartTime, activityEndTime, date , lastDateForRegistration,price ,activityLocation} : undefined,
+            workshop: workshopTitle ? { id: makeId(),activityId:id, title: workshopTitle, subTitle: workshopSubTitle, img, imgUrl: imgLink, desc: workshopDesc, activityStartTime, activityEndTime, date , lastDateForRegistration,price ,activityLocation} : undefined,
             teacher: activityTeacher,
             location: activityLocation,
             isCanceled: false,
@@ -479,7 +481,6 @@ export default function PeriodicAgendaCreation() {
         if(res){
             const currPeriodicAgenda :TperiodicAgenda = res.periodicAgenda
 
-            console.log('currPeriodicAgenda',currPeriodicAgenda);
             setPeriodicAgenda({...currPeriodicAgenda})
             setStartPeriodicAgendaDate(getDateType(currPeriodicAgenda.date.start))
             setEndPeriodicAgendaDate(getDateType(currPeriodicAgenda.date.end))
@@ -488,13 +489,14 @@ export default function PeriodicAgendaCreation() {
         
     }
 
-    const PeriodDatesProps = {
+    const EditPeriodOrCreateNewProps = {
         setStartPeriodicAgendaDate,
         setEndPeriodicAgendaDate,
         startPeriodicAgendaDate,
         endPeriodicAgendaDate,
         setPeriodicAgendaDates,
-        periodicAgendaDates
+        periodicAgendaDates,
+        handelEditMode
     }
     const PreviewDisplayProps = {
         setIsPreviewDisplayShown,
@@ -561,14 +563,9 @@ export default function PeriodicAgendaCreation() {
 
     return (
         !isPeriodicAgendaDates ?
-            <>
-            <PeriodDates {...PeriodDatesProps} />
-            <section className='flex-col flex-jc-ac gap1' >
-            <span className='slash mt-1 mb-1'>/</span>
-            <button type='button' className='btn' onClick={handelEditMode} >לעריכה של לוז נוכחי</button>
+            <EditPeriodOrCreateNew {...EditPeriodOrCreateNewProps}/>
 
-            </section>
-            </>
+           
             :
             isPreviewDisplayShown ?
                 <PeriodicAgendaPreviewDisplay {...PreviewDisplayProps} />

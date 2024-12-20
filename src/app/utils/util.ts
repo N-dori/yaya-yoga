@@ -1,4 +1,4 @@
-import { Tworkshop } from "../types/types";
+import { Tmembership, Tworkshop } from "../types/types";
 
 export function makeId(length = 6) {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -62,6 +62,7 @@ export const getUserByEmail = async (email: String) => {
 export const getDateType = (givenDate :Date|string) => {
   return new Date(givenDate)
 }
+
 export const getUser = async (_id: String) => {
   const url = getUrl('user/getUser/')
 
@@ -91,6 +92,56 @@ export const getWorkshop = async (id: String) => {
     
   }
   
+}
+
+export const updateWorkshop = async (workshopId: String,workshop:Tworkshop) => {
+  const url = getUrl('workshop/updateWorkshop/')
+
+  const res = await fetch(url, {
+
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ workshopId , workshop})
+  })
+  if(res.ok){
+    const workshop = await res.json()
+    return workshop
+    
+  }
+  
+}
+export const deleteWorkshop = async (workshopId: String) => {
+  const url = getUrl('workshop/removeWorkShop/')
+
+  const res = await fetch(url, {
+
+    method: 'DELETE',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ workshopId })
+  })
+  if(res.ok){
+    const msg = res.json()
+    return msg
+    
+  }
+
+}
+
+export const deleteAnnouncemnt = async (id: String) => {
+  const url = getUrl('announcement/removeAnnouncement/')
+
+  const res = await fetch(url, {
+
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ id })
+  })
+  if(res.ok){
+    const msg = res.json()
+    return msg
+    
+  }
+
 }
 
 export const uploadBillboardImage =async ( formData :FormData) =>{
@@ -195,6 +246,29 @@ export const getPreiodicAgenda = async () => {
   }
   
 }
+
+export const pushPractionerToActivity = async (id:string,periodicAgendaId:string,
+                                               activityId:string,membershipId:string,
+                                               email:string, name:string) => {
+   const url = getUrl('periodicAgenda/updateActivityPractitioners')
+          const res = await fetch(url, {
+              method: 'PUT',
+              headers: { "Content-type": "application/json" },
+              body: JSON.stringify({
+                  id,
+                  periodicAgendaId,
+                  activityId,
+                  membershipId,
+                  email,
+                  name,
+              })
+          })
+          if (res.ok) {
+            const updatedActivity = await res.json()
+              console.log('adding Practitioner To Activity', updatedActivity);
+              return updatedActivity
+          }
+}
 export const createNewWorkShop = async (workshop:Tworkshop)=>{
   const url = getUrl('workshop/createWorkshop/')
   
@@ -221,6 +295,7 @@ try {
   })
   if (res.ok) {
     const workshops =  await res.json()
+    console.log('workshops to get workshops',workshops);
     return workshops
 }}
  catch (error) {
@@ -265,6 +340,95 @@ export const clearBillboard = async (_id: string) => {
   }
 
 }
+export const  createNewMembership =async (membership:Tmembership) => {
+  const url = getUrl('membership/createNewMembership')
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ membership })
+      })
+      if (res.ok) {
+        const newMembership =res.json()
+        return newMembership
+      }
+}
+
+export const getPlan = async (membershipType: string, email:string ,paid?:number) => {
+  
+    const user = await getUserByEmail(email)
+
+    let membership: Tmembership
+    const dropInMembership: Tmembership =
+    {
+      userId: user._id,
+      isExpired: false,
+      subscription: { type: 'drop-in', entries: 1 },
+      paid: 50,
+      dateOfPurchase: new Date(),
+    }
+
+    const fivePassMembership: Tmembership =
+    {
+      userId: user._id,
+      subscription: { type: 'כרטיסייה 5 כניסות', entries: 5 },
+      isExpired: false,
+      paid: 250,
+      dateOfPurchase: new Date(),
+
+    }
+    const tenPassMembership: Tmembership =
+    {
+      userId: user._id,
+      subscription: { type: 'כרטיסייה 10 כניסות', entries: 10 },
+      isExpired: false,
+      paid: 450,
+      dateOfPurchase: new Date(),
+    }
+    const monthlyPassMembership: Tmembership =
+    {
+      userId: user._id,
+      subscription: { type: 'חופשי חודשי', entries: 100 },
+      isExpired: false,
+      paid: 350,
+      dateOfPurchase: new Date(),
+    }
+
+    const workshopPass: Tmembership =
+    {
+      userId: user._id,
+      subscription: { type: 'סדנא', entries: 1 },
+      isExpired: false,
+      paid,
+      dateOfPurchase: new Date(),
+    }
+    switch (membershipType) {
+      case 'כניסה חד-פעמית':
+        membership = dropInMembership
+        let end = new Date(dropInMembership.dateOfPurchase);
+        end.setMonth(end.getMonth() + 6); // Move 6 months ahead
+        dropInMembership.end = end
+        break;
+      case 'סדנא':
+        membership = workshopPass
+        let expiryDate = new Date(dropInMembership.dateOfPurchase);
+        expiryDate.setMonth(end.getMonth() + 6); // Move 6 months ahead
+        workshopPass.end = expiryDate
+        break;
+      case 'כרטיסייה 5 כניסות':
+        membership = fivePassMembership
+        break;
+      case 'כרטיסייה 10 כניסות':
+        membership = tenPassMembership
+        break;
+      case 'חופשי חודשי':
+        membership = monthlyPassMembership
+        break;
+
+      default:
+        break;
+    }
+    return [membership, user._id]
+  }
 
 export const removePractitionerFromActivityFromDatabase = async (periodicAgendaId: string, activityId: string, email: string) => {
   const url = getUrl('periodicAgenda/removePractitionerFromActivity')

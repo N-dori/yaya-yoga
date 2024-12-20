@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import AnnouncementCreationForm from './AnnouncementCreationForm'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
-import { clearBillboard, getUrl, getWorkshops, makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
+import { clearBillboard, deleteAnnouncemnt, getUrl, getWorkshops, makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
 import EditAnnouncementFrom from './EditAnnouncementFrom'
 
 type AnnouncementCreationIndexProps = {
@@ -331,6 +331,9 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
                 console.log('res : ', res);
 
             }
+
+             await deleteAnnouncemnt(announcement.workshopId)
+            
             removeClientSideAnnuncement(id)
 
         }

@@ -20,6 +20,8 @@ export type Tpractitioner = {
     membershipId: string
 }
 export type Tworkshop = {
+    _id?: string
+    activityId?: string
     id: string,
     title: string,
     subTitle: string,
@@ -97,6 +99,7 @@ export type Tuser =
 
 export type Tannouncement =
     {
+       
         id?: string
         title: string,
         subTitle: string,

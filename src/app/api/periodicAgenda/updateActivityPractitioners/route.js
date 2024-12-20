@@ -5,6 +5,7 @@ import PeriodicAgenda from '../../../models/periodicAgenda';
 export async function PUT(request) {
     try {
         const {id, email, activityId, periodicAgendaId ,name ,membershipId} = await request.json();
+        const lastDoc = await PeriodicAgenda.findOne().sort( { _id: -1 } )
 
         await connectMongoDB();
 
@@ -12,7 +13,7 @@ export async function PUT(request) {
         
         // Update the a specific activity in the array of the document
         const updatedPeriodicAgenda = await PeriodicAgenda.updateOne(
-            { _id: periodicAgendaId},
+            { _id: periodicAgendaId?periodicAgendaId:lastDoc._id},
             { $push: { "activities.$[activity].practitioners": {id,email,name,membershipId} } },
             {
               arrayFilters: [{ "activity.id": activityId }]  

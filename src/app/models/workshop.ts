@@ -4,6 +4,9 @@ const workshopSchema = new Schema({
     id: {
         type: String,
     },
+    activityId: {
+        type: String,
+    },
     title: {
         type: String,
     },

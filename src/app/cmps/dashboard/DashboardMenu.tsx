@@ -10,7 +10,7 @@ export default function DashboardMenu({ }: Props) {
     const handelRoute = (route:string) => {
         router.replace('/')
 
-            router.replace(route)
+            router.push(route)
             
 
     }
@@ -19,7 +19,7 @@ export default function DashboardMenu({ }: Props) {
             <p onClick={()=>handelRoute('/dashboard/presence')}>דף נוכחות</p>
             <p  onClick={()=>{handelRoute('/dashboard/create_periodic_agenda')}}>יצירת/עריכת לוז תקופתי</p>
             <p  onClick={()=>{handelRoute('/dashboard/practitioners_list')}}>רשימת תלמידים</p>
-             <p onClick={()=>{handelRoute('/dashboard/create_announcement')}}>פרסום של לוח מודעות</p>
+             <p onClick={()=>{handelRoute('/dashboard/create_announcement')}}> לוח מודעות</p>
             {/* <p>סיכום רכישות </p>
             <p>הזנת תקבולים</p> */}
         </section>
