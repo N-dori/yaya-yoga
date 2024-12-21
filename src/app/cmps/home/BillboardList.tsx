@@ -8,6 +8,7 @@ type thisMountListProps = {
 
 export default function BillboardList({announcements}: thisMountListProps) {
   return (
-    announcements?.map(announcement => <BillboardPreview key={announcement.id} announcement={announcement}/> )
+    announcements?.map(announcement => 
+    <BillboardPreview key={announcement.id} announcement={announcement}/> )
   )
 }

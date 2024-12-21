@@ -1,5 +1,5 @@
 .this-mounth-index-container {
-    position: relative;
+
     margin-top: 1em;
     padding-inline: 1em;
     background-color: var(--clr8);
@@ -29,18 +29,7 @@
         margin-bottom: 1em;
     }
 
-    .this-mounth-event-desc-wrapper {
-
-        .this-mounth-event-desc {
-            text-align: justify;
-            font-size: .9em;
-            border-radius: 8px;
-            line-height: 20px;
-            letter-spacing: .6px;
-
-
-        }
-    }
+   
     .blur-overlay {
         position: absolute;
         bottom: 0;
@@ -60,5 +49,18 @@
         font-size: 1.3em;
         padding: .5em;
         font-weight: 600;
+    }
+}
+.this-mounth-event-desc-wrapper {
+    position: relative;
+    padding-block:1em ;
+    .this-mounth-event-desc {
+        text-align: justify;
+        font-size: .9em;
+        border-radius: 8px;
+        line-height: 20px;
+        letter-spacing: .6px;
+
+
     }
 }

@@ -4,24 +4,13 @@ import { getFormatedTime } from '@/app/utils/util'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import ParagraphsIndex from '../ParagraphsIndex'
 
 type ThisMounthPreviewProps = {
     announcement: Tannouncement
 }
-// const getFormtaedtime = (time:Date) => {
-//     let hours = new Date(time).toLocaleTimeString('he-IL').split(':')[0]
-//     let minutes = new Date(time).toLocaleTimeString('he-IL').split(':')[1]
-// return `${hours}:${minutes}`
-// }
 
 export default function BillboardPreview({ announcement }: ThisMounthPreviewProps) {
-    const paragraphs = announcement.desc.split('/')
-    //  const handelClick =(announcement:Tannouncement) => {
-    //     if(announcement.workshopId){
-    //         router.push(`workshops/${announcement.workshopId}`)
-    //     }
-
-    //  }
 
     return (
         <section className='this-mount-wrapper flex-col gap05'>
@@ -47,23 +36,14 @@ export default function BillboardPreview({ announcement }: ThisMounthPreviewProp
                     <h5 className='this-mounth-event-date'>{getFormatedTime(announcement.hours.start) + '-' + getFormatedTime(announcement.hours.end)}</h5>
                 }
             </div>
-            <section className='this-mounth-event-desc-wrapper'
-                style={announcement.workshopId ? { maxHeight: '144px', overflow: 'hidden' } : {}}>
-                {paragraphs.map(paragraph =>
-                    <p className='this-mounth-event-desc '>  {paragraph} </p>
-                )}
-
-            </section>
+            <ParagraphsIndex desc={announcement.desc} workshopId={announcement.workshopId}/>
+           
 
             {(announcement.price != 0)
                 && <p className='this-mounth-event-desc '> מחיר : {announcement.price} ש"ח</p>
             }
             
-            {announcement.workshopId &&
-                <div className="blur-overlay flex-jc-ac">
-                    <Link className="more" href={`workshops/${announcement.workshopId}`}>למידע נוסף</Link>
-                </div>
-            }
+          
         </section>
     )
 }

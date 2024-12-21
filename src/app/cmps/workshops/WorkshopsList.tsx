@@ -12,6 +12,7 @@ export default function WorkshopsList({workshops}: WorkshopsListProps) {
 
 
   const WorkshopsPreviewProps={
+    workshops,
     workshop:workshops[0],
     isDetailsMode:false,
     numberOfMeetings:workshops?.length

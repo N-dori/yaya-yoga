@@ -1,8 +1,6 @@
-import MenuSvg from '@/app/assets/svgs/MenuSvg'
-import React, { useEffect, useState } from 'react'
+
 import MainMenuList from './MainMenuList'
-import CloseSvg from '@/app/assets/svgs/CloseSvg'
-import Link from 'next/link'
+
 
 type MainMenuProps = {
   isShown: boolean

@@ -1,5 +1,5 @@
 import { Tactivity } from '@/app/types/types'
-import { stripTime } from '@/app/utils/util'
+import { getDateType, stripTime } from '@/app/utils/util'
 import React, { useEffect, useState } from 'react'
 import { newDate } from 'react-datepicker/dist/date_utils'
 
@@ -36,15 +36,18 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
       const monthIndex = activityDate.getMonth()
       setHbMonth(hebrewMonths[monthIndex])
       const today = new Date()
-       isDatePassed(today)
-     
-       if(isBothTheSameDate(activityDate,today)) {
-        console.log('both days are the same')
+      console.log('both days are the same', today.getDay())
+      console.log('both days are the same', today.toDateString())
+      console.log('both days are the same', today.toLocaleDateString('he-IL'))
+      
+      if(isBothTheSameDate(activityDate,today)) {
         today.getDay() === 6? setHbDay('ראשון') : setHbDay('היום')
+        return
       } else {
         const dayIndex = activityDate.getDay()
         setHbDay(hebrewDays[dayIndex])
       }
+      isDayPassed(today)
     }}
   }, [activityDay?.date])
 
@@ -78,14 +81,16 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
     }
   }
 
-   const isDatePassed = (today:Date) => {
+   const isDayPassed = (today:Date) => {
     if(today.getDay()!==6){
+      console.log('in if');
       
-      setIsDateHasPassed( new Date (activityDay.date).getDay()<today.getDay())
-
+      setIsDateHasPassed( getDateType(activityDay.date).getDay()<today.getDay())
+      
     }else{
+      console.log('in ekse');
       today.setDate(today.getDate() + 1)
-      setIsDateHasPassed( new Date (activityDay.date).getDay()<today.getDay())
+      setIsDateHasPassed(  getDateType (activityDay.date).getDay()<today.getDay())
 
     }
    }

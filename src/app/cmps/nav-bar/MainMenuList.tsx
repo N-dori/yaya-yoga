@@ -30,7 +30,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
 
   const handelClick = (route:string) => {
     setIsShown(!isShown)
-    router.replace(route)
+    router.push(route)
   }
   const handleSignOut = async () => {
     await signOut({ redirect: false, callbackUrl: '/' }); // Example of how to use signOut properly

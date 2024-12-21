@@ -63,6 +63,11 @@ export const getDateType = (givenDate :Date|string) => {
   return new Date(givenDate)
 }
 
+export const isAfterToday = (givenDate:Date|string) => {
+  const today = new Date()
+  return today<getDateType(givenDate)?true:false  
+}
+
 export const getUser = async (_id: String) => {
   const url = getUrl('user/getUser/')
 
@@ -118,6 +123,22 @@ export const deleteWorkshop = async (workshopId: String) => {
     method: 'DELETE',
     headers: { "Content-type": "application/json" },
     body: JSON.stringify({ workshopId })
+  })
+  if(res.ok){
+    const msg = res.json()
+    return msg
+    
+  }
+
+}
+export const deleteActivity = async (activityId: String) => {
+  const url = getUrl('periodicAgenda/removeActivity/')
+
+  const res = await fetch(url, {
+
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ activityId })
   })
   if(res.ok){
     const msg = res.json()
@@ -295,7 +316,7 @@ try {
   })
   if (res.ok) {
     const workshops =  await res.json()
-    console.log('workshops to get workshops',workshops);
+    // console.log('workshops to get workshops',workshops);
     return workshops
 }}
  catch (error) {
@@ -411,7 +432,7 @@ export const getPlan = async (membershipType: string, email:string ,paid?:number
       case 'סדנא':
         membership = workshopPass
         let expiryDate = new Date(dropInMembership.dateOfPurchase);
-        expiryDate.setMonth(end.getMonth() + 6); // Move 6 months ahead
+        expiryDate.setMonth(expiryDate.getMonth() + 6); // Move 6 months ahead
         workshopPass.end = expiryDate
         break;
       case 'כרטיסייה 5 כניסות':
