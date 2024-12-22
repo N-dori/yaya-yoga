@@ -20,16 +20,16 @@ export default function announcementPreview({ announcement }: ThisMounthPreviewP
             {(announcement.price != 0)
                 && <p className='announcement-price '> מחיר : {announcement.price} ש"ח</p>
             }
-            {/* <div className='image-conatiner flex-ac-jc'> */}
-                {/* <Image className='announcement-image'
+            <div className='image-conatiner flex-ac-jc'>
+                <Image className='announcement-image'
                     style={{ width: '100%', height: '100%' }}
                     quality={90} src={announcement.img}
                     sizes="100vw"
                     width={0}
                     height={0}
-                    alt={'this mounth event image'} /> */}
-             <DynamicImage imgClassName={'announcement-image'}   alt={'announcement-image'} url={announcement.img} />
-            {/* </div> */}
+                    alt={'this mounth event image'} />
+             {/* <DynamicImage imgClassName={'announcement-image'}   alt={'announcement-image'} url={announcement.img} /> */}
+            </div>
 
             <div className='flex-sb'>
                 {announcement?.date &&
