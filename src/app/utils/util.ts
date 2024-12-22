@@ -1,4 +1,3 @@
-import { getPlaiceholder } from "plaiceholder";
 import { Tmembership, Tworkshop } from "../types/types";
 
 export function makeId(length = 6) {
