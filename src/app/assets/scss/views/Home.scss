@@ -3,18 +3,19 @@
     width: 100%;
     margin-bottom: 1em;
     margin-top: 4em;
+
     .hero {
         object-fit: 'cover';
         opacity: 0.9;
         border-radius: 0px 0px 8px 8px;
     }
 
-   
+
 
     .welcome-conteiner {
         position: absolute;
         color: var(--clr1);
-        top:28%;
+        top: 28%;
         right: 30%;
         row-gap: 1em;
 
@@ -26,15 +27,17 @@
             font-size: 1.5em;
             text-decoration: overline;
         }
+
         .signup-to-class-btn {
-       border:  2px solid var(--clr10);
-       padding: 15px 10px;
-       background-color: transparent;
-       font-size: 1.1em;
-       color: #571a08;
-  cursor: pointer;
+            border: 2px solid var(--clr10);
+            padding: 15px 10px;
+            background-color: transparent;
+            font-size: 1.1em;
+            color: #571a08;
+            cursor: pointer;
         }
-        .signup-to-class-btn:hover{
+
+        .signup-to-class-btn:hover {
             transition: background-color;
             color: var(--clr1);
             background-color: var(--clr10)
@@ -42,7 +45,8 @@
 
     }
 }
-.home-page-container{
+
+.home-page-container {
     padding-bottom: 2em;
 
     .quote-container {
@@ -70,27 +74,38 @@
 
         }
     }
+
     .weekly-schedule-image-conatiner {
         position: relative;
-        padding: 4em 1em 4em 1em;
-        // padding-block: 1em  ;
-        // padding-bottom: 0em;
-        // background-color: var(--clr7);
-        // border-radius: 8px;
-        // border: 1px solid #e0e0e0;
-  background-color:var(--clr10);
-        .weekly-schedule-button{
-            position: relative;
+        // padding: 4em 1em 4em 1em;
+        background-color: var(--clr10);
+        color: var(--clr1);
+        .teachers-container{
+            color: var(--clr1);
+            .meet-the-yogis-title{
+                padding-block: 2em;
+                font-size: 1.5em;
+            }
+            .txt{
+                line-height: 22px;
+                padding-bottom: 2em;
+        
+            }
         }
+        .weekly-schedule-button {
+            position: relative;
+            height: 250px;
+        }
+
         .weekly-schedule-image {
             border-radius: 4px;
         }
-        
+
         .for-signup-txt {
             position: absolute;
             // background-color: var(--clr9);
             background: linear-gradient(rgba(255, 255, 255, 0), var(--clr12), var(--clr12));
-            color:var(--clr1);
+            color: var(--clr1);
             bottom: 0;
             padding: 1em;
             right: 0em;
@@ -98,7 +113,7 @@
             font-size: 1.2rem;
             width: 100%;
             text-decoration: underline;
-// min-height: 4em;
+            // min-height: 4em;
             border-radius: 0px 0px 8px 8px;
         }
     }

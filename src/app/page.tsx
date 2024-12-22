@@ -40,10 +40,14 @@ export default async function Home() {
 
         <BillboardIndex />
 
-        <section className='weekly-schedule-image-conatiner '>
+        <section className='weekly-schedule-image-conatiner flex-col'>
+              <section className="teachers-container">
+                <h3 className="meet-the-yogis-title">באו לפגוש את היוגים</h3>
+                  <p className='txt'>אנחנו מקבלים תלמידים  בכל הרמות . השיעורים בסטודיו משלבים את מסגננות ההאטה יוגה, אשטנגה, וינאסה. שיעורים ממוקדים רעננים ומאתגרים. </p>
+              </section>
           <Link className="weekly-schedule-button" href={'/weekly_schedule'}>
             <Image className='weekly-schedule-image'
-              style={{ width: '100%', height: '100%' }}
+              style={{ objectFit:'cover', width: '100%', height: '100%' }}
               quality={90} src={weeklySchduleImage}
               sizes="100vw"
               width={0}
