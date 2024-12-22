@@ -5,43 +5,45 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import ParagraphsIndex from '../ParagraphsIndex'
+import DynamicImage from '../DynamicImage'
 
 type ThisMounthPreviewProps = {
     announcement: Tannouncement
 }
 
-export default function BillboardPreview({ announcement }: ThisMounthPreviewProps) {
+export default function announcementPreview({ announcement }: ThisMounthPreviewProps) {
 
     return (
-        <section className='this-mount-wrapper flex-col gap05'>
-            <h3 className='this-mounth-event-title'>{announcement.title}</h3>
-            <h5 className='this-mounth-event-subtitle'>{announcement.subTitle}</h5>
-
-            <div className='image-conatiner flex-ac-jc'>
-                <Image className='this-mounth-event-image'
+        <section className='announcement-wrapper flex-col  gap05'>
+            <h3 className='announcement-title'>{announcement.title}</h3>
+            <h5 className='announcement-subtitle'>{announcement.subTitle}</h5>
+            {(announcement.price != 0)
+                && <p className='announcement-price '> מחיר : {announcement.price} ש"ח</p>
+            }
+            {/* <div className='image-conatiner flex-ac-jc'> */}
+                {/* <Image className='announcement-image'
                     style={{ width: '100%', height: '100%' }}
                     quality={90} src={announcement.img}
                     sizes="100vw"
                     width={0}
                     height={0}
-                    alt={'this mounth event image'} />
-            </div>
+                    alt={'this mounth event image'} /> */}
+             <DynamicImage imgClassName={'announcement-image'}   alt={'announcement-image'} url={announcement.img} />
+            {/* </div> */}
 
             <div className='flex-sb'>
                 {announcement?.date &&
-                    <h5 className='this-mounth-event-date'>{new Date(announcement.date).toLocaleDateString('he-IL')}</h5>
+                    <h5 className='announcement-date'>{new Date(announcement.date).toLocaleDateString('he-IL')}</h5>
                 }
                 {
                     announcement?.hours?.start &&
-                    <h5 className='this-mounth-event-date'>{getFormatedTime(announcement.hours.start) + '-' + getFormatedTime(announcement.hours.end)}</h5>
+                    <h5 className='announcement-date'>{getFormatedTime(announcement.hours.start) + '-' + getFormatedTime(announcement.hours.end)}</h5>
                 }
             </div>
             <ParagraphsIndex desc={announcement.desc} workshopId={announcement.workshopId}/>
            
 
-            {(announcement.price != 0)
-                && <p className='this-mounth-event-desc '> מחיר : {announcement.price} ש"ח</p>
-            }
+          
             
           
         </section>

@@ -1,3 +1,4 @@
+import { getPlaiceholder } from "plaiceholder";
 import { Tmembership, Tworkshop } from "../types/types";
 
 export function makeId(length = 6) {
@@ -42,6 +43,25 @@ export const getUrl = (endPoint: string) => {
   const url = `${baseUrl}/api/${endPoint}`;
   // console.log(`Constructed URL: ${url}`);
   return url;
+};
+
+export const getImage = async (src: string) => {
+  if (typeof window !== "undefined") {
+    throw new Error("getImage should only be run on the server side");
+  }
+
+  // Dynamically import plaiceholder
+  const { getPlaiceholder } = await import("plaiceholder");
+  const response = await fetch(src);
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const { metadata: { height, width }, ...placeholder } = await getPlaiceholder(buffer, { size: 10 });
+
+  return {
+    ...placeholder,
+    img: { src, height, width },
+  };
 };
 
 export const getUserByEmail = async (email: String) => {

@@ -22,21 +22,6 @@
             height: 100%;
         }
 
-        .blur-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            /* Adjust height of the blur */
-            background: linear-gradient(rgba(255, 255, 255, 0), var(--clr7), var(--clr7), var(--clr7));
-        }
-
-        .more {
-            color: var(--clr1);
-            font-size: 1.2em;
-            padding: .5em;
-        }
 
         .work-shop-image {
             border-radius: 4px;
@@ -56,6 +41,8 @@
     .workshop-title {
         background: #c2ac973d;
         padding: 1em;
+        text-decoration: underline;
+
     }
 
     .paragraph {

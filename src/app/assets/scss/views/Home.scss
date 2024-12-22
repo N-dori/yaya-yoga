@@ -53,17 +53,33 @@
     
     .weekly-schedule-image-conatiner {
         position: relative;
+        padding: 1em;
+        // padding-block: 1em  ;
+        // padding-bottom: 0em;
+        // background-color: var(--clr7);
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+  background-color: #fafafa;
+        .weekly-schedule-button{
+            position: relative;
+        }
         .weekly-schedule-image {
-            border-radius: 8px;
+            border-radius: 4px;
         }
         
         .for-signup-txt {
             position: absolute;
             background-color: var(--clr9);
-            color:  var(--clr1);
+            background: linear-gradient(rgba(255, 255, 255, 0), var(--clr8), var(--clr7), var(--clr7));
+            color:var(--clr1);
             bottom: 0;
             padding: 1em;
+            right: 0em;
+            // line-height: 22px;
+            font-size: 1.2rem;
             width: 100%;
+            text-decoration: underline;
+// min-height: 4em;
             border-radius: 0px 0px 8px 8px;
         }
     }

@@ -14,7 +14,7 @@ if(res){
   
   return (
     billboard &&   
-    <section className='this-mounth-index-container  flex-col gap1'>
+    <section className='billboard-container  flex-col flex-jc-ac gap2'>
         <h2 className='headline tac'> ארועי החודש בסטודיו</h2>
    <BillboardList announcements={billboard.announcements}/>
     </section>

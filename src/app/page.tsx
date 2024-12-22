@@ -3,7 +3,7 @@ import Link from "next/link";
 import AboutMeIndex from "./cmps/home/AboutMeIndex";
 import DirectionsToYayaYoga from "./cmps/home/DirectionsToYayaYoga";
 import BillboardIndex from "./cmps/home/BillboardIndex";
-
+import YogaImage from "../../public/4.jpg"
 export default async function Home() {
 
   return (
@@ -12,12 +12,13 @@ export default async function Home() {
     <>
       <section className="hero-container flex-col full gap2">
 
-        <Image className='hero' src={'/4.jpg'}
+        <Image className='hero' src={YogaImage}
           style={{ width: '100%', height: '100%' }}
           sizes="100vw"
           width={0}
           height={0}
-          quality={90} alt="image of yoga class" />
+          quality={90} alt="image of yoga class" 
+          placeholder="blur"/>
 
         <section className="quote-container">
           <p className='patangeli-quote'><span className="quotaion-mark">״</span>אך אימון זה מכה שורש כשהוא מבוצע כראוי, בהתמדה ולאורך זמן״</p>
@@ -31,11 +32,11 @@ export default async function Home() {
         </section>
       </section>
 
-      <main className="home-page-container flex-col gap1 gc2" >
+      <main className="home-page-container flex-col  gap1 gc2" >
 
         <BillboardIndex />
 
-        <section className='weekly-schedule-image-conatiner flex-ac-jc'>
+        <section className='weekly-schedule-image-conatiner '>
           <Link className="weekly-schedule-button" href={'/weekly_schedule'}>
             <Image className='weekly-schedule-image'
               style={{ width: '100%', height: '100%' }}
@@ -44,7 +45,10 @@ export default async function Home() {
               width={0}
               height={0}
               alt={'this mounth event image'} />
-            <p className="for-signup-txt flex-jc-ac">להרשמה לשיעורים לחצו כאן</p>
+           
+            <p className="for-signup-txt flex-jc-ac">להרשמה לשיעורים </p>
+
+          
           </Link>
         </section>
 

@@ -23,16 +23,16 @@ export default function ParagraphsIndex({ desc, workshopId ,isDetailsMode}: Para
     }
 
     return (
-        <section className='this-mounth-event-desc-wrapper'
-            style={!isReadMore ? { maxHeight: '144px', overflow: 'hidden' } : {}}>
+        <section className='desc-wrapper'>
             {isReadMore && paragraphs &&
                 paragraphs?.map((paragraph, i) =>
-                    <p key={i} className='this-mounth-event-desc '>  {paragraph} </p>
+                    <p key={i} className='desc '>  {paragraph} </p>
                 )}
             {!isReadMore&&
 
-                <section className='this-mounth-event-desc mb-1 '> 
-                 {paragraphs[0]} {paragraphs[1]}... 
+                <section className='desc mb-1 '> 
+                 {paragraphs[0]} {paragraphs.length>=1&& paragraphs[1]} {
+                 paragraphs.length>1&&paragraphs[2]}... 
                 
                 <p className="blur-overlay flex-jc-ac">
                     <span onClick={handelReadMore} className="more pointer">להמשך קריאה</span>
