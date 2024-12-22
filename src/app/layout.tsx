@@ -6,7 +6,6 @@ import { AuthProvider } from "./Providers";
 import NavBar from "./cmps/nav-bar/NavBar";
 import StoreProvider from "./StoreProvider";
 import { UserMsg2 } from "./cmps/UserMsg2";
-import Image from "next/image";
 const varelaRound = Varela_Round ({ weight:'400',subsets: ["hebrew"] });
 
 export const metadata: Metadata = {
@@ -29,7 +28,7 @@ export default function RootLayout({
     
     <StoreProvider >
     <html lang="en" style={{height:`100%`}}>
-      <body className={`${varelaRound.className} main-layout`}>
+      <body className={`${varelaRound.className}  main-layout`}>
         <AuthProvider>
           <NavBar />
           {children}

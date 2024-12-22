@@ -4,6 +4,10 @@ import AboutMeIndex from "./cmps/home/AboutMeIndex";
 import DirectionsToYayaYoga from "./cmps/home/DirectionsToYayaYoga";
 import BillboardIndex from "./cmps/home/BillboardIndex";
 import YogaImage from "../../public/4.jpg"
+import weeklySchduleImage from "../../public/weekly_schdule_image.png"
+import { Open_Sans } from "next/font/google";
+const open_Sans = Open_Sans ({ weight:'400',subsets: ["hebrew"] });
+
 export default async function Home() {
 
   return (
@@ -20,19 +24,19 @@ export default async function Home() {
           quality={90} alt="image of yoga class" 
           placeholder="blur"/>
 
-        <section className="quote-container">
+        <section className="welcome-conteiner flex-col flex-ac">
+          <h1 className="welcome-txt tac"> ברוכים הבאים </h1>
+          <h3 className="yaya-yoga tac">YAYA-YOGA</h3>
+          <Link href={'/weekly_schedule'} className="signup-to-class-btn " >הרשמה לשיעורים</Link>
+        </section>
+      </section>
+
+      <main className="home-page-container flex-col full" >
+        <section className={`quote-container ${open_Sans.className} gc2`}>
           <p className='patangeli-quote'><span className="quotaion-mark">״</span>אך אימון זה מכה שורש כשהוא מבוצע כראוי, בהתמדה ולאורך זמן״</p>
           <p className='patangeli-quote-credit'>-פטנג׳לי, בתרגומה של אורית סן גופטה</p>
 
         </section>
-        <section className="welcome-conteiner flex-col flex-ac">
-          <h1 className="welcome-txt tac"> ברוכים הבאים </h1>
-          <h3 className="yaya-yoga tac">YAYA-YOGA</h3>
-
-        </section>
-      </section>
-
-      <main className="home-page-container flex-col  gap1 gc2" >
 
         <BillboardIndex />
 
@@ -40,7 +44,7 @@ export default async function Home() {
           <Link className="weekly-schedule-button" href={'/weekly_schedule'}>
             <Image className='weekly-schedule-image'
               style={{ width: '100%', height: '100%' }}
-              quality={90} src={'/weekly_schdule_image.png'}
+              quality={90} src={weeklySchduleImage}
               sizes="100vw"
               width={0}
               height={0}
@@ -51,7 +55,7 @@ export default async function Home() {
           
           </Link>
         </section>
-
+        
         <AboutMeIndex />
         <DirectionsToYayaYoga />
 

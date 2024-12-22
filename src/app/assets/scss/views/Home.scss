@@ -9,21 +9,59 @@
         border-radius: 0px 0px 8px 8px;
     }
 
-    .quote-container {
+   
+
+    .welcome-conteiner {
         position: absolute;
-        top: 40%;
-        color: #fff;
-        background: #0000010d;
+        color: var(--clr1);
+        top:28%;
+        right: 30%;
+        row-gap: 1em;
+
+        .welcome-txt {
+            font-size: 1.8em;
+        }
+
+        .yaya-yoga {
+            font-size: 1.5em;
+            text-decoration: overline;
+        }
+        .signup-to-class-btn {
+       border:  2px solid var(--clr10);
+       padding: 15px 10px;
+       background-color: transparent;
+       font-size: 1.1em;
+       color: #571a08;
+  cursor: pointer;
+        }
+        .signup-to-class-btn:hover{
+            transition: background-color;
+            color: var(--clr1);
+            background-color: var(--clr10)
+        }
+
+    }
+}
+.home-page-container{
+    padding-bottom: 2em;
+
+    .quote-container {
+
+        color: var(--clr5);
+        // background: #0000010d;
 
         .quotaion-mark {
-            font-size: 1.8em;
+            font-size: 2em;
+            font-weight: 600;
 
         }
 
         .patangeli-quote {
-            font-size: 1.3em;
+            font-size: 1.5em;
             text-align: justify;
+            line-height: 40px;
             padding-inline: .25em;
+            padding-block: 2em;
         }
 
         .patangeli-quote-credit {
@@ -32,34 +70,15 @@
 
         }
     }
-
-    .welcome-conteiner {
-        row-gap: 1em;
-
-        .welcome-txt {
-            font-size: 2.5em;
-        }
-
-        .yaya-yoga {
-            font-size: 1.5em;
-            text-decoration: overline;
-        }
-
-    }
-}
-.home-page-container{
-    padding-bottom: 2em;
-
-    
     .weekly-schedule-image-conatiner {
         position: relative;
-        padding: 1em;
+        padding: 4em 1em 4em 1em;
         // padding-block: 1em  ;
         // padding-bottom: 0em;
         // background-color: var(--clr7);
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-  background-color: #fafafa;
+        // border-radius: 8px;
+        // border: 1px solid #e0e0e0;
+  background-color:var(--clr10);
         .weekly-schedule-button{
             position: relative;
         }
@@ -69,8 +88,8 @@
         
         .for-signup-txt {
             position: absolute;
-            background-color: var(--clr9);
-            background: linear-gradient(rgba(255, 255, 255, 0), var(--clr8), var(--clr7), var(--clr7));
+            // background-color: var(--clr9);
+            background: linear-gradient(rgba(255, 255, 255, 0), var(--clr12), var(--clr12));
             color:var(--clr1);
             bottom: 0;
             padding: 1em;

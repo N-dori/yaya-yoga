@@ -7,7 +7,11 @@ type AboutMeIndexProps = {}
 export default function AboutMeIndex({ }: AboutMeIndexProps) {
   return (
     <section className="about-me-container flex-col gap05">
-      <h2 className='title tac'>נעים להכיר </h2>
+      <section className="teachers-container">
+                <h3 className="meet-the-yogis-title">באו לפגוש את היוגים</h3>
+                  <p className='txt'>אנחנו מקבלים תלמידים  בכל הרמות . השיעורים בסטודיו משלבים את מסגננות ההאטה יוגה, אשטנגה, וינאסה. שיעורים ממוקדים רעננים ומאתגרים. </p>
+              </section>
+      <h3 className='title tac'>נעים להכיר </h3>
 
       <div className='flex-jc-ac'>
 

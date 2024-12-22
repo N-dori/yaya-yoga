@@ -6,7 +6,8 @@ type Props = {}
 export default function Content({ }: Props) {
     const [isShown, setIsShown] = useState(false)
     return (
-        <section className={!isShown?'content flex-col gap05':'flex-col gap05'}>
+        <section className={'content flex-col gap05'}
+        style={!isShown?{maxHeight:'144px',overflow:'hidden'}:{}}>
 
             {/* <p>נעים להכיר – </p> */}
             <p>אני יאיר שורץ, בן 34, אבא גאה למעיין ובן זוג למורן. מתגורר בקיבוץ משמרות, והיוגה עבורי היא הרבה יותר ממקצוע – היא דרך חיים, חיבור ושקט פנימי. </p>
