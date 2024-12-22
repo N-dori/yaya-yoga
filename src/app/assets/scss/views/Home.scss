@@ -77,24 +77,20 @@
 
     .weekly-schedule-image-conatiner {
         position: relative;
-        // padding: 4em 1em 4em 1em;
+        padding: 4em 1em 4em 1em;
         background-color: var(--clr10);
         color: var(--clr1);
-        .teachers-container{
-            color: var(--clr1);
-            .meet-the-yogis-title{
-                padding-block: 2em;
-                font-size: 1.5em;
-            }
-            .txt{
-                line-height: 22px;
-                padding-bottom: 2em;
-        
-            }
+        .healine{
+            padding-block: 1em;
+            margin-bottom: 2em;
+            margin-top: 2em;
+            border: 2px solid var(--clr1);
         }
         .weekly-schedule-button {
             position: relative;
+            display: block;
             height: 250px;
+            // width: 250px;
         }
 
         .weekly-schedule-image {

@@ -40,11 +40,8 @@ export default async function Home() {
 
         <BillboardIndex />
 
-        <section className='weekly-schedule-image-conatiner flex-col'>
-              <section className="teachers-container">
-                <h3 className="meet-the-yogis-title">באו לפגוש את היוגים</h3>
-                  <p className='txt'>אנחנו מקבלים תלמידים  בכל הרמות . השיעורים בסטודיו משלבים את מסגננות ההאטה יוגה, אשטנגה, וינאסה. שיעורים ממוקדים רעננים ומאתגרים. </p>
-              </section>
+        <section className='weekly-schedule-image-conatiner '>
+             {/* <h2 className="healine tac">שיעורי הסטודיו</h2> */}
           <Link className="weekly-schedule-button" href={'/weekly_schedule'}>
             <Image className='weekly-schedule-image'
               style={{ objectFit:'cover', width: '100%', height: '100%' }}
@@ -52,6 +49,7 @@ export default async function Home() {
               sizes="100vw"
               width={0}
               height={0}
+              placeholder="blur"
               alt={'this mounth event image'} />
            
             <p className="for-signup-txt flex-jc-ac">להרשמה לשיעורים </p>

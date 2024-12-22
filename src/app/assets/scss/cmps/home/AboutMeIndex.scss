@@ -25,6 +25,18 @@
             color: var(--clr13);
         padding: .5em;
     }
+    .teachers-container{
+        color: var(--clr13);
+        .meet-the-yogis-title{
+            padding-block: 2em;
+            font-size: 1.5em;
+        }
+        .txt{
+            line-height: 22px;
+            padding-bottom: 2em;
+    
+        }
+    }
 
 
 }
