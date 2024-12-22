@@ -45,23 +45,7 @@ export const getUrl = (endPoint: string) => {
   return url;
 };
 
-export const getImage = async (src: string) => {
-  if (typeof window !== "undefined") {
-    throw new Error("getImage should only be run on the server side");
-  }
-  
-  // Dynamically import plaiceholder
-  const response = await fetch(src);
-  const arrayBuffer = await response.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
 
-  const { metadata: { height, width }, ...placeholder } = await getPlaiceholder(buffer, { size: 10 });
-
-  return {
-    ...placeholder,
-    img: { src, height, width },
-  };
-};
 
 export const getUserByEmail = async (email: String) => {
   const url = getUrl('auth/userExists/')
