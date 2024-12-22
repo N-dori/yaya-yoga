@@ -225,7 +225,7 @@ export const getUsers = async () => {
 
 }
 export const getMembership = async (membershipId: String) => {
-  console.log(' fatching with membershipId = ', membershipId);
+  // console.log(' fatching with membershipId = ', membershipId);
   const url = getUrl('membership/getMembership/')
 
   const res = await fetch(url, {
@@ -266,7 +266,7 @@ export const getFullUserByEmail = async (email: String) => {
 
   },)
   const user = await res.json()
-  console.log(' my user in utils getFullUserByEmail = ', user);
+  // console.log(' my user in utils getFullUserByEmail = ', user);
 
   return user
 }
