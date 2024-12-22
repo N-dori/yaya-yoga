@@ -49,9 +49,8 @@ export const getImage = async (src: string) => {
   if (typeof window !== "undefined") {
     throw new Error("getImage should only be run on the server side");
   }
-
+  
   // Dynamically import plaiceholder
-  const { getPlaiceholder } = await import("plaiceholder");
   const response = await fetch(src);
   const arrayBuffer = await response.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);

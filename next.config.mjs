@@ -24,5 +24,4 @@ const nextConfig = {
       },
 };
 
-export default withPlaiceholder(nextConfig)
-;
+export default withPlaiceholder(nextConfig) ;

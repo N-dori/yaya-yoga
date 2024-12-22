@@ -17,7 +17,7 @@ export async function PUT(request) {
                { $pull: { "activities": { id: activityId } } }
             )
             
-            return NextResponse.json({ message: 'periodic agenda was updated after removing  activity' }, { status: 200 });
+            return NextResponse.json({ message: 'periodic agenda was updated after removing  activity' ,updatedPeriodicAgenda}, { status: 200 });
         }
 
             return NextResponse.json({ message: "PeriodicAgenda not found" }, { status: 404 });
