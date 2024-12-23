@@ -9,6 +9,7 @@ import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { getFullUserByEmail, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
 import MyActivitiesIndex from './MyActivitiesIndex'
 import MyMembershipsIndex from './MyMembershipsIndex'
+import MyWorkshopsIndex from './MyWorkshopsIndex'
 
 type MyPersonalDetailsIndexProps = {
     userName: string
@@ -17,6 +18,7 @@ type MyPersonalDetailsIndexProps = {
     myActivities: Tactivity[]
     periodicAgendaId: string
     memberships: Tmembership[]
+    myWorkshopsTickets: Tmembership[]
     userQuestionnaireId: string
     userHealthDeclarationLink: string
 }
@@ -154,6 +156,11 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
             <section className='my-memberships-container card'>
                 <h3 className='tac mb-05'>מנויים</h3>
                 <MyMembershipsIndex memberships={myMemberships} />
+{props.myWorkshopsTickets&&
+            <section className='my-memberships-container mt-1'>
+                   <h3 className='tac mb-05'> הסדנאות שלי</h3>
+                <MyWorkshopsIndex myWorkshopsTickets={props.myWorkshopsTickets}/>
+            </section>}
             </section>
 
             <section className='my-user-questionneaire card '>

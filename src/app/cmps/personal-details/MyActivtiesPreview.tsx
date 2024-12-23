@@ -78,7 +78,7 @@ export default function MyActivtiesPreview({ activity, setCurrActivityId, userEm
             <p className='activity-date tac '> {new Date(activity.date).toLocaleDateString('he-IL')} </p>
             <div className='activity-info-container flex-sb'>
                 <LessonInfoHoursRange {...LessonInfoHoursRangeProps} />
-                <p className='activity-name'>שיעור {activity.name}  </p>
+                <p className='activity-name'>{activity.classOrWorkshop} {activity.name}  </p>
 
             </div>
             <div style={activity.isCanceled ? { textDecoration: ' line-through' } : {}}

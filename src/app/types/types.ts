@@ -69,7 +69,8 @@ export type Tplan = {
 }
 type Tsubscription = {
     type: string
-    entries: Number
+    workshopTitle?:string
+    entries: number
 }
 
 export type Tmembership =
@@ -92,8 +93,8 @@ export type Tuser =
         isNewUser: string,
         healthDeclaration: string,
         userQuestionnaireId: string,
-        memberships?: string[]
-        ,
+        memberships?: string[],
+        worshopTickets?: string[],
         isAdmin: boolean,
     }
 

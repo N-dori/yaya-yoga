@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 
 type DynamicImageProps = {
@@ -8,7 +8,9 @@ type DynamicImageProps = {
     imgClassName?:string
 }
 
-export default  async function DynamicImage({url,alt,imgClassName}: DynamicImageProps) {
+export default   function DynamicImage({url,alt,imgClassName}: DynamicImageProps) {
+
+
     return (
         <section className='dynamic-img-container flex-jc-ac' 
         style={{position:'relative', width:'100%'}}>
@@ -21,6 +23,7 @@ export default  async function DynamicImage({url,alt,imgClassName}: DynamicImage
     alt={alt||''}
     // placeholder='blur'
     // blurDataURL={'123'}
+    // loader={({src})=>`https://localhost:3000/${src}?thumbnail=true`}
     style={{objectFit:'cover' ,width:'100%',height:'100%'}}
     sizes='100vw'/>
     </section>

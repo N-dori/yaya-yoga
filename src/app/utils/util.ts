@@ -292,6 +292,7 @@ export const pushPractionerToActivity = async (id:string,periodicAgendaId:string
               return updatedActivity
           }
 }
+
 export const createNewWorkShop = async (workshop:Tworkshop)=>{
   const url = getUrl('workshop/createWorkshop/')
   
@@ -308,6 +309,8 @@ export const createNewWorkShop = async (workshop:Tworkshop)=>{
 
   }
 }
+
+
 export const getWorkshops = async () => {
 
   const url = getUrl('workshop/getWorkshops')
@@ -371,12 +374,12 @@ export const  createNewMembership =async (membership:Tmembership) => {
         body: JSON.stringify({ membership })
       })
       if (res.ok) {
-        const newMembership =res.json()
-        return newMembership
+        const newMembershipId =res.json()
+        return newMembershipId
       }
 }
 
-export const getPlan = async (membershipType: string, email:string ,paid?:number) => {
+export const getPlan = async (membershipType: string, email:string ,paid?:number,workshopTitle?:string,expiryDate?:Date) => {
   
     const user = await getUserByEmail(email)
 
@@ -419,7 +422,7 @@ export const getPlan = async (membershipType: string, email:string ,paid?:number
     const workshopPass: Tmembership =
     {
       userId: user._id,
-      subscription: { type: 'סדנא', entries: 1 },
+      subscription: { type: 'סדנא', entries: 1,workshopTitle },
       isExpired: false,
       paid,
       dateOfPurchase: new Date(),
@@ -433,9 +436,9 @@ export const getPlan = async (membershipType: string, email:string ,paid?:number
         break;
       case 'סדנא':
         membership = workshopPass
-        let expiryDate = new Date(dropInMembership.dateOfPurchase);
-        expiryDate.setMonth(expiryDate.getMonth() + 6); // Move 6 months ahead
         workshopPass.end = expiryDate
+        console.log('workshopPass*********************',workshopPass);
+        
         break;
       case 'כרטיסייה 5 כניסות':
         membership = fivePassMembership
@@ -491,6 +494,7 @@ export const refundPractitionerMembershipAtDatabase = async (membershipId: strin
 
   }
 }
+
 export const updateUserWithNewMembershipAtDatabase = async (membershipId: string, userId: string, wasMembershipJustPurchesed: boolean) => {
   try {
     const url = getUrl('user/updateUserMembership')
@@ -508,6 +512,28 @@ export const updateUserWithNewMembershipAtDatabase = async (membershipId: string
 
     } else {
       return [false, null]
+    }
+  } catch (error) {
+    console.log('had a problem updating user with new membership', error)
+  }
+}
+export const updateUserWithNewWorkshopAtDatabase = async (membershipId: string, userId: string) => {
+  try {
+    const url = getUrl('user/updateUserWorkshop')
+
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ _id: userId, membershipId })
+    })
+    if (res.ok) {
+      const updatedUser = await res.json()
+
+      console.log(`User id :${userId} was updated with new membership no' :${membershipId}`, updatedUser);
+      return updatedUser
+
+    } else {
+      return false
     }
   } catch (error) {
     console.log('had a problem updating user with new membership', error)

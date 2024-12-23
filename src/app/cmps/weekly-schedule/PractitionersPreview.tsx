@@ -7,8 +7,9 @@ type PractitionersPreviewProps = {
     practitioner:Tpractitioner
     askUserIfToRemoveHimFromActivity: ( membershipId:string) => void
     checkActivityTime: () => boolean 
+    isWorkshop:boolean
 }
-export default function PractitionersPreview({practitioner,askUserIfToRemoveHimFromActivity,checkActivityTime}: PractitionersPreviewProps) {
+export default function PractitionersPreview({practitioner,askUserIfToRemoveHimFromActivity,isWorkshop,checkActivityTime}: PractitionersPreviewProps) {
     const {data:session}=useSession()
     const [isShown1, setisShown1] = useState(false)
 
@@ -27,9 +28,13 @@ const handelCanceltion = () => {
     return (
         <li style={isShown1?{opacity:'.9'}:{}} className='practitioner-name  flex-sb'>
        
-          {session?.user?.name === practitioner.name?checkActivityTime()?
+          {session?.user?.name === practitioner.name?
+          !isWorkshop?
+          checkActivityTime()?
             <span className='cancelation-btn pointer' onClick={handelCanceltion}>X</span>
-            :'':''
+            :''
+            :''
+            :''
           }
        <span> </span>
           <span>   {practitioner.name}   </span>

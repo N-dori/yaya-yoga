@@ -32,11 +32,11 @@ export default function ParagraphsIndex({ desc, workshopId ,isDetailsMode}: Para
 
                 <section className='desc mb-1 '> 
                  {paragraphs[0]} {paragraphs.length>=1&& paragraphs[1]} {
-                 paragraphs.length>1&&paragraphs[2]}... 
+                 paragraphs.length>1&&paragraphs[2]}
                 
-                <p className="blur-overlay flex-jc-ac">
-                    <span onClick={handelReadMore} className="more pointer">להמשך קריאה</span>
-                </p>
+              
+                    <span onClick={handelReadMore} className="more pointer">להמשך קריאה...</span>
+                
                 </section>
             }
             

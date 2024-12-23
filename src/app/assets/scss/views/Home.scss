@@ -64,14 +64,14 @@
             font-size: 1.5em;
             text-align: justify;
             line-height: 40px;
-            padding-inline: .25em;
-            padding-block: 2em;
+            // padding-inline: .25em;
+            padding: 2em .25em 0em .25em;
         }
 
         .patangeli-quote-credit {
             font-size: .8em;
             margin-inline-start: 10px;
-
+            padding-bottom: 4em;
         }
     }
 

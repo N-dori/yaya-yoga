@@ -5,8 +5,12 @@ import PeriodicAgenda from '../../../models/periodicAgenda';
 export async function PUT(request) {
     try {
         const {id, email, activityId, periodicAgendaId ,name ,membershipId} = await request.json();
-        const lastDoc = await PeriodicAgenda.findOne().sort( { _id: -1 } )
-        if(lastDoc){
+        let lastDoc
+        if(!periodicAgendaId){
+            lastDoc = await PeriodicAgenda.findOne().sort( { _id: -1 } )
+
+        }
+ 
 
             await connectMongoDB();
     
@@ -26,7 +30,7 @@ export async function PUT(request) {
             }
         
             return NextResponse.json({message:'last periodic agenda was updated activity with a new practitioner '}, { status: 200 });
-        }
+   
         return NextResponse.json({ message: "PeriodicAgenda not found" }, { status: 404 });
 
 

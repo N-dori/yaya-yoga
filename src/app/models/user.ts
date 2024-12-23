@@ -26,6 +26,8 @@ const userSceama = new Schema ({
     } ,
     memberships: [ { type: Schema.Types.ObjectId, ref: "Membership" } ] 
      ,
+    worshopTickets: [ { type: Schema.Types.ObjectId, ref: "Membership" } ] 
+     ,
     isAdmin : Boolean ,
 
 

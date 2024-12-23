@@ -1,6 +1,6 @@
 'use client'
 import { Tmembership, Tworkshop } from '@/app/types/types'
-import { createNewMembership, deleteActivity, deleteAnnouncemnt, deleteWorkshop, getFormatedDate, getFormatedTime, getPlan, makeId, pushPractionerToActivity, scrollUp, updateWorkshop } from '@/app/utils/util'
+import { createNewMembership, deleteActivity, deleteAnnouncemnt, deleteWorkshop, getFormatedDate, getFormatedTime, getPlan, makeId, pushPractionerToActivity, scrollUp, updateUserWithNewWorkshopAtDatabase, updateWorkshop } from '@/app/utils/util'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -142,19 +142,20 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   }
 
   const onRegisterToWorkshop = async () => {
-
+//after user buy workshop
     const email = session?.user?.email
     const name = session?.user?.name
     const id = makeId(8)
     const paid = +workshop.price
+    const workshopTitle = workshop.title
+    const expiryDate = workshop.date
 
-    const [membership, userId] = await getPlan('סדנא', email, paid)
+    const [membership, userId] = await getPlan('סדנא', email, paid, workshopTitle,expiryDate)
     if (!membership || !userId) {
       return
     }
-    const newMembership: Tmembership = await createNewMembership(membership)
-    if (newMembership) {
-      const membershipId = newMembership._id
+    const membershipId: string = await createNewMembership(membership)
+    if (membershipId) {
       //updating the user memberships array - pushing membership _id 
       const wasMembershipJustPurchesed = true
       const periodicAgendaId = null
@@ -165,8 +166,14 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
         membershipId,
         email,
         name)
-      let txt = '🙏 תודה על רכישתך'
-      getUserMsg(txt, true)
+        if(res){
+          const updatedUser =  await updateUserWithNewWorkshopAtDatabase(membershipId,userId) 
+            if(updatedUser){
+              let txt = '🙏 תודה על רכישתך'
+              getUserMsg(txt, true)
+            }
+        }
+
     } else {
       let txt = 'הייתה בעיה נסו שוב מאוחר יותר'
       getUserMsg(txt, false)

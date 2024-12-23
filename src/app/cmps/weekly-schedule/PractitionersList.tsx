@@ -6,9 +6,10 @@ type PractitionersListProps = {
     practitioners: Tpractitioner[]
     askUserIfToRemoveHimFromActivity: (membershipId:string) => void
     checkActivityTime: () => boolean
+    isWorkshop:boolean
 }
 
-export default function PractitionersList({askUserIfToRemoveHimFromActivity,checkActivityTime,practitioners}: PractitionersListProps) {
+export default function PractitionersList({isWorkshop,askUserIfToRemoveHimFromActivity,checkActivityTime,practitioners}: PractitionersListProps) {
   
     const [isShown2, setisShown2] = useState(false)
     useEffect(() => {
@@ -30,7 +31,8 @@ export default function PractitionersList({askUserIfToRemoveHimFromActivity,chec
         key={i} 
         practitioner={practitioner} 
         askUserIfToRemoveHimFromActivity={askUserIfToRemoveHimFromActivity}
-        checkActivityTime={checkActivityTime} />)
+        checkActivityTime={checkActivityTime} 
+        isWorkshop={isWorkshop}/>)
        }
 
         </ol>

@@ -7,9 +7,11 @@ type ParticipantsIndexProps = {
   practitioners: Tpractitioner[]
   askUserIfToRemoveHimFromActivity: (membershipId:string) => void
   checkActivityTime: () => boolean
+  isWorkshop:boolean
 }
 
-export default function PractitionersIndex({askUserIfToRemoveHimFromActivity,checkActivityTime, practitioners }: ParticipantsIndexProps) {
+export default function PractitionersIndex({askUserIfToRemoveHimFromActivity,checkActivityTime,
+  isWorkshop, practitioners }: ParticipantsIndexProps) {
   const [isShown, setisShown] = useState(false)
   useEffect(() => {
 
@@ -19,6 +21,7 @@ const PractitionersListProps = {
   practitioners,
   askUserIfToRemoveHimFromActivity,
   checkActivityTime,
+  isWorkshop
 }
   return (
     <section className='practitioners-index-container grid'>

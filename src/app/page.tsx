@@ -40,8 +40,8 @@ export default async function Home() {
 
         <BillboardIndex />
 
-        <section className='weekly-schedule-image-conatiner '>
-             {/* <h2 className="healine tac">שיעורי הסטודיו</h2> */}
+        {/* <section className='weekly-schedule-image-conatiner '>
+             <h2 className="healine tac">שיעורי הסטודיו</h2>
           <Link className="weekly-schedule-button" href={'/weekly_schedule'}>
             <Image className='weekly-schedule-image'
               style={{ objectFit:'cover', width: '100%', height: '100%' }}
@@ -57,7 +57,7 @@ export default async function Home() {
           
           </Link>
         </section>
-        
+         */}
         <AboutMeIndex />
         <DirectionsToYayaYoga />
 

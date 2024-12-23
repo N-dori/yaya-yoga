@@ -1,8 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const subscriptionSchema = new Schema({
-    type: String,
-    entries: Number
+    type: { type: String },
+    workshopTitle:{ type: String },
+    entries: { type: Number }
 })
 
 const membershipsSchema = new Schema(
