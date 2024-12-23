@@ -90,7 +90,7 @@ export default function MyActivtiesPreview({ activity, setCurrActivityId, userEm
                     <span className='activity-location gc2'> בית פעם - סטודיו קדם  </span>
 
                 </div>
-                <button disabled={!checkActivityTime() || activity.isCanceled}
+               {!activity.workshopId&& <button disabled={!checkActivityTime() || activity.isCanceled}
                    style={!checkActivityTime() || activity.isCanceled ? { color: `var(--clr3)` } : {}}
                  onClick={handelCancelation} className='btn flex-jc-ac gc3'>
                 {isLoading&& activity.id === currActivityId?
@@ -98,7 +98,7 @@ export default function MyActivtiesPreview({ activity, setCurrActivityId, userEm
                 :
                 <span>ביטול</span>
                 }   
-                </button>
+                </button>}
             </div>
 
         </li>
