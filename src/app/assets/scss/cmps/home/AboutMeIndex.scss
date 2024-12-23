@@ -1,5 +1,5 @@
-.about-me-container{
-  
+.about-me-container {
+
     border: 1px solid #e0e0e0;
     background-color: #fafafa;
     text-align: justify;
@@ -7,34 +7,40 @@
     border-radius: 8px;
     padding: 1em;
     letter-spacing: .6px;
-    .title{
+    background: rgba(194, 172, 151, 0.2392156863);       
+
+    .title {
         padding-block: 1em;
-        // background: rgba(194, 172, 151, 0.2392156863);       
-         color: var(--clr13);
-         border-radius: 4px;
-         margin-bottom: 1em;
-        }
-        .me-image{
-            border-radius: 4px;
-            
-        }
-        .content {
-            position: relative;
-           
-            font-size: 14px;
-            color: var(--clr13);
-        padding: .5em;
-    }
-    .teachers-container{
         color: var(--clr13);
-        .meet-the-yogis-title{
+        border-radius: 4px;
+        margin-bottom: 1em;
+    }
+
+    .me-image {
+        border-radius: 4px;
+
+    }
+
+    .content {
+        position: relative;
+        font-size: 14px;
+        color: var(--clr13);
+        padding: .5em;
+        line-height: 22px;
+    }
+
+    .teachers-container {
+        color: var(--clr13);
+
+        .meet-the-yogis-title {
             padding-block: 2em;
             font-size: 1.5em;
         }
-        .txt{
+
+        .txt {
             line-height: 22px;
             padding-bottom: 2em;
-    
+
         }
     }
 

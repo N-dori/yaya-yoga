@@ -1,22 +1,23 @@
 .map-warrper {
-    border: 1px solid #e0e0e0;
-    background-color: #fafafa;
-    // background-color: var(--clr8);
+    // border: 1px solid #e0e0e0;
+    // background-color: #fafafa;
+    background-color: var(--clr8);
     font-size: .9em;
     border-radius: 8px;
     padding: 1em;
+    color: var(--clr13);
 
     .title {
         padding-block: 1em;
         // background-color: var(--clr7);
-        background-color: rgba(194, 172, 151, 0.2392156863);
-        color: var(--clr5);
+        // background-color: rgba(194, 172, 151, 0.2392156863);
         border-radius: 4px;
         margin-bottom: 1em;
     }
-
+    
     .adress-container {
         text-decoration: underline;
+        color: var(--clr13);
         font-size: 1.2em;
         padding-block: 1em;
         letter-spacing: .6px;
