@@ -18,10 +18,10 @@ export function UserMsg2({ }: Props) {
     top: isMsgShown?`2em`:`-200px`,
     left: '50%',
     translate:' -50%',
-    transition: 'top .4s ease-in-out',
+    transition: 'top .7s ease-in-out',
     padding:' 1em',
     borderRadius: '20px',
-    border:sucsses? `2px solid rgb(0, 242, 61)`:`2px solid rgb(199, 165, 165)`,
+    border:sucsses? `2px solid #fff`:`2px solid transperent`,
     textAlign: `center`,
     background:bgColor
   }

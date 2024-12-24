@@ -10,20 +10,20 @@ export async function POST (request) {
      const { announcements }: { announcements: Tannouncement[] } = await request.json()
   
      await connectMongoDB ()
-     const lastDoc = await Billboard.findOne().sort( { _id: -1 } )
+     const lastDoc = await Billboard.findOne().sort({ createdAt: -1 });
      let billboard:Tbillboard
      if(lastDoc){
          const {_id}= lastDoc 
          let updatedDoc:Tbillboard
-         if(_id){
+       
              updatedDoc = await Billboard.findOneAndUpdate(
                 { _id },
                 { _id, announcements },
                 { new: true, upsert: true } // Create if not exists, return updated document
               );
-            }
-            revalidatePath('/')
-            revalidatePath('/dashboard/create_announcement')
+            
+            revalidatePath('/','page')
+            revalidatePath('/dashboard/create_announcement','page')
             return NextResponse.json({message: "billboard was updated/overwirtten",updatedDoc }, {status: 201 } )
     }else{
          billboard =  await Billboard.create({announcements})

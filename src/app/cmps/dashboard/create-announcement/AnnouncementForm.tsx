@@ -236,7 +236,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
             {props.isOnEditMode ?
                 <button type='button' onClick={handelSaveChanges} className='btn'>שמירת שינויים </button>
                 :
-                <button className='btn flex-jc-ac'>{props.isLoading ? <Spinner /> : 'הוסף מודעה'}</button>
+                <button className='btn flex-jc-ac' onClick={props.handelSubmitAnnouncement}>{props.isLoading ? <Spinner /> : 'הוסף מודעה'}</button>
             }
         </form>
     )

@@ -15,7 +15,7 @@ type MyActivitiesProps = {
 
 export default function MyActivitiesList({myActivities,periodicAgendaId,userEmail,isLoading,currActivityId, setCurrActivityId,askUserIfToRemoveHimFromActivity}: MyActivitiesProps) {
   return (
-     <ul className='my-activities-warpper clean'>
+     <ul className='my-activities-warpper flex-col gap05 clean'>
       {myActivities?
 
       myActivities.map(activity=>

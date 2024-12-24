@@ -27,7 +27,7 @@ export default function MyActivitiesIndex({myActivities,periodicAgendaId,userEma
   return (
     <section className='my-activities-container card'
      style={isShown?{}:{height:'475px'}}>
-    <h3 className='tac mb-05'> השיעורים שלי</h3>
+    <h3 className='tac title'> השיעורים שלי</h3>
        
         <MyActivitiesList {...MyActivitiesListProps}  />
       {(myActivities?.length >=4) &&
