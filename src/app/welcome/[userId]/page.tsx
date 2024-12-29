@@ -1,7 +1,7 @@
 import React from 'react'
 import { authOptions } from '../../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
-import { getUrl, sendEmail } from '../../utils/util';
+import { getUrl, getUser, sendEmail } from '../../utils/util';
 import Link from 'next/link';
 import { Tuser } from '@/app/types/types';
 
@@ -12,56 +12,13 @@ export default async function page({ params }) {
     // 
     const session = await getServerSession(authOptions)
 
-    const updateNewUser = async (_id: string) => {
+   
 
-        try {
-            const url = getUrl('user/handelNewUser/')
-            const res = await fetch(url, {
-
-                method: 'PUT',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ _id })
-
-            })
-            if (res.ok) {
-                console.log('updated user', await res.json());
-                return await res.json()
-            } else {
-                console.log('there was a problem trying to update new user status');
-
-            }
-
-        } catch (error) {
-            console.log('error updating New user');
-
-        }
-    }
-    const getUser = async () => {
-        try {
-            const url = getUrl('user/getUser')
-
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ _id: params.userId })
-            })
-            if (res.ok) {
-                return await res.json()
-
-            }
-        } catch (error) {
-            console.log('error getting user ');
-        }
-    }
-
-    const user: Tuser = await getUser()
+    const user: Tuser = await getUser(params.userId)
     console.log('user :', user)
     if (session) {
         if (user) {
-            if (user.isNewUser) {
-                await sendEmail(session?.user?.email, session?.user?.name, 'welcome', user._id)
-
-            }
+                await sendEmail(session.user?.email, session.user?.name, 'welcome', user._id)
         }
     }
     return (

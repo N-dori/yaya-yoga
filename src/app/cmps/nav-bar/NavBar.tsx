@@ -19,7 +19,6 @@ export default function NavBar({ }: Props) {
 
 
   useEffect(() => {
-    console.log('path is :', path);
     path === '/'
       ?
       setIsHomePage(true)
@@ -30,17 +29,8 @@ export default function NavBar({ }: Props) {
   useEffect(() => {
     getUserFirstLetter()
 
-    const checkUserAndRedirect = async () => {
-      if (session?.user?.email) {
-        const userId = await checkIfNewUser();
-        if (userId) {
-          router.push(`/welcome/${userId}`);
-        }
-      }
-    };
-    checkUserAndRedirect();
-
   }, [session?.user?.email]);
+
   useEffect(() => {
     if (isShown) {
       document.body.style.overflow = "hidden"; // Prevent scroll
@@ -56,20 +46,25 @@ export default function NavBar({ }: Props) {
     setIsShown(false)
     router.replace('/')
   }
-  const checkIfNewUser = async () => {
-    const miniUser = await getUserByEmail(session?.user?.email);
-    if (miniUser) {
-      if (miniUser.isNewUser) {// here we chack if the user is a new user or not
-        return miniUser._id;
+
+  const getUserFirstLetter = () => {
+    const firstLetter = session?.user?.name[0]
+    if (firstLetter) {
+      if (isEnglishCharacter(firstLetter)) {
+        setfirstLetter(firstLetter.toUpperCase())
+
       } else {
-        return false;
+
+        setfirstLetter(firstLetter)
       }
     }
-    return false; // Return false if no user
-  };
-  const getUserFirstLetter = () => {
-    setfirstLetter(session?.user?.name ? session?.user?.name[0].toUpperCase() : "")
   }
+
+  function isEnglishCharacter(str: string) {
+    const englishRegex = /^[A-Za-z]+$/;
+    return englishRegex.test(str);
+  }
+
   const menuSvgProps = {
     isShown,
     setIsShown

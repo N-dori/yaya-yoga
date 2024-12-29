@@ -38,7 +38,7 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
     const dispatch = useDispatch()
 
     useEffect(() => {
-        setMyActivities(props.myActivities)
+        setMyActivities(props?.myActivities?.reverse())
         setMyMemberships(props.memberships)
     }, [])
     useEffect(() => {

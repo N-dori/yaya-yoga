@@ -1,6 +1,6 @@
 "use client"
 
-import { getUrl, getUserByEmail } from "@/app/utils/util"
+import { getLastUserId, getUrl, getUserByEmail } from "@/app/utils/util"
 import { signIn } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -9,6 +9,7 @@ import { useState } from "react"
 import CircleDeroration from "./CircleDeroration"
 import { useAppDispatch } from "@/app/libs/hooks"
 import { callUserMsg, hideUserMsg } from "@/app/store/features/msgSlice"
+import { createUser } from "@/app/actions/userActions"
 
 type SignupFormProps = {
   redirectTo?:string
@@ -28,6 +29,27 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
   const dispatch = useAppDispatch()
 
 
+  const isUserExist = async () => {
+    try {
+      const userExists = await getUserByEmail(email)
+      
+      if (userExists) {
+        let txt = 'משתמש קיים במערכת'
+        dispatch(callUserMsg({ msg: txt, isSucsses: false }))
+     
+        setTimeout(() => {
+          dispatch(hideUserMsg())
+        }, 3500);
+        return true
+      }
+      return false
+      
+    } catch (error) {
+      console.log('had aproblem with user Exists',error);
+      
+    }
+  }
+
   const handelSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -37,34 +59,18 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
       if (!email) handelOnError('יש להרשם עם כתובת אי-מייל חוקית', 'email')
       return
     }
-    const userExists = await getUserByEmail(email)
-    console.log('userExists',userExists);
-    
-    if (userExists) {
-      let txt = 'משתמש קיים במערכת'
-      dispatch(callUserMsg({ msg: txt, isSucsses: false }))
-      const form = e.target
-      form.reset()
-      setTimeout(() => {
-        dispatch(hideUserMsg())
-      }, 3500);
-      return
-    }
-
+   const userExist = await isUserExist()
+   if(userExist){
+     const form = e.target
+     form.reset()
+     return 
+   }
     try {
-      const url = getUrl('auth/registration/')
-      const res = await fetch(url, {
-
-        method: 'POST',
-        headers: { "Content-type": "appliction/json" },
-        body: JSON.stringify({ name, email, password, isNewUser:true, isAdmin: false })
-
-      },
-      )
-      if (res.ok) {
+      const user = await createUser({ name, email, password, isAdmin: false })
+      if (user) {
         const form = e.target
         form.reset()
-        signUserIn()
+        signUserIn(user._id)
         
       } else {
         throw new Error('faild to create new user')
@@ -76,17 +82,25 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
     }
 
   }
-  const signUserIn = async () => {
+  const signUserIn = async (userId:string) => {
    const res =   await signIn('credentials', {
       email, password, redirect: false
     })
+    if(res.ok){
+      router.push(`welcome/${userId}`)
+    }
   }
- 
-
+  
+  
   const handelGoogleRegistion = async () => {
-    
-
-      const res = await signIn('google', { callbackUrl:redirectTo})
+    const user = await getUserByEmail(email)
+    if(!user){
+      await signIn('google', { callbackUrl:'/welcome'})
+      
+    }else{
+      
+      await signIn('google', { callbackUrl:'/'})
+    }
  
   }
 
@@ -156,7 +170,7 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
         <button type='button' onClick={handelGoogleRegistion}
           className='google-btn flex-sb pointer'>
          <span> צור חשבון עם גוגל</span>
-          <Image src={'/googleSymbol.png'} alt={'G'} width={30} height={30}></Image>  </button>
+          <Image src={'/googleSymbol.png'} alt={'google symbol'} width={30} height={30}></Image>  </button>
 
         <CircleDeroration />
       </form>

@@ -4,13 +4,13 @@ import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GooglePovider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
-import { getUrl } from "@/app/utils/util";
+import { getLastUserId, getUrl } from "@/app/utils/util";
+import { createUser } from "@/app/actions/userActions";
 
 type Tcredentials = {
     email: string
     password: string
 }
-
 export const authOptions: NextAuthOptions = {
     providers: [CredentialsProvider(
         {
@@ -53,27 +53,17 @@ export const authOptions: NextAuthOptions = {
 
                 try {
                     const { name, email } = user
-                    await connectMongoDB()
-                    const userExist = await User.findOne({ email })
-                    // console.log('userExist : ',userExist);
-                    if (!userExist) {
+               
                         const url = getUrl('auth/registration/')
 
-                        const res = await fetch(url, {
-
-                            method: 'POST',
-                            headers: { "Content-type": "appliction/json" },
-                            body: JSON.stringify({ name, email, isNewUser: true, isAdmin: false })
-
-                        })
-                        if (res.status === 200 || res.status === 201) {
-
+                        const newUser = await createUser({name, email, isAdmin:false})
+                        if (newUser) {
+                          
                             return true
                         } else {
                             return false
                         }
-                    }
-                    // update isNewUser to false
+               
 
                     return true;
                 } catch (err) {
@@ -102,12 +92,18 @@ export const authOptions: NextAuthOptions = {
             return session
         },
         async redirect({ url, baseUrl }) {
-            console.log('url in redirect is: ', url);
-
+            // console.log('url in redirect is: ', url);
+        
             // Allows relative callback URLs
-            if (url.startsWith("/")) return `${baseUrl}${url}`
-            // Allows callback URLs on the same origin
-            else if (new URL(url).origin === baseUrl) return url
+            if (url.startsWith("/")) {
+                console.log('baseUrl in redirect is: ', `${baseUrl}${url}`);
+                
+                return `${baseUrl}${url}`}
+                // Allows callback URLs on the same origin
+                else if (new URL(url).origin === baseUrl){
+                console.log('new URL(url).origin is: ', `${new URL(url).origin}`);
+             return url
+            }
             return baseUrl
         }
 

@@ -13,12 +13,12 @@ export async function POST (request) {
       await connectMongoDB ()
       // console.log('going to create user :', name , email ,   isAdmin , hasedPassword );
      const user =  await User.create({ name, email , password:hasedPassword, isAdmin ,isNewUser,})
-     return NextResponse.json({message: "User creacted" }, {status: 201 } )
+     return NextResponse.json(user, {status: 201 } )
      
    }  else{
       await connectMongoDB ()
       const user =  await User.create({ name, email ,  isAdmin , isNewUser })
-      return NextResponse.json({message: "User creacted" }, {status: 201 } )
+      return NextResponse.json(user, {status: 201 } )
       
    }
  

@@ -17,9 +17,9 @@ export default function announcementPreview({ announcement }: ThisMounthPreviewP
         <section className='announcement-wrapper flex-col  gap05'>
             <h3 className='announcement-title'>{announcement.title}</h3>
             <h5 className='announcement-subtitle'>{announcement.subTitle}</h5>
-            {(announcement.price != 0)
+            {/* {(announcement.price != 0)
                 && <p className='announcement-price '> מחיר : {announcement.price} ש"ח</p>
-            }
+            } */}
             {/* <div className='image-conatiner flex-ac-jc'>
                 <Image className='announcement-image'
                     style={{ width: '100%', height: '100%' }}

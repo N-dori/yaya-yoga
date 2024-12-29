@@ -1,12 +1,15 @@
-import React from 'react'
+
+import WelcomeNewUser from '../cmps/WelcomeNewUser'
 
 
-type Props = {}
+export default  function page() {
 
-export default async function page({params}) {
 
-   
     return (
-      <div></div>
+      <section className='welcome-first-page flex-col gap1 gc2'>
+      <h1 className='tac mt-1'>ברוכ/ה הבא/ה</h1>
+      <h2 className='tac mt-1'> 🙏מודים לך על הרשמתך</h2>
+      <WelcomeNewUser/>
+      </section>
     )
 }
