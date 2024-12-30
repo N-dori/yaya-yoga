@@ -76,7 +76,7 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
       if (user) {
         const form = e.target
         form.reset()
-        signUserIn(user._id)
+        signUserIn()
         
       } else {
         throw new Error('faild to create new user')
@@ -89,12 +89,12 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
 
   }
 
-  const signUserIn = async (userId:string) => {
+  const signUserIn = async () => {
    const res =   await signIn('credentials', {
       email, password, redirect: false
     })
     if(res.ok){
-      router.push(`welcome`)
+      router.push(`/welcome`)
     }
   }
 

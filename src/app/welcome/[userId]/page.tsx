@@ -22,13 +22,13 @@ export default async function page({ params }) {
    
     return (
         <main className='welcome-container gc2 flex-col p-1'>
-            <p className='hey-title'> היי {session?.user?.name} </p>
+            <p className='hey-title'> היי {user.name} </p>
             <p className='bold'>ברוך/ה הבא/ה למשפחת היוגה של יאיא יוגה! 🌿</p>`
 
             <p>
                 אני כל כך שמח שבחרת להצטרף אלינו למסע המדהים הזה בעולם היוגה, ובמיוחד במסורת האשטנגה, שמתמקדת בנשימה, יציבות, והקשבה פנימית.
                 כאן, תוכל/י למצוא את השקט והאיזון בחיי היומיום, ולהתחבר אל עצמך דרך התרגול.            </p>
-            <p>
+            <p className='bold underline'>
 
                 במסגרת האתר שלנו, תוכל/י:
 

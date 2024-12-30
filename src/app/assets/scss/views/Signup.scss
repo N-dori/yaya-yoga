@@ -3,7 +3,7 @@
     .signup-form {
         position: relative;
         width: 85%;
-        padding: 4em 2em;
+        padding: 2em 2em 5em 2em;
         direction: rtl;
         border-radius: 35px;
     }
@@ -18,8 +18,8 @@
     }
 
     .link-to-login {
-        color: #31016c;
-        margin-bottom: 2em;
+        color: var(--clr11);
+
 
     }
     .input-label{
@@ -31,11 +31,14 @@
         border-bottom: 1px solid #222;   
              padding: 10px;
         min-height: 2.5em;
-        font-size: 14px;
+        font-size: 12px;
         margin-top: .25em;
         transition: .4s ease-in-out;
     }
-
+    .password-error{
+        color: red;
+        font-size: 10px;
+    }
     .on-error::placeholder {
         color: red;
         font-size: 10px;
@@ -57,8 +60,9 @@
         gap: 10px;
         border-radius: 10px;
         font-size: 1em;
-        padding: 10px;
+        padding: 20px 10px 20px 10px;
         min-height: 2.5em;
+        background-color: var(--clr1);
 
     }
 

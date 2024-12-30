@@ -75,6 +75,6 @@ useEffect(() => {
              <button onClick={()=> removePractitionerFromActivity( practitioner.membershipId)}
               className='has-arrived-btn flex-jc-ac gtc2 pointer' >לא הגיע </button>
 
-
+                
         </>)
 }

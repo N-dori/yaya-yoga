@@ -1,10 +1,15 @@
 import React from 'react'
 import LoginForm from '../cmps/auth/LoginForm'
+import LogInSignup from '../cmps/auth/LogInSignup'
 
 type Props = {}
 
 export default function Login({}: Props) {
   return (
-<LoginForm redirectTo='/'/>
+    <>
+    <LogInSignup />
+    {/* <LoginForm redirectTo='/'/> */}
+    
+    </>
   )
 }
