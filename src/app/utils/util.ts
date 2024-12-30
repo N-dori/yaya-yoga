@@ -31,7 +31,10 @@ export const getBaseUrl = () => {
     process.env.NEXT_PUBLIC_DEV_URL : process.env.NEXT_PUBLIC_PRUD_URL
   return baseUrl
 }
-
+export const isEnglishCharacter = (str: string) => {
+  const englishRegex = /^[A-Za-z]+$/;
+  return englishRegex.test(str);
+}
 export const getUrl = (endPoint: string) => {
 
   const baseUrl = process.env.NODE_ENV === 'development' ?
@@ -474,67 +477,10 @@ export const getPlan = async (membershipType: string, email: string, paid?: numb
   return [membership, user._id]
 }
 
-export const removePractitionerFromActivityFromDatabase = async (periodicAgendaId: string, activityId: string, email: string) => {
-  const url = getUrl('periodicAgenda/removePractitionerFromActivity')
-  const res = await fetch(url, {
-    method: 'PUT',
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify({
-      periodicAgendaId,
-      activityId,
-      email,
 
-    })
-  })
-  if (res.ok) {
-    return true
 
-  } else {
-    return false
 
-  }
-}
-export const refundPractitionerMembershipAtDatabase = async (membershipId: string) => {
-  const url = getUrl('membership/refundMembership')
-  const res = await fetch(url, {
-    method: 'PUT',
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify({
-      membershipId
 
-    })
-  })
-  if (res.ok) {
-    return await res.json()
-
-  } else {
-    return null
-
-  }
-}
-
-export const updateUserWithNewMembershipAtDatabase = async (membershipId: string, userId: string, wasMembershipJustPurchesed: boolean) => {
-  try {
-    const url = getUrl('user/updateUserMembership')
-
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ _id: userId, membershipId, wasMembershipJustPurchesed })
-    })
-    if (res.ok) {
-      const updatedUser = await res.json()
-
-      console.log(`User id :${userId} was updated with new membership no' :${membershipId}`, updatedUser);
-      return [true, updatedUser]
-
-    } else {
-      return [false, null]
-    }
-  } catch (error) {
-    console.log('had a problem updating user with new membership', error)
-  }
-}
 export const updateUserWithNewWorkshopAtDatabase = async (membershipId: string, userId: string) => {
   try {
     const url = getUrl('user/updateUserWorkshop')

@@ -3,13 +3,17 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId, pushPractionerToActivity, refundPractitionerMembershipAtDatabase, removePractitionerFromActivityFromDatabase, removeUserMembership, sendEmail, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
+import { getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId, 
+    pushPractionerToActivity, removeUserMembership, sendEmail } from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { usePathname, useRouter } from 'next/navigation'
 import { AlertBox } from '../../AlertBox'
 import Spinner from '../../Spinner'
 import PractitionersIndex from '../../weekly-schedule/PractitionersIndex'
+import { removePractitionerFromActivityFromDatabase } from '@/app/actions/periodicAgendaActions'
+import { refundPractitionerMembershipAtDatabase } from '@/app/actions/membershipActions'
+import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
 
 type LessonInfoPreviewProps = {
     activity: Tactivity
@@ -44,8 +48,8 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
     }, [activity.date, activity.isCanceled, activity.id, periodicAgendaId, currUser, currUser?.memberships?.length, path, currMembershipId])
     useEffect(() => {
         isActivityPassed()
-        console.log('activity.classOrWorkshop',activity.classOrWorkshop);
-        
+        console.log('activity.classOrWorkshop', activity.classOrWorkshop);
+
     }, [])
 
     const handelClick = () => {
@@ -195,15 +199,15 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
 
     const addPractitionerToActivity = async (membershipId: string) => {
-        const id =makeId(8)
-        const activityId =activity.id
-        const email =session?.user?.email
-        const name =session?.user?.name
-     const res = await pushPractionerToActivity( id ,periodicAgendaId, 
-                                                        activityId,
-                                                        membershipId,
-                                                        email ,
-                                                        name)
+        const id = makeId(8)
+        const activityId = activity.id
+        const email = session?.user?.email
+        const name = session?.user?.name
+        const res = await pushPractionerToActivity(id, periodicAgendaId,
+            activityId,
+            membershipId,
+            email,
+            name)
         if (res) {
             let txt = `הרשמתך לשיעור ${activity.name} עברה בהצלחה נתראה על המזרן 🙏 `
             getUserMsg(txt, true)
@@ -248,13 +252,14 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         //if yes do nothing if no add it back to user.memberships[]
         console.log('do User Own Membership', doUserOwnMembership);
         if (!doUserOwnMembership) {
-            const wasMembershipJustPurchesed= false
-            const [isSucsses,updatedUser] = await updateUserWithNewMembershipAtDatabase(membershipId, user._id, wasMembershipJustPurchesed)
-            if (isSucsses) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
+            const wasMembershipJustPurchesed = false
+            const [isSucsses, updatedUser] = await updateUserWithNewMembershipAtDatabase(membershipId, user._id, wasMembershipJustPurchesed)
+            if (isSucsses) console.log('user.memberships was updated with the refunded membership?', updatedUser);
 
         }
 
     }
+    
     let alertBoxProps = {
         isAlertBoxShown, setIsAlertBoxShown,
         userMsg, setUserMsg,
@@ -353,25 +358,25 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         return true;
     }
 
-    const handelWorkshop =(activity:Tactivity) => {
- router.replace(`/workshops/${activity.workshopId}`)
+    const handelWorkshop = (activity: Tactivity) => {
+        router.replace(`/workshops/${activity.workshopId}`)
     }
     const PractitionersIndexProps = {
         practitioners: activity?.practitioners,
         askUserIfToRemoveHimFromActivity,
         checkActivityTime,
-        isWorkshop: activity.classOrWorkshop === 'סדנא' ?true:false
+        isWorkshop: activity.classOrWorkshop === 'סדנא' ? true : false
     }
     return (
         <li className='actitity-card-container flex-col clean'
-        style={activity.classOrWorkshop === 'סדנא'?{border:'1px solid var(--clr10)'}:{}}>
+            style={activity.classOrWorkshop === 'סדנא' ? { border: '1px solid var(--clr10)' } : {}}>
             <article className='p-1'>
-                 { <span>    {activity.classOrWorkshop} </span>}
+                {<span>    {activity.classOrWorkshop} </span>}
                 <LessonInfoHoursRange {...LessonInfoHoursRangeProps} />
                 {activity.isCanceled && <span > השיעור בוטל</span>}
 
                 <section className='activity-info-container'>
-            
+
                     <div className='activity-info grid' style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} >
                         <Image className='activity-teacher-img gc1'
                             alt={'teacher-img'} width={30} height={30} src={'/hero.jpg'} />
@@ -388,8 +393,8 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                             </button> :
                                 <button disabled={isActivityHasPassed || activity.isCanceled} type='button' className='btn flex-jc-ac'
                                     style={isActivityHasPassed || activity.isCanceled ? { color: `var(--clr3)` } : {}}
-                                    onClick={ activity.classOrWorkshop==='סדנא'?()=>handelWorkshop(activity):() => handelSignInToClass()}>
-                                    {isLoading ? <Spinner /> : activity.classOrWorkshop==='סדנא'? 'לפרטים':` הרשמה`}
+                                    onClick={activity.classOrWorkshop === 'סדנא' ? () => handelWorkshop(activity) : () => handelSignInToClass()}>
+                                    {isLoading ? <Spinner /> : activity.classOrWorkshop === 'סדנא' ? 'לפרטים' : ` הרשמה`}
                                 </button>}
                         </div>
                     </div>

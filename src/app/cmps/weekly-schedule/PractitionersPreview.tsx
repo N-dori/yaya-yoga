@@ -22,7 +22,6 @@ const handelOpacity = () =>{
     setisShown1(true)
 }
 const handelCanceltion = () => {
-    console.log(' need to refund me now!' ,practitioner);
     askUserIfToRemoveHimFromActivity(practitioner.membershipId)
 }
     return (

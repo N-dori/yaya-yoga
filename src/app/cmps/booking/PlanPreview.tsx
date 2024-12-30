@@ -4,11 +4,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { Tmembership } from '@/app/types/types';
-import { createNewMembership, getPlan, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util';
+import { createNewMembership, getPlan } from '@/app/utils/util';
 import { useDispatch } from 'react-redux';
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice';
 import LoginForm from '../auth/LoginForm';
 import { setUser } from '@/app/store/features/userSlice';
+import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions';
 type PlanPreviewProps = {
   planId: string,
   planType: string,

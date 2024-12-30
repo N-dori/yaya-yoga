@@ -35,6 +35,7 @@ export default function MainMenuList({isShown ,setIsShown}: Props) {
   const handleSignOut = async () => {
     await signOut({ redirect: false, callbackUrl: '/' }); // Example of how to use signOut properly
     router.push('/'); // Redirect to homepage after sign out
+    setIsShown(false)
   }
   return (
     <section className='main-menu-list-conatiner flex-ac flex-col tac'>

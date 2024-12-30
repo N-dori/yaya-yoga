@@ -4,6 +4,8 @@ import { getServerSession } from 'next-auth';
 import { getUrl, getUser, sendEmail } from '../../utils/util';
 import Link from 'next/link';
 import { Tuser } from '@/app/types/types';
+import SendEmailOnlyOnce from '@/app/cmps/SendEmailOnlyOnce';
+import { toggleNewUser } from '@/app/actions/userActions';
 
 type Props = {}
 
@@ -12,17 +14,14 @@ export default async function page({ params }) {
     // 
     const session = await getServerSession(authOptions)
 
-   
-
     const user: Tuser = await getUser(params.userId)
-    console.log('user :', user)
-    if (session) {
-        if (user) {
-                await sendEmail(session.user?.email, session.user?.name, 'welcome', user._id)
-        }
-    }
+        const _id = user._id
+        await toggleNewUser(_id)
+
+    
+   
     return (
-        <main className='welcome-container gc2 flex-col '>
+        <main className='welcome-container gc2 flex-col p-1'>
             <p className='hey-title'> היי {session?.user?.name} </p>
             <p className='bold'>ברוך/ה הבא/ה למשפחת היוגה של יאיא יוגה! 🌿</p>`
 
@@ -46,8 +45,9 @@ export default async function page({ params }) {
             <p>
             נתראה על המזרן! 🙏 שלכם ובשבילכם יאיר שורץ
             </p>
-            <p>לנוחיותכם ברגעים אלה נשלח לחשבון המייל שלך שאלון רפואי אותו אפשר למלא בזמן שנח לך </p>
+            <p className='bold'>לנוחיותכם ברגעים אלה נשלח לחשבון המייל שלך שאלון רפואי אותו אפשר למלא בזמן שנח לך </p>
             <Link className='transition-btn' href={`/trnsitionToUserQuestionnaire/${params.userId}`}>הבנתי תודה</Link>
+            <SendEmailOnlyOnce user={user}/>
         </main>
     )
 }

@@ -1,16 +1,18 @@
 'use client'
 import BackSvg from '@/app/assets/svgs/BackSvg'
-import { Tmembership, TperiodicAgenda, Tuser, TuserMsgProps } from '@/app/types/types'
+import { Tmembership, TperiodicAgenda, Tuser } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import DaysOfActivities from './DaysOfActivities'
 import { LesssonsInfoList } from './LesssonsInfoList'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
-import { clearPractitionersFromActivityAtDataBase, getFullUserByEmail, getUrl, getUser, refundPractitionerMembershipAtDatabase, updateUserWithNewMembershipAtDatabase } from '@/app/utils/util'
+import { clearPractitionersFromActivityAtDataBase, getFullUserByEmail, getUrl, getUser, } from '@/app/utils/util'
 import { useRouter } from 'next/navigation'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
+import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
+import { refundPractitionerMembershipAtDatabase } from '@/app/actions/membershipActions'
 
 
 type PreviewDisplayProps = {

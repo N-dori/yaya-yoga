@@ -1,20 +1,23 @@
-.welcome-first-page{
-    font-size: 1.5em;
+.welcome-first-page {
+    font-size: 1.2em;
     font-weight: 600;
     padding: 4em;
 }
-.welcome-container{
-    margin-top: 5em;
+
+.welcome-container {
+    margin-top: 2em;
     align-items: center;
     text-align: justify;
     gap: .5em;
-    .hey-title{
+
+    .hey-title {
         font-size: 1.2em;
         margin-bottom: 2em;
     }
-    .transition-btn{
+
+    .transition-btn {
         border-radius: 20px;
-        border: 1px solid  #222;
+        border: 1px solid #222;
         padding: .5em;
         text-decoration: none;
         text-align: center;

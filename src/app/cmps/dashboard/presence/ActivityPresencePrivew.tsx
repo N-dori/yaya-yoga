@@ -1,6 +1,5 @@
-import { Tactivity, Tpractitioner } from '@/app/types/types'
+import { Tactivity } from '@/app/types/types'
 import React, { useState } from 'react'
-import PractitionerPreview from './ActivityPractitionersPreview'
 import ActivityPractitionersList from './ActivityPractitionersList'
 
 type ActivityPresencePrivewProps = {

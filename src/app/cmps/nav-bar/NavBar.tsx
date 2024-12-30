@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import MainMenu from './MainMenu'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import { getUserByEmail } from '@/app/utils/util'
 import CloseSvg from '@/app/assets/svgs/CloseSvg'
 import MenuSvg from '@/app/assets/svgs/MenuSvg'
+import { isEnglishCharacter } from '@/app/utils/util'
 
 type Props = {}
 export default function NavBar({ }: Props) {
@@ -27,8 +27,11 @@ export default function NavBar({ }: Props) {
   }, [path]);
 
   useEffect(() => {
-    getUserFirstLetter()
-
+    if(session?.user?.email){
+      getUserFirstLetter()
+    }else{
+      setfirstLetter('')
+    }
   }, [session?.user?.email]);
 
   useEffect(() => {
@@ -60,15 +63,11 @@ export default function NavBar({ }: Props) {
     }
   }
 
-  function isEnglishCharacter(str: string) {
-    const englishRegex = /^[A-Za-z]+$/;
-    return englishRegex.test(str);
-  }
-
   const menuSvgProps = {
     isShown,
     setIsShown
   }
+
   return (
     <>
 

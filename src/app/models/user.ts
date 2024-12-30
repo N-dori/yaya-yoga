@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import { NULL } from "sass";
 
 const userSceama = new Schema ({
     name : {
@@ -15,6 +14,9 @@ const userSceama = new Schema ({
         type: String,
         required:[false , " please provide password"]
     } ,
+    isNewUser:{
+        type:Boolean,
+    },
     healthDeclaration: {
         type: String,
     } ,

@@ -1,15 +1,16 @@
 "use client"
 
-import { getLastUserId, getUrl, getUserByEmail } from "@/app/utils/util"
-import { signIn } from "next-auth/react"
+import { getFullUserByEmail, getLastUserId, getUrl, getUserByEmail } from "@/app/utils/util"
+import { signIn, useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CircleDeroration from "./CircleDeroration"
 import { useAppDispatch } from "@/app/libs/hooks"
 import { callUserMsg, hideUserMsg } from "@/app/store/features/msgSlice"
 import { createUser } from "@/app/actions/userActions"
+import { Tuser } from "@/app/types/types"
 
 type SignupFormProps = {
   redirectTo?:string
@@ -27,7 +28,12 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
 
   const router = useRouter()
   const dispatch = useAppDispatch()
+    const { data: session } = useSession()
 
+  useEffect(() => {
+    checkIfNewUser()
+ 
+  }, [session?.user?.email])
 
   const isUserExist = async () => {
     try {
@@ -66,7 +72,7 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
      return 
    }
     try {
-      const user = await createUser({ name, email, password, isAdmin: false })
+      const user = await createUser({ name, email, isNewUser:true, password, isAdmin: false })
       if (user) {
         const form = e.target
         form.reset()
@@ -82,26 +88,36 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
     }
 
   }
+
   const signUserIn = async (userId:string) => {
    const res =   await signIn('credentials', {
       email, password, redirect: false
     })
     if(res.ok){
-      router.push(`welcome/${userId}`)
+      router.push(`welcome`)
+    }
+  }
+
+  const checkIfNewUser = async () => {
+    if(session?.user?.email){
+      const user:Tuser = await getFullUserByEmail(session.user.email)
+      if(user.isNewUser){
+        router.push(`/welcome/${user._id}`)
+      }else{
+        router.push('/')
+  
+      }
+
     }
   }
   
-  
-  const handelGoogleRegistion = async () => {
-    const user = await getUserByEmail(email)
-    if(!user){
-      await signIn('google', { callbackUrl:'/welcome'})
-      
-    }else{
-      
-      await signIn('google', { callbackUrl:'/'})
-    }
- 
+  const handelGoogleRegisration = async () => {
+
+      // await signIn('google',{ callbackUrl: '/welcome' })
+      await signIn('google')
+
+    
+
   }
 
   const handelOnError = (msg: string, field: string) => {
@@ -167,7 +183,7 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
 
         <button type='submit' className="login-btn"> רשום אותי </button>
         <h2 className="or tac">או</h2>
-        <button type='button' onClick={handelGoogleRegistion}
+        <button type='button' onClick={handelGoogleRegisration}
           className='google-btn flex-sb pointer'>
          <span> צור חשבון עם גוגל</span>
           <Image src={'/googleSymbol.png'} alt={'google symbol'} width={30} height={30}></Image>  </button>

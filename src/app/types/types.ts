@@ -90,6 +90,7 @@ export type Tuser =
         name: string,
         email: string,
         password?: string,
+        isNewUser?:boolean,
         healthDeclaration?: string,
         userQuestionnaireId?: string,
         memberships?: string[],

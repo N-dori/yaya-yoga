@@ -4,8 +4,8 @@ import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GooglePovider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
-import { getLastUserId, getUrl } from "@/app/utils/util";
 import { createUser } from "@/app/actions/userActions";
+import { getFullUserByEmail, getUserByEmail } from "@/app/utils/util";
 
 type Tcredentials = {
     email: string
@@ -49,23 +49,25 @@ export const authOptions: NextAuthOptions = {
         async signIn({ user, account }) {
 
             if (account.provider === 'google') {
-                console.log('account.provider is : ', account.provider);
-
+               
+                
                 try {
                     const { name, email } = user
-               
-                        const url = getUrl('auth/registration/')
+                            const userFound = await getUserByEmail(email)
+                            if(userFound){
+                                return true
+                            }
 
-                        const newUser = await createUser({name, email, isAdmin:false})
-                        if (newUser) {
-                          
-                            return true
-                        } else {
-                            return false
-                        }
-               
+                            const newUser = await createUser({name, email,isNewUser:true, isAdmin:false})
+                            if (newUser) {
+                              
+                                return true
+                            } else {
+                                return false
+                            }
 
-                    return true;
+                        
+               
                 } catch (err) {
                     console.log('had aproblem saving google user to data base', err);
                     return false; // Sign-in failure
@@ -92,16 +94,12 @@ export const authOptions: NextAuthOptions = {
             return session
         },
         async redirect({ url, baseUrl }) {
-            // console.log('url in redirect is: ', url);
-        
+  
             // Allows relative callback URLs
-            if (url.startsWith("/")) {
-                console.log('baseUrl in redirect is: ', `${baseUrl}${url}`);
-                
+            if (url.startsWith("/")) {                
                 return `${baseUrl}${url}`}
                 // Allows callback URLs on the same origin
                 else if (new URL(url).origin === baseUrl){
-                console.log('new URL(url).origin is: ', `${new URL(url).origin}`);
              return url
             }
             return baseUrl
