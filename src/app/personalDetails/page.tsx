@@ -3,11 +3,6 @@ import { authOptions } from '../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
 import { getDateType, getFullUserByEmail, getMembership, getPreiodicAgenda } from '../utils/util';
 import { Tactivity, Tmembership, TperiodicAgenda, Tuser } from '../types/types';
-import MyMembershipsList from '../cmps/personal-details/MyMembershipsList';
-import Link from 'next/link';
-import MyUserQuestionaireCard from '../cmps/personal-details/MyUserQuestionaireCard';
-import MyUserHealthDecelrationCard from '../cmps/personal-details/MyUserHealthDecelrationCard';
-import MyActivitiesList from '../cmps/personal-details/MyActivitiesList';
 import MyPersonalDetailsIndex from '../cmps/personal-details/MyPersonalDetailsIndex';
 type Props = {}
 

@@ -83,10 +83,11 @@ export const getUser = async (_id: String) => {
     body: JSON.stringify({ _id })
   })
   const user = await res.json()
-  // console.log(' my user in utils getUserl = ', user);
+  console.log(' my user in utils getUserl = '+`${_id}`, user);
 
   return user
 }
+
 export const getWorkshop = async (id: String) => {
   const url = getUrl('workshop/getWorkshop/')
 

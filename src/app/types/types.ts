@@ -48,6 +48,7 @@ export type TuserMsgProps = {
     msg: string
 }
 export type TuserQuestionnaire = {
+    _id?:string
     firstName: string,
     lastName: string,
     israelid: string,
@@ -120,13 +121,3 @@ export type Tbillboard = {
     announcements: Tannouncement[]
 }
 
-declare module "next-auth" {
-  interface User {
-    id: string;
-    isNew?: boolean; // Add the isNew property
-  }
-
-  export interface Session  {
-    user: User; // Ensure the session includes your custom user
-  }
-}

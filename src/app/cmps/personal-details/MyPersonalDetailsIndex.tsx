@@ -31,7 +31,6 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
     const [myActivities, setMyActivities] = useState<Tactivity[]>()
     const [myMemberships, setMyMemberships] = useState<Tmembership[]>()
     const [isAlertBoxShown, setIsAlertBoxShown] = useState(false)
-    const [isActivityHasPassed, setIsActivityHasPassed] = useState(false)
     const [currActivityId, setCurrActivityId] = useState('')
     const [currActivityName, setCurrActivityName] = useState('')
     const [userMsg, setUserMsg] = useState('')
@@ -41,6 +40,8 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
     const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log('userQuestionnaireId',props.userQuestionnaireId);
+        
         setMyActivities(props?.myActivities?.reverse())
         setMyMemberships(props.memberships)
     }, [])
@@ -179,7 +180,7 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
             <section className='my-user-questionneaire card '>
                 <h3 className='tac mb-05'>שאלון אישי</h3>
                 <MyUserQuestionaireCard
-                    userQuestionnaireId={props.userQuestionnaireId ? 'U' + props.userQuestionnaireId : undefined}
+                    userQuestionnaireId={props.userQuestionnaireId && 'U' + props.userQuestionnaireId }
                     userId={props.userId} />
 
             </section>

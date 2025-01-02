@@ -1,11 +1,13 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { createDaysRange, createMonthsRange, createYearsRange, getUrl, scrollUp } from '@/app/utils/util';
-import { TuserQuestionnaire } from '@/app/types/types';
+import { createDaysRange, createMonthsRange, createYearsRange, getUrl, getUser, scrollUp } from '@/app/utils/util';
+import { Tuser, TuserQuestionnaire } from '@/app/types/types';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice';
+import { createUserQuestionnaire, getQuestionnair, updateQuestionnair, updateUserWithHisQuestionnairId } from '@/app/actions/userActions';
+import Spinner from '../Spinner';
 
 const years: number[] = createYearsRange()
 const months: number[] = createMonthsRange()
@@ -42,40 +44,45 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
     const [comments, setComments] = useState('')
     const [commentsInError, setCommentsInError] = useState(false)
     const [error, setError] = useState("")
+    const [userId, setUserId] = useState("")
+    const [questionnaireId, setQuestionnaireId] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
+    const [onEditMode] = useState(_id[0] === 'U')
     const router = useRouter()
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(_id[0] === 'U' ){
-            //U says that user have userQuestionnaireId and we woant to edit+update 
-            setData(_id)
+        //quId = get from the params QuestionnaireId and useId
+        const quId = _id.split('-')
+        setQuestionnaireId(quId[0])
+        setUserId(quId[1])
+        
+        if (_id[0] === 'U') {
+            //U says that user have questionnaireId and we want to edit+update 
+            setQuestionnaireId(quId[0].slice(1))
+            setData(quId[0])
         }
 
     }, [])
 
-    const setData = async (_id:string) => {
-// here we slice the U that was concated to user _id
-        const url = getUrl('user/userQeustionnaire/getUserQeusttionnaire')
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { "Content-type": "application/json" },
-                body: JSON.stringify({ _id:_id.slice(1) })
-            })
-            if(res.ok){
-                const userQuestionnaire:TuserQuestionnaire = await res.json()
-                setFirstName(userQuestionnaire.firstName)
-                setLastName(userQuestionnaire.lastName)
-                setIsraeliId(userQuestionnaire.israelid)
-                setGender(userQuestionnaire.gender)
-                setDayBirth(userQuestionnaire.dayBirth)
-                setMonthBirth(userQuestionnaire.monthBirth)
-                setYearBirth(userQuestionnaire.yearBirth)
-                setOccupation(userQuestionnaire.occupation)
-                setPhone(userQuestionnaire.phone)
-                setAddress(userQuestionnaire.address)
-                setComments(userQuestionnaire.comments)
-            }
+    const setData = async (_id: string) => {
+        // here we slice the U that was attched to user _id
+        const questionnair: TuserQuestionnaire | null = await getQuestionnair(_id.slice(1))
+
+        if (questionnair) {
+            setFirstName(questionnair.firstName)
+            setLastName(questionnair.lastName)
+            setIsraeliId(questionnair.israelid)
+            setGender(questionnair.gender)
+            setDayBirth(questionnair.dayBirth)
+            setMonthBirth(questionnair.monthBirth)
+            setYearBirth(questionnair.yearBirth)
+            setOccupation(questionnair.occupation)
+            setPhone(questionnair.phone)
+            setAddress(questionnair.address)
+            setComments(questionnair.comments)
+        }
     }
 
     const handelSubmit = async (e: any) => {
@@ -96,6 +103,7 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                 if (!comments) handelOnError('זה המקום ולשתף בכל בעיה, פציעה,מחלה או כל דבר שעשיו לסייע בהתאמת התרגול ', 'comments')
                 return
             }
+            setIsLoading(true)
             const data: TuserQuestionnaire = {
                 firstName,
                 lastName,
@@ -110,43 +118,60 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                 comments
             }
 
+            if (!onEditMode) {
+                //crearing a new user questoinnaire object  
+                const userQeustionnaire: TuserQuestionnaire = await createUserQuestionnaire(data)
 
-            //crearing a new user questoinnaire object  
-            const url = getUrl('user/userQeustionnaire')
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { "Content-type": "application/json" },
-                body: JSON.stringify({ data })
-            })
-            if (res.ok) {
-                //updating currrent user with user questoinnaire id
-                const userQuestionnaireId = await res.json()
-                const url = getUrl('user/updateUserQeustionnaire')
-                const result = await fetch(url, {
-                    method: 'PUT',
-                    headers: { "Content-type": "application/json" },
-                    body: JSON.stringify({ _id:_id[0]==='U'?_id.slice(1):_id, userQuestionnaireId })
-                })
-                if (result.ok) {
-                    let txt = 'שאלון פרטים אישיים נקלט בהצלחה!'
-                    dispatch(callUserMsg({ msg: txt, isSucsses: true }))
-
+                if (userQeustionnaire) {
+                    //updating currrent user with new questoinnaire id
+                    const userQuestionnaireId = userQeustionnaire._id
+                    // const userId = _id
+                    const userUpdated = await updateUserWithHisQuestionnairId(userId, userQuestionnaireId)
+                    if (userUpdated) {
+                        let txt = 'שאלון פרטים אישיים נקלט בהצלחה!'
+                        getUserMsg(txt, true)
+                    }
+                    setIsLoading(false)
+                    router.replace('/')
                     console.log('User qeustionnaire was posted successfuly ');
                 } else {
                     let txt = 'השליחה נכשלה!'
-                    dispatch(callUserMsg({ msg: txt, isSucsses: false }))
+                    getUserMsg(txt, false)
+                    setIsLoading(false)
+                }
+
+
+            } else {
+                // calling the updated user questionnier 
+                // const user: Tuser = await getUser(userId)
+                const userUpdated = await updateQuestionnair(questionnaireId, data)
+                if (userUpdated) {
+                    let txt = 'השאלון שלך עודכן בהצלחה'
+                    getUserMsg(txt, true)
+                    setIsLoading(false)
+                    router.replace('/personalDetails')
+                } else {
+                    let txt = 'הייתה בעיה בעדכון השאלון נסו מאוחר יותר'
+                    getUserMsg(txt, false)
+                    setIsLoading(false)
+
 
                 }
-                scrollUp()
-                setTimeout(() => {
-                    dispatch(hideUserMsg())
-                    router.replace('/')
-                }, 3500);
+
             }
         } catch (err) {
             console.log('had a problem to post user questionnaire',);
         }
     }
+
+    const getUserMsg = (txt: string, isSucsses: boolean) => {
+        scrollUp()
+        dispatch(callUserMsg({ msg: txt, isSucsses }))
+        setTimeout(() => {
+            dispatch(hideUserMsg())
+        }, 3500);
+    }
+
     const resetErrors = () => {
         setTimeout(() => {
             setError('')
@@ -181,7 +206,7 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
 
     const handelOnError = (msg: string, field: string) => {
         if (!firstName && !lastName && !israelid && !gender && !dayBirth &&
-            !monthBirth  && !occupation && !address && !phone && !comments) {
+            !monthBirth && !occupation && !address && !phone && !comments) {
 
             let txt = 'בבקשה למלא את כל השדות'
             setError(txt)
@@ -210,7 +235,7 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                 <input className='input-text' type='text' name='last-name'
                     style={lastNameInError ? { border: '1px solid red' } : {}}
                     value={lastName} onChange={(e: any) => setLastName(e.target.value)}
-                   />
+                />
             </label>
 
             <label className='input-label flex-col' htmlFor="israeli-israeliid">
@@ -236,7 +261,7 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                 <input type='text' name='phone' className='input-text'
                     style={phoneInError ? { border: '1px solid red' } : {}}
                     value={phone} onChange={(e: any) => setPhone(e.target.value)}
-                     />
+                />
             </label>
             <label className='input-label flex-col' htmlFor="address">
                 מקום מגורים
@@ -291,7 +316,7 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                 <input type='text' name='occupation' className='input-text' value={occupation}
                     style={occupationInError ? { border: '1px solid red' } : {}}
                     onChange={(e: any) => setOccupation(e.target.value)}
-                     />
+                />
             </label>
 
             <label className='input-label flex-col flex-col' htmlFor="notes">
@@ -301,15 +326,21 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
                     placeholder='כל דבר נוסף שתרצו לשתף זה המקום בשבילו.
 אשמח מאד לשמוע מה הם הציפיות, רצונות וכוונות שאיתם את/ה מגיעים לתרגל יוגה
 וגם לשמוע מאיפה שמעת והגעת אלי.
- תודה יאיר :)' 
- onChange={(e: any) => setComments(e.target.value)}></textarea>
+ תודה יאיר :)'
+                    onChange={(e: any) => setComments(e.target.value)}></textarea>
 
             </label>
-            <button type='submit' className='submit-questionnaire-btn'>{
-            _id[0]==='U'?
-            'עדכן שאלון '
-            :
-            'שליחת שאלון'}
+            <button type='submit' className='submit-questionnaire-btn flex-jc-ac'>
+                {isLoading ?
+
+                    <Spinner />
+                    :
+
+                    onEditMode ?
+                        'עדכן שאלון '
+                        :
+                        'שליחת שאלון'
+                }
             </button>
         </form>
     )

@@ -17,15 +17,16 @@ export default function MyUserQuestionaireCard({userQuestionnaireId,userId}: MyU
     return (
     <div className='my-user-questionnaire-conatiner flex-col gap05'>
       <span > מסע היוגה הינו יחודי לכל אדם, מילוי השאלון עוזר למורה להבין את הצרכים שלך, המטרות והעדפות שלך בצורה טובה יותר. ביחד אנחנו יכולים ליצור תרגול מותאם יותר ונכון יותר עבורך</span>
-           {userQuestionnaireId?
-                        <p className='btn flex-jc-ac'   onClick={()=>navigateTo(`userQuestionnaire/${userQuestionnaireId}`)} >לעדכון השאלון אישי</p>
-                    :
-                    <div>
-                        <p className='btn flex-jc-ac'  onClick={()=>navigateTo(`userQuestionnaire/${userQuestionnaireId}`)}>למילוי השאלון האישי </p>
+    
+                        <p className='btn flex-jc-ac'   onClick={()=>navigateTo(`userQuestionnaire/${userQuestionnaireId}-${userId}`)} >
+                          {userQuestionnaireId?' לעדכון השאלון אישי':'למילוי השאלון האישי '}
+                         </p>
+                    
+                 
                        
-                    </div>
+             
 
-                    }
+                    
     </div>
   )
 }

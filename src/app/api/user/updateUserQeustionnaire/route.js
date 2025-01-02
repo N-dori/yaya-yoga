@@ -1,6 +1,7 @@
 import connectMongoDB from '../../../libs/mongoDB';
 import { NextResponse } from 'next/server';
 import User from '../../../models/user';
+
 export async function PUT(request) {
     try {
         const { _id ,userQuestionnaireId } = await request.json();

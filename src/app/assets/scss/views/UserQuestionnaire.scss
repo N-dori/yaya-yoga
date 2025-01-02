@@ -9,12 +9,12 @@
     .form-select{
         border: none;
         border-bottom: 1px solid #222;
-        background-color: transparent;
+        background-color: var(--clr1);
         padding: .3em;
     }
     .input-text{
         border: none;
-        background-color: transparent;
+        background-color: var(--clr1);
         border-bottom: 1px solid #222;
         padding: .3em;
 
@@ -24,7 +24,7 @@
         // border: none;
       }
     .txt-area{
-        min-height: 100px;
+        min-height: 220px;
         padding: .5em;
         font-size: 1.1em;
         letter-spacing: .03em;
