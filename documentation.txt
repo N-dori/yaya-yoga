@@ -1,0 +1,35 @@
+#login / signup logic : 
+
+two ooptions with google or local 
+
+on google mode : 
+1. getting form google email and name 
+2. in next auth chacking if user in the database?
+     if yes check it's user.password?
+            if yes it is means that someone signup with this email localy therfore we return false !
+                and in the LogInSignup component we give userMsg = user exsist in database 
+   if not user not in database still returning true and the exploerer recives the session.
+3. in LogInSignup in UseEffect we check if there is session if yes
+        we get with the email in database if we have if not we creact a new user 
+        and redirect to '/welcome/${user._id}'   
+
+on locale mode : 
+1. getting email name and password from form and check if is this email exsist in the database if yes?
+    giving user msg 'user exsist' and return if not 
+        creating new user 
+
+**when creaction a new user the isNewUser = true after sucssesful signup 
+the useEffect func checks if user is exsist in the database if not 
+    it is because signup was via google. if yes ?
+        then check isNewUser? if yes 
+            redirct to /welcome/userId
+                if not
+                    redirct to '/'
+
+
+#/welcome/userId
+
+ 1.this page give a welcome massage
+ 2.toggleNewUser to false at the database
+ 3. sends an email with a link to fillout health decleration via
+    client cmp <SendEmailOnlyOnce user={user}/>

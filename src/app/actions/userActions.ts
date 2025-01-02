@@ -4,6 +4,7 @@ import { getUrl } from "../utils/util"
 export const createUser = async (user: Tuser) => {
     const url = getUrl('auth/registration/')
 
+console.log('gettinf in create user : ',user);
 
     const res = await fetch(url, {
 

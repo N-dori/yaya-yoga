@@ -119,3 +119,14 @@ export type Tbillboard = {
     _id?: string
     announcements: Tannouncement[]
 }
+
+declare module "next-auth" {
+  interface User {
+    id: string;
+    isNew?: boolean; // Add the isNew property
+  }
+
+  export interface Session  {
+    user: User; // Ensure the session includes your custom user
+  }
+}

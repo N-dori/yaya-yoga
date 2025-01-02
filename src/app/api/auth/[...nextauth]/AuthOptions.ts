@@ -4,36 +4,43 @@ import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GooglePovider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
-import { createUser } from "@/app/actions/userActions";
-import { getFullUserByEmail, getUserByEmail } from "@/app/utils/util";
+import { getFullUserByEmail } from "@/app/utils/util";
+import { Tuser } from "@/app/types/types";
 
 type Tcredentials = {
     email: string
     password: string
 }
+
 export const authOptions: NextAuthOptions = {
     providers: [CredentialsProvider(
         {
             name: 'Credentials',
             credentials: {},
             async authorize(credentials) {
-                const { email, password } = credentials as Tcredentials
-
-
+                console.log('Received credentials:', credentials); // Debug input credentials
                 try {
-                    await connectMongoDB()
-                    const user = await User.findOne({ email })
+                    const { email, password } = credentials as Tcredentials;
+                    await connectMongoDB();
+
+                    const user = await User.findOne({ email });
                     if (!user) {
+                        console.log('User not found');
                         return null
+
                     }
-                    //    console.log('user in authOptions :', user);
-                    const passwordMatch = await bcrypt.compare(password, user.password)
+
+                    const passwordMatch = await bcrypt.compare(password, user.password);
                     if (!passwordMatch) {
-                        return null
+                        console.log('Invalid password');
+                        return null; // Password mismatch
                     }
-                    return user
+
+                    console.log('Authentication successful, returning user:', user);
+                    return user; // Authentication successful
                 } catch (err) {
-                    console.log(err);
+                    console.error('Error in authorize function:', err); // Catch any errors
+                    throw new Error('Authentication failed'); // Ensure meaningful error messages
                 }
             }
         }
@@ -49,25 +56,23 @@ export const authOptions: NextAuthOptions = {
         async signIn({ user, account }) {
 
             if (account.provider === 'google') {
-               
-                
+
+
                 try {
-                    const { name, email } = user
-                            const userFound = await getUserByEmail(email)
-                            if(userFound){
-                                return true
-                            }
+                    const { email ,name } = user 
+                    const userFound: Tuser = await getFullUserByEmail(email)
+                    if (userFound) {
+                        user.id =userFound._id
+                        if (userFound.password) {
+                            return false
+                        }
+                    }
 
-                            const newUser = await createUser({name, email,isNewUser:true, isAdmin:false})
-                            if (newUser) {
-                              
-                                return true
-                            } else {
-                                return false
-                            }
+                    return true
 
-                        
-               
+
+
+
                 } catch (err) {
                     console.log('had aproblem saving google user to data base', err);
                     return false; // Sign-in failure
@@ -81,12 +86,12 @@ export const authOptions: NextAuthOptions = {
                 token.email = user.email
                 token.name = user.name
                 token.id = user.id
-                // token.isNewUser = user.isNewUser
             }
             return token
         },
-        async session({ session, token }) {
-            if (session.user) {
+        async session({ session , token }) {
+         
+            if (session.user ) {
                 session.user.email = token.email
                 session.user.name = token.name
 
@@ -94,13 +99,14 @@ export const authOptions: NextAuthOptions = {
             return session
         },
         async redirect({ url, baseUrl }) {
-  
+
             // Allows relative callback URLs
-            if (url.startsWith("/")) {                
-                return `${baseUrl}${url}`}
-                // Allows callback URLs on the same origin
-                else if (new URL(url).origin === baseUrl){
-             return url
+            if (url.startsWith("/")) {
+                return `${baseUrl}${url}`
+            }
+            // Allows callback URLs on the same origin
+            else if (new URL(url).origin === baseUrl) {
+                return url
             }
             return baseUrl
         }

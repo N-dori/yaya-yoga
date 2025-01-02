@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
+import { S3Upload, updateUserHealthDeclaration } from '@/app/actions/healthDeclerationActions'
 
 type HeathDeclerationFormProps = {
     userId: string
@@ -26,8 +27,10 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
     const [canvas, setCanvas] = useState(null);
     const [gCtx, setGCtx] = useState(null);
     const [isDrawing, setIsDrawing] = useState(false);
+    const [isBtnShown, setIsBtnShown] = useState(true);
 
     const formData = new FormData();
+    const ref = useRef(true)
 
     const router = useRouter()
     const dispatch = useDispatch()
@@ -49,51 +52,44 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
         scrollUp()
         return () => window.removeEventListener('resize', resizeCanvas);
     }, [canvas]);
+
     useEffect(() => {
         const preventScroll = (e) => {
             e.preventDefault();
         };
-    
         const canvas = canvasRef.current;
         canvas.addEventListener('touchmove', preventScroll, { passive: false });
-    
+
         return () => {
             canvas.removeEventListener('touchmove', preventScroll);
         };
     }, []);
+
     const resizeCanvas = () => {
         if (canvas && canvasContainerRef.current) {
             canvas.width = canvasContainerRef.current.offsetWidth;
             canvas.height = canvasContainerRef.current.offsetHeight;
         }
     };
+
     const uploadPdfToS3 = async () => {
         try {
-            const url = getUrl('s3/uploadPdf')
-            const res = await fetch(url, {
-                method: 'POST',
-                body: formData
-            })
-            if (!res.ok) {
+            // here I upload the pdf to S3 bucket
+            const res = S3Upload(formData)
+            if (!res) {
                 scrollUp()
                 let txt = `הייתה בעיה עם שליחת הטופס נסה שוב מאוחר יותר`
                 dispatch(callUserMsg({ msg: txt, isSucsses: false }))
             } else {
-                scrollUp()
-                let txt = `טופס הצהרת בריאות נשלח ונקלט בהצלחה!`
-                dispatch(callUserMsg({ msg: txt, isSucsses: true }))
-                const url = getUrl('user/updateHealthDeclration')
-                let healthDeclaration = `https://yayayoga.s3.eu-north-1.amazonaws.com/Health_Declerations/${userId}.pdf`
-                const res = await fetch(url, {
-                    method: 'PUT',
-                    headers: { "Content-type": "application/json" },
-                    body: JSON.stringify({ _id: userId, healthDeclaration })
-                })
-                if (res.ok) {
+                   // here I attach the link to the pdf on the user
+                const userUpdated =await  updateUserHealthDeclaration(userId)
+                if (userUpdated) {
+                    scrollUp()
+                    let txt = `טופס הצהרת בריאות נשלח ונקלט בהצלחה!`
+                    dispatch(callUserMsg({ msg: txt, isSucsses: true }))
+
                     console.log('user health Declaration created successfuly');
-
                 }
-
             }
             setTimeout(() => {
                 dispatch(hideUserMsg())
@@ -108,6 +104,7 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
 
     const makePdf = (e: any) => {
         e.preventDefault()
+        ref.current =false
         const input = pdfRef.current
         html2canvas(input).then((canvas) => {
             const imgData = canvas.toDataURL('image/png')
@@ -141,6 +138,15 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
         })
     }
 
+    const handelSubmit = (e:any) => {
+        e.preventDefault()
+        setIsBtnShown(false)
+       setTimeout(() => {
+           makePdf(e)
+        
+       }, 750); 
+    }
+
     const startDrawing = (e) => {
         const { offsetX, offsetY } = getEventCoordinates(e);
         setIsDrawing(true);
@@ -161,11 +167,13 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
         setIsDrawing(false);
         gCtx.closePath();
     };
+
     const clearCanvas = () => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
     };
+
     const getEventCoordinates = (e) => {
         const canvas = canvasRef.current;
         const rect = canvas.getBoundingClientRect();
@@ -193,7 +201,7 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
             <p></p>
             <form className='flex-col health-decleration-form'
 
-                onSubmit={makePdf}>
+                onSubmit={handelSubmit}>
 
                 <label className='input-label'>שם מלא:  </label>
 
@@ -272,7 +280,7 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
 
                 <h2 className='tac underline'>חתימה</h2>
                 <div
-                    style={{ width: '100%', height: '100px' }}
+                    style={{ width: '320px', height: '280px' }}
                     ref={canvasContainerRef} className='canvas-container mb-1'>
                     <div className='trash-continer pointer' title='נקה' onClick={clearCanvas}>X</div>
                     <canvas
@@ -288,7 +296,7 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
                         style={{ display: 'block' }}
                     />
                 </div>
-                <button type='submit' className='form-btn'>שלח טופס</button>
+                <button type='submit' style={isBtnShown ? {} : { display: 'none' }} className='form-btn'>שלח טופס</button>
             </form>
         </main>
     )

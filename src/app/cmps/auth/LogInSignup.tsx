@@ -10,6 +10,7 @@ import { getFullUserByEmail, getUserByEmail } from '@/app/utils/util'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { createUser } from '@/app/actions/userActions'
 import { Tuser } from '@/app/types/types'
+import Spinner from '../Spinner'
 
 type LogInSignupProps = {
     redirectTo?: string
@@ -27,53 +28,64 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
     const [error, setError] = useState("")
     const [passwarderror, setPasswardError] = useState("")
     const [passward2error, setPassward2Error] = useState("")
+    const [isLoading, setIsLoading] = useState<{ btn1: boolean, btn2: boolean }>({ btn1: false, btn2: false })
 
-    const [currUserId, setCurrUserId] = useState("")
-    // const [onSignupMode, setOnSignupMode] = useState(false)
-    // const [onLoginMode, setOnLoginMode] = useState(false)
-
+    const [isItGoogleSignup, setIsItGoogleSignup] = useState<boolean>(false)
     const path = usePathname()
     const router = useRouter()
     const dispatch = useAppDispatch()
-    const { data: session } = useSession()
-
+    const { data: session, status } = useSession();
     useEffect(() => {
         checkIfNewUser()
 
-    }, [session?.user?.email])
-    useEffect(() => {
-
-        console.log('path', path);
+    }, [session?.user?.email, isItGoogleSignup])
 
 
-    }, [path])
+    const checkIfNewUser = async () => {
+        // is best prctice status === "authenticated" tells us if session is ready we dont want the function to run premturely
+        if (status === "authenticated") {
 
-    const isUserExist = async () => {
-        try {
-            const userExists = await getUserByEmail(email)
-                    setCurrUserId(userExists._id)
-            if (userExists) {
-                let txt = 'משתמש קיים במערכת'
-                dispatch(callUserMsg({ msg: txt, isSucsses: false }))
-
-                setTimeout(() => {
-                    dispatch(hideUserMsg())
-                }, 3500);
-                return true
+            const userFound: Tuser = await getFullUserByEmail(session.user.email)
+            if (!userFound) {
+                const name = session.user.name
+                const email = session.user.email
+                const user = await createUser({ name, email, isNewUser: true, isAdmin: false })
+                router.push(`/welcome/${user._id}`)
+                return
             }
-            return false
-
-        } catch (error) {
-            console.log('had aproblem with user Exists', error);
-
+            if (userFound.isNewUser) {
+                router.push(`/welcome/${userFound?._id}`)
+            } else {
+                router.push('/')
+            }
+            setIsLoading(prevState => ({ ...prevState, btn1: false, btn2: false }))
         }
     }
-    const isPasswordValid = (value:string) => {
+
+
+    const handelGoogleRegisration = async () => {
+
+        setIsLoading(prevState => ({ ...prevState, btn2: true }))
+        await signIn('google', { redirect: false })
+
+    }
+
+    const getUserMsg = (txt: string, isSucsses: boolean) => {
+
+        dispatch(callUserMsg({ msg: txt, isSucsses: false }))
+
+        setTimeout(() => {
+            dispatch(hideUserMsg())
+        }, 3500);
+
+    }
+
+    const isPasswordValid = (value: string) => {
         setPassword(value)
         if (value.length < 4) {
             setPasswardError('יש לבחור סיסמא עם 4 תווים לפחות ')
             return false
-        } else { 
+        } else {
             setPasswardError('')
             return true
         }
@@ -83,7 +95,7 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
     const handelLoginSubmit = async (e: any) => {
         e.preventDefault()
         e.stopPropagation()
-        if (e.target.value === 'google') return
+
         if (!password || !email) {
             if (!password) handelOnError('יש להרשם עם סיסמא תקנית', 'password')
             if (!email) handelOnError('יש להרשם עם כתובת אי-מייל חוקית', 'email')
@@ -91,23 +103,24 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
         }
         try {
             const passwordValid = isPasswordValid(password)
-            if(!passwordValid){
+            if (!passwordValid) {
                 setPasswardError('יש להרשם עם סיסמא תקנית')
-                return} 
+                return
+            }
+
+            setIsLoading(prevState => ({ ...prevState, btn1: true }))
             const res = await signIn('credentials', {
                 email, password, redirect: false
             })
+
             if (res?.error) {
                 let txt = "פרטים אינם נכונים נסה שוב"
-                dispatch(callUserMsg({ msg: txt, isSucsses: false }))
                 const form = e.target
                 form.reset()
-                setTimeout(() => {
-                    dispatch(hideUserMsg())
-                }, 3500);
+                getUserMsg(txt, false)
                 return
             }
-            router.push('/')
+
         } catch (err) {
             console.log('had a problom...');
 
@@ -124,33 +137,32 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
             return
         }
         const passwordValid = isPasswordValid(password)
-            if(!passwordValid){
+        try {
+            if (!passwordValid) {
                 setPasswardError('יש להרשם עם סיסמא תקנית')
-                return} 
-                const passwordMatch = isAmatch(password2)   
-                if(!passwordMatch){
-            setPasswardError('סיסמא לא תואמת')
-            setPassward2Error('סיסמא לא תואמת') 
+                return
+            }
+            const passwordMatch = isAmatch(password2)
+            if (!passwordMatch) {
+                setPasswardError('סיסמא לא תואמת')
+                setPassward2Error('סיסמא לא תואמת')
 
-            return}      
-        const userExist = await isUserExist()
-        if (userExist) {
+                return
+            }
+            const userExists = await getUserByEmail(email)
+            if (!userExists) {
+
+                const newUser = await createUser({ name, email, isNewUser: true, password, isAdmin: false })
+                const result = await signUserIn()
+
+            } else {
+
+                getUserMsg('משתמש קיים במערכת', false)
+
+            }
+
             const form = e.target
             form.reset()
-            return
-        }
-        try {
-            const user = await createUser({ name, email, isNewUser: true, password, isAdmin: false })
-            if (user) {
-                const form = e.target
-                form.reset()
-                signUserIn()
-                
-                    router.push(`/welcome/${user._id}`)
-                
-            } else {
-                throw new Error('faild to create new user')
-            }
 
         }
         catch (err) {
@@ -160,33 +172,15 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
     }
 
     const signUserIn = async () => {
+
         const res = await signIn('credentials', {
             email, password, redirect: false
         })
-      
-    }
-
-    const checkIfNewUser = async () => {
-        if (session?.user?.email) {
-            const user: Tuser = await getFullUserByEmail(session.user.email)
-            if (user.isNewUser) {
-                router.push(`/welcome/${user._id}`)
-            } else {
-                router.push('/')
-
-            }
-
-        }
-    }
-
-    const handelGoogleRegisration = async () => {
-
-        // await signIn('google',{ callbackUrl: '/welcome' })
-        await signIn('google')
-
-
+        return res
 
     }
+
+
 
     const handelOnError = (msg: string, field: string) => {
         if (!name && !password && !email) {
@@ -216,21 +210,23 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
         "email": () => setEmailInError(!emailInError),
 
     }
-     
-    const isAmatch = (value:string) => {
-       setPassword2(value)
-        if(value === password){
+
+    const isAmatch = (value: string) => {
+        setPassword2(value)
+        if (value === password) {
             setPasswardError('')
             setPassward2Error('')
-           if(! isPasswordValid(password)){
-            setPasswardError('יש לבחור סיסמא עם 4 תווים לפחות ')
-            // setPassward2Error('סיסמא לא תואמת') 
 
-           }
-           return  true
+            if (!isPasswordValid(password)) {
+                setPasswardError('יש לבחור סיסמא עם 4 תווים לפחות ')
+
+            }
+
+            return true
+
         } else {
-            setPassward2Error('סיסמא לא תואמת') 
-            return  false
+            setPassward2Error('סיסמא לא תואמת')
+            return false
         }
     }
 
@@ -280,37 +276,44 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
                         className={error ? 'form-input on-error' : 'form-input'}
                         type='password' placeholder={path === '/signup' ? ' בחר סיסמא (לפחות 4 תווים)' : ' הכנס סיסמא '} ></input>
                 </label>
-                {passwarderror&& <small className='password-error '>{passwarderror}</small>}
+                {passwarderror && <small className='password-error '>{passwarderror}</small>}
 
                 {path === '/signup' &&
                     <label className="input-label flex-col" htmlFor="password">
-                     
+
                         <input name="password"
                             style={passwordInError ? { border: '1px solid red' } : {}}
                             onChange={(e) => isAmatch(e.target.value)}
                             className={error ? 'form-input on-error' : 'form-input'}
                             type='password' placeholder={' הקלד סיסמא פעם נוספת '} ></input>
                     </label>
-                    }
-                    {passward2error&& <small className=' password-error '>{passward2error}</small>}
+                }
+                {passward2error && <small className=' password-error '>{passward2error}</small>}
 
 
                 {path === '/signup' ?
-                    <button type='submit' className="login-btn pointer"> רשום אותי </button>
+                    <button type='submit' className="login-btn flex-jc-ac pointer">{isLoading.btn1 ? <Spinner /> : <span>רשום אותי</span>}  </button>
                     :
-                    <button type='submit' className='login-btn pointer'> התחבר </button>
+                    <button type='submit' className='login-btn flex-jc-ac pointer'>{isLoading.btn1 ? <Spinner /> : <span>התחבר</span>}  </button>
                 }
 
                 <h2 className="or tac">או</h2>
                 <button type='button' onClick={handelGoogleRegisration}
-                    className='google-btn flex-sb pointer'>
+                    className={`google-btn ${!isLoading.btn2 && 'flex-sb'} pointer`}>
                     {
                         path === '/signup' ?
-                            <span> צור חשבון עם גוגל</span>
+                            <span className='flex-jc-ac'>{isLoading.btn2 ? <Spinner /> : <span>צור חשבון עם גוגל</span>} </span>
                             :
-                            <span> התחבר עם גוגל</span>
+                            <span className='flex-jc-ac'>{isLoading.btn2 ? <Spinner /> : <span>התחבר עם גוגל</span>} </span>
                     }
-                    <Image src={'/googleSymbol.png'} alt={'google symbol'} width={40} height={40}></Image>  </button>
+
+                    {
+                        !isLoading.btn2 ?
+                            <Image src={'/googleSymbol.png'} alt={'google symbol'} width={40} height={40}></Image>
+                            :
+                            <></>
+                    }
+                </button>
 
                 <CircleDeroration />
             </form>

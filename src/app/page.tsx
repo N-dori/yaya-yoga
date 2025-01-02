@@ -4,11 +4,14 @@ import AboutMeIndex from "./cmps/home/AboutMeIndex";
 import DirectionsToYayaYoga from "./cmps/home/DirectionsToYayaYoga";
 import BillboardIndex from "./cmps/home/BillboardIndex";
 import YogaImage from "../../public/4.jpg"
-import weeklySchduleImage from "../../public/weekly_schdule_image.png"
 import { Open_Sans } from "next/font/google";
+
 const open_Sans = Open_Sans ({ weight:'400',subsets: ["hebrew"] });
 
 export default async function Home() {
+
+
+
 
   return (
 

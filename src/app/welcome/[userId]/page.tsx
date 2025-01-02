@@ -1,7 +1,7 @@
 import React from 'react'
 import { authOptions } from '../../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
-import { getUrl, getUser, sendEmail } from '../../utils/util';
+import { getUser } from '../../utils/util';
 import Link from 'next/link';
 import { Tuser } from '@/app/types/types';
 import SendEmailOnlyOnce from '@/app/cmps/SendEmailOnlyOnce';
@@ -11,7 +11,7 @@ type Props = {}
 
 export default async function page({ params }) {
     console.log('params.welcomeUserId', params.userId);
-    // 
+  
     const session = await getServerSession(authOptions)
 
     const user: Tuser = await getUser(params.userId)
