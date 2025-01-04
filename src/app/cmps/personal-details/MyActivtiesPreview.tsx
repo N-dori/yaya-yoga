@@ -84,7 +84,7 @@ export default function MyActivtiesPreview({ activity, setCurrActivityId, userEm
             <div style={activity.isCanceled ? { textDecoration: ' line-through' } : {}}
                 className='activity-info mb-1 grid'>
                 <Image className='activity-teacher-img gc1'
-                    alt={'teacher-img'} width={50} height={50} src={'https://robohash.org/kkk'} />
+                    alt={'teacher-img'} width={50} height={50} src={'/hero.jpg'} />
                 <div className='activity-teacher-warpper flex-col gc2'>
                     <span className='activity-teacher-name gc2'> {activity.teacher} </span>
                     <span className='activity-location gc2'> בית פעם - סטודיו קדם  </span>

@@ -11,11 +11,11 @@ const varelaRound = Varela_Round ({ weight:'400',subsets: ["hebrew"] });
 export const metadata: Metadata = {
   title: "יאיא יוגה",
   description: "סטודיו ליוגה במסורת האשטנגה ",
-  // icons:{
-  //   icon:['/favicon.ico?v=4'],
-  //   apple:['/apple-touch-icon.png?v=4'],
-  //   shortcut:['/apple-touch-icon.png']
-  // },
+  icons:{
+    icon:['/favicon.ico?v=4'],
+    apple:['/apple-touch-icon.png?v=4'],
+    shortcut:['/apple-touch-icon.png']
+  },
   manifest: '/site.webmanifest'
 };
 

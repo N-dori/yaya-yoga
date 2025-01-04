@@ -40,8 +40,8 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log('userQuestionnaireId',props.userQuestionnaireId);
-        
+        console.log('userQuestionnaireId', props.userQuestionnaireId);
+
         setMyActivities(props?.myActivities?.reverse())
         setMyMemberships(props.memberships)
     }, [])
@@ -91,8 +91,8 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
         const membershipAfterRefund = await refundPractitionerMembershipAtDatabase(currMembershipId)
         if (membershipAfterRefund) {
             console.log('practitioner after refund', membershipAfterRefund);
-                                           refundPractitionerMembershipClientSide(membershipAfterRefund)
-           
+            refundPractitionerMembershipClientSide(membershipAfterRefund)
+
             setIsLoading(false)
         }
         const user: Tuser = await getFullUserByEmail(props.userEmail)
@@ -109,22 +109,22 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
         }
         removeActivityFromClientSide(currActivityId)
     }
-     
-    const refundPractitionerMembershipClientSide =(membershipAfterRefund:Tmembership) => {
-          //is memebrship there? if yes 1.find it 2.replace it with the updated one.
-            // if no - push it to client side array of memberships
-            const isMembershipFound = myMemberships?.some(membership => membership._id === currMembershipId)
+
+    const refundPractitionerMembershipClientSide = (membershipAfterRefund: Tmembership) => {
+        //is memebrship there? if yes 1.find it 2.replace it with the updated one.
+        // if no - push it to client side array of memberships
+        const isMembershipFound = myMemberships?.some(membership => membership._id === currMembershipId)
         if (isMembershipFound) {
             const index = myMemberships.findIndex(membership => membership._id === currMembershipId)
             myMemberships.splice(index, 1, membershipAfterRefund)
             setMyMemberships([...myMemberships])
         }
         else {
-            if(!myMemberships){
+            if (!myMemberships) {
                 setMyMemberships([membershipAfterRefund])
                 setIsLoading(false)
-                return 
-            }  
+                return
+            }
             myMemberships.unshift(membershipAfterRefund)
             setMyMemberships([...myMemberships])
         }
@@ -170,17 +170,17 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
             <section className='my-memberships-container card'>
                 <h3 className='tac mb-05'>מנויים</h3>
                 <MyMembershipsIndex memberships={myMemberships} />
-{props.myWorkshopsTickets&&
-            <section className='my-memberships-container mt-1'>
-                   <h3 className='tac mb-05'> הסדנאות שלי</h3>
-                <MyWorkshopsIndex myWorkshopsTickets={props.myWorkshopsTickets}/>
-            </section>}
+                {props.myWorkshopsTickets &&
+                    <section className='my-memberships-container mt-1'>
+                        <h3 className='tac mb-05'> הסדנאות שלי</h3>
+                        <MyWorkshopsIndex myWorkshopsTickets={props.myWorkshopsTickets} />
+                    </section>}
             </section>
 
             <section className='my-user-questionneaire card '>
                 <h3 className='tac mb-05'>שאלון אישי</h3>
                 <MyUserQuestionaireCard
-                    userQuestionnaireId={props.userQuestionnaireId && 'U' + props.userQuestionnaireId }
+                    userQuestionnaireId={props.userQuestionnaireId && 'U' + props.userQuestionnaireId}
                     userId={props.userId} />
 
             </section>

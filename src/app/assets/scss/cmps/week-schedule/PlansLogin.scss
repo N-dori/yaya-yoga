@@ -14,24 +14,6 @@
 
     }
 
-    .existing-users-login-btn {
-        grid-template-columns: 1fr 1fr;
-        border: 1px solid rgb(34, 34, 34);
-        background-color: transparent;
-        cursor: pointer;
-        align-items: center;
-        font-size: 1em;
-        padding: .5em;
-        max-height: 4em;
-        align-self: center;
-        border-radius: 10px;
-        opacity: 0.5;
-
-        .login-svg {
-            margin-block-start: 10px;
-        }
-
-    }
 
     .new-to-studio {
         padding: 1em 1em;
@@ -42,4 +24,22 @@
         padding: 1em 1em;
 
     }
+}
+.existing-users-login-btn {
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid rgb(34, 34, 34);
+    background-color: transparent;
+    cursor: pointer;
+    align-items: center;
+    font-size: 1em;
+    padding: .5em;
+    max-height: 4em;
+    align-self: center;
+    border-radius: 10px;
+    opacity: 0.5;
+
+    .login-svg {
+        margin-block-start: 10px;
+    }
+
 }

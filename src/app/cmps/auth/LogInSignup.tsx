@@ -14,9 +14,10 @@ import Spinner from '../Spinner'
 
 type LogInSignupProps = {
     redirectTo?: string
+    origin?: string
 }
 
-export default function LogInSignup({ redirectTo }: LogInSignupProps) {
+export default function LogInSignup({ redirectTo, origin }: LogInSignupProps) {
 
     const [name, setName] = useState("")
     const [nameInError, setNameInError] = useState(false)
@@ -32,6 +33,7 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
 
     const [isItGoogleSignup, setIsItGoogleSignup] = useState<boolean>(false)
     const path = usePathname()
+
     const router = useRouter()
     const dispatch = useAppDispatch()
     const { data: session, status } = useSession();
@@ -56,6 +58,7 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
             if (userFound.isNewUser) {
                 router.push(`/welcome/${userFound?._id}`)
             } else {
+                if(origin === 'workshops-login')return 
                 router.push('/')
             }
             setIsLoading(prevState => ({ ...prevState, btn1: false, btn2: false }))
@@ -229,6 +232,8 @@ export default function LogInSignup({ redirectTo }: LogInSignupProps) {
             return false
         }
     }
+
+
 
     return (
         <main className='signup-container flex-col flex-jc-ac full gap1'>

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { authOptions } from '../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
 import { getDateType, getFullUserByEmail, getMembership, getPreiodicAgenda } from '../utils/util';
 import { Tactivity, Tmembership, TperiodicAgenda, Tuser } from '../types/types';
 import MyPersonalDetailsIndex from '../cmps/personal-details/MyPersonalDetailsIndex';
+import PersonalDetailsLoader from '../cmps/personal-details/PersonalDetailsLoader';
 type Props = {}
 
 export default async function page({ }: Props) {
@@ -89,7 +90,9 @@ export default async function page({ }: Props) {
     return (
         <section className='personal-details-container gc2'>
             <h2 className='tac m-0'>האיזור האישי </h2>
+            <Suspense fallback={<PersonalDetailsLoader/>}>
             <MyPersonalDetailsIndex {...MyPersonalDetailsProps} />
+            </Suspense>
 
         </section>
     )

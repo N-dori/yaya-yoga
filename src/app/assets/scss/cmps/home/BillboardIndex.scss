@@ -68,12 +68,12 @@
     border-radius: 0px 0px 0px 0px;
     /* Adjust height of the blur */
     // background: linear-gradient(rgba(255, 255, 255, 0), var(--clr8), var(--clr7), var(--clr7));
-    background: linear-gradient(rgba(255, 255, 255, 0), var(--clr10), );
+    background: linear-gradient(rgba(255, 255, 255, 0),lightgray );
 }
 
 .more {
     letter-spacing: 1px;
-    color: var(--clr1);
+    color: var(--clr11);
     font-size: 1em;
     padding: .5em;
     font-weight: 600;

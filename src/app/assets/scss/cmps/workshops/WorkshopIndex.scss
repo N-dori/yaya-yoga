@@ -1,12 +1,14 @@
 .workshops-page-container {
-    cursor: pointer;
     padding-block: 1em;
     text-decoration: none;
 
+    .workshop-link{
+        color: var(--clr5);
+    }
     .workshop-card-container {
         position: relative;
         // width: 300px; /* Adjust as needed */
-        height: 650px;
+        height: 600px;
         /* Fixed height */
         overflow: hidden;
         /* Hide overflowing content */
@@ -34,6 +36,8 @@
 }
 
 .workshop-details-container {
+    padding:2em 0em ;
+
     .title {
         text-decoration: overline;
     }
@@ -53,14 +57,15 @@
     }
 }
 .additional-workshps-dates{
-    margin-bottom: 1em;
+    margin-bottom: 2em;
     font-size: .8em;
-    text-decoration: underline;
+    // text-decoration: underline;
 }
 .location{
     font-size: .8em;
 }
 .edit-desc-wrapper{
+
     width: 100%;
     
     .edit-desc{
@@ -71,7 +76,7 @@
 
 .last-date {
     padding: .5em;
-    background: linear-gradient(rgba(255, 255, 255, 0), var(--clr7));
+    background: linear-gradient(rgba(255, 255, 255, 0), lightgray);
     color: var(--clr5);
 }
 .work-shop-image{

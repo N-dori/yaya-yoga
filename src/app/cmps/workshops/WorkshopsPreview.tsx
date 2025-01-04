@@ -4,13 +4,15 @@ import { createNewMembership, deleteActivity, deleteAnnouncemnt, deleteWorkshop,
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import EditWorkshopBtns from './EditWorkshopBtns'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import Spinner from '../Spinner'
 import ParagraphsIndex from '../ParagraphsIndex'
+import { AlertBox } from '../AlertBox'
+import LocationSvg from '@/app/assets/svgs/LocationSvg'
 
 type WorkshopsPreviewProps = {
   isDetailsMode: boolean
@@ -27,14 +29,18 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
   const [currWorkshop, setCurrWorkshop] = useState<Tworkshop>(null)
   const [isLoading, setIsLoading] = useState<boolean>()
-  const [isAditionalDates, setIsAditionalDates] = useState<boolean>(false)
-  const [paragraphs, setParagraphs] = useState<string[]>([])
+
   const [currWorkshops, setCurrWorshops] = useState<Tworkshop[]>([])
+
+  const [isAlertBoxShown, setIsAlertBoxShown] = useState(false)
+  const [userMsg, setUserMsg] = useState('')
+  const [btnTxt, setBtnTxt] = useState('')
 
   const { data: session } = useSession()
   const path = usePathname()
   const dispatch = useDispatch()
-
+  const loginFormRef = useRef<HTMLElement>()
+  const router = useRouter()
   useEffect(() => {
     setCurrWorkshop(workshop)
     setCurrWorshops(workshops)
@@ -45,15 +51,9 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
 
   }, [session?.user?.email, path,])
 
-  useEffect(() => {
-    getParagraphs()
-  }, [currWorkshop?.desc, workshops])
 
-  const getParagraphs = () => {
-    if (currWorkshop?.desc) {
-      const paragraphs = currWorkshop?.desc.split('/')
-      setParagraphs(paragraphs)
-    }
+  const navigatTo = (route: string) => {
+    router.push(route)
   }
 
   const handelChange = (e: any) => {
@@ -92,7 +92,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
             const deleteActivityPromises = workshops.map(workshop => {
               deleteActivity(workshop.activityId)
             })
-            
+
             const deleteWorkshopResult = Promise.all(deleteWorkshopPromises)
             const deleteActivityResult = Promise.all(deleteActivityPromises)
             if (deleteActivityResult && deleteWorkshopResult) {
@@ -102,7 +102,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
           }
         } else {
           const res = await deleteWorkshop(workshop._id)
-                     await deleteActivity(workshop.activityId)
+          await deleteActivity(workshop.activityId)
           if (res) {
             let txt = 'סדנא הוסרה בהצלחה'
             getUserMsg(txt, true)
@@ -115,9 +115,9 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
     }
   }
 
-  const updateClientSideWorkshops = (workshopId:string) => {
-    const index = currWorkshops.findIndex(worshop=> worshop._id === workshopId)
-    currWorkshops.splice(index,1,currWorkshop)
+  const updateClientSideWorkshops = (workshopId: string) => {
+    const index = currWorkshops.findIndex(worshop => worshop._id === workshopId)
+    currWorkshops.splice(index, 1, currWorkshop)
     setCurrWorshops([...currWorkshops])
 
   }
@@ -128,7 +128,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
     console.log('workshopID is :', workshopId);
 
     const res = await updateWorkshop(workshopId, currWorkshop)
-                      updateClientSideWorkshops(workshopId)
+    updateClientSideWorkshops(workshopId)
     if (res) {
       let txt = `סדנא עודכנה בהצלחה`
       getUserMsg(txt, true)
@@ -142,15 +142,21 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   }
 
   const onRegisterToWorkshop = async () => {
-//after user buy workshop
+    //after user buy workshop
     const email = session?.user?.email
     const name = session?.user?.name
     const id = makeId(8)
     const paid = +workshop.price
     const workshopTitle = workshop.title
     const expiryDate = workshop.date
+    if (!email) {
+      let userMsg = 'להשלמת התהליך יש צורך לבצע התחברות  '
+      let btnTxt = 'קח אותי'
+      getAlertBox(userMsg, btnTxt)
+      return
+    }
 
-    const [membership, userId] = await getPlan('סדנא', email, paid, workshopTitle,expiryDate)
+    const [membership, userId] = await getPlan('סדנא', email, paid, workshopTitle, expiryDate)
     if (!membership || !userId) {
       return
     }
@@ -166,13 +172,13 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
         membershipId,
         email,
         name)
-        if(res){
-          const updatedUser =  await updateUserWithNewWorkshopAtDatabase(membershipId,userId) 
-            if(updatedUser){
-              let txt = '🙏 תודה על רכישתך'
-              getUserMsg(txt, true)
-            }
+      if (res) {
+        const updatedUser = await updateUserWithNewWorkshopAtDatabase(membershipId, userId)
+        if (updatedUser) {
+          let txt = '🙏 תודה על רכישתך'
+          getUserMsg(txt, true)
         }
+      }
 
     } else {
       let txt = 'הייתה בעיה נסו שוב מאוחר יותר'
@@ -191,37 +197,66 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
     }, 3500);
   }
 
+  const getAlertBox = (userMsg: string, btnTxt: string,) => {
+    setUserMsg(userMsg)
+    setBtnTxt(btnTxt)
+    setIsAlertBoxShown(true)
+
+  }
+
   const EditWorkshopBtnsProps = {
     isAdmin, isOnDetailsPage,
     isEditMode, setIsEditMode,
     isLoading, onSaveChanges,
     onRemoveWorkshop
   }
+
+  const AlertBoxProps = {
+    isAlertBoxShown, setIsAlertBoxShown,
+    userMsg, setUserMsg,
+    btnTxt, setBtnTxt,
+    navigatTo
+  }
+
+  const goToDetailsPage = () => {
+    if (!isOnDetailsPage) {
+      router.push(`workshops/${currWorkshop.id}`)
+    }
+  }
+
   return (
     currWorkshop &&
-    <section className='workshop-card-wrapper'>
+
+    <section className='workshop-card-wrapper' >
+
 
       <article className='workshop-card-container flex-col gap05 clean ' >
 
         <h2 className='workshop-title tac'>{currWorkshop.title}</h2>
         <h4 className='sub-title'>{currWorkshop.subTitle}</h4>
+
         <section>
 
-        {isDetailsMode &&
-          <section className='additional-workshps-dates bold flex-col gap05'>
-            {numberOfMeetings > 1 &&
-              <p className='pointer'
-                onClick={() => setIsAditionalDates(true)}>לסדנא {numberOfMeetings} חלקים, לצפייה בתאריכים נוספים לחץ כאן</p>
-            }
+          {isDetailsMode &&
+            <section className='additional-workshps-dates bold flex-col gap05'>
+              {numberOfMeetings > 1 &&
+                <p className='underline pointer mb-1'>
+                  לסדנא {numberOfMeetings} חלקים, לצפייה בתאריכים נוספים
+                </p>
+              }
 
-            {isAditionalDates &&
-              workshops?.map(workshop =>
-                <p key={workshop._id} className='underline pointer' 
-                onClick={() => handelChangeWorkshop(workshop._id)}>{getFormatedDate(workshop.date)}</p>
+              {workshops?.map(workshop =>
+                <>
+
+                  <span key={workshop._id} className=' no-under-line pointer'
+                    onClick={() => handelChangeWorkshop(workshop._id)}> {getFormatedDate(workshop.date) + ' - '}
+                  <span className='no-under-line' >{workshop.subTitle }</span>
+                  </span>
+                </>
               )
-            }
-          </section>
-        }
+              }
+            </section>
+          }
           {isDetailsMode &&
             <div className='flex-sb'>
               <p className='date bold'>{getFormatedDate(currWorkshop.date)}</p>
@@ -229,22 +264,22 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
             </div>}
 
 
-          <Image className='work-shop-image' src={currWorkshop.imgUrl} alt={'imageOfworkshop'}
-            style={{ width: '100%' }}
+          <Image onClick={goToDetailsPage} className='work-shop-image pointer' src={currWorkshop.imgUrl} alt={'imageOfworkshop'}
+            style={{ width: '100%', height: 'auto' }}
             sizes='100vw'
             width={0}
-            height={270}
+            height={0}
           />
         </section>
-
-        <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormatedDate(currWorkshop.lastDateForRegistration)}</span></span>
         <p className='price bold'>מחיר: {currWorkshop.price} ש"ח</p>
-        <p className='location bold'>{currWorkshop.activityLocation} </p>
+        <p className='location bold'><LocationSvg/>{currWorkshop.activityLocation} </p>
+        <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormatedDate(currWorkshop.lastDateForRegistration)}</span></span>
 
-       
-        {!isEditMode ? <section>
-          <ParagraphsIndex desc={currWorkshop.desc} isDetailsMode={isDetailsMode}/>
-         
+
+
+        {!isEditMode ? <section className='pb-1'>
+          <ParagraphsIndex desc={currWorkshop.desc} isDetailsMode={isDetailsMode} />
+
         </section>
           :
           <section className='edit-desc-wrapper flex-jc-ac w-100'>
@@ -253,7 +288,6 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
 
           </section>
         }
-
 
 
 
@@ -279,6 +313,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
         }
 
       </div>
+      <AlertBox {...AlertBoxProps} />
 
     </section>
   )

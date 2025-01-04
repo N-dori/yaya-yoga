@@ -15,8 +15,8 @@ type AlertBoxProps = {
   handelChargeUser?:()=>void
   navigatTo?:(route:string)=>void
   removePractitionerFromActivity?: (membershipId:string) => void
-  currMembershipId:string|null
-  userId:string
+  currMembershipId?:string|null
+  userId?:string
 
 }
 
@@ -63,6 +63,9 @@ export function AlertBox({removePractitionerFromActivity,currMembershipId,userId
   }
   if(btnTxt=== 'להצהרת בריאות'){
     navigatTo(`/healthDecleration/${userId}`) 
+  }
+  if(btnTxt=== 'קח אותי'){
+    navigatTo(`/login`) 
   }
   hideBox()
  }

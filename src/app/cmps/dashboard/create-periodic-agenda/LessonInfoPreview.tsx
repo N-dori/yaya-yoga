@@ -28,9 +28,9 @@ type LessonInfoPreviewProps = {
 
 export function LessonInfoPreview({ setActivities, activities, onBooking, periodicAgendaId, isOnWeeklyScheduleMode, activity, handelLessonCancelation }: LessonInfoPreviewProps) {
     const [isAlertBoxShown, setIsAlertBoxShown] = useState(false)
-    const [isActivityHasPassed, setIsActivityHasPassed] = useState(false)
     const [userMsg, setUserMsg] = useState('')
     const [btnTxt, setBtnTxt] = useState('')
+    const [isActivityHasPassed, setIsActivityHasPassed] = useState(false)
     const router = useRouter()
 
     const [currUser, setCurrUser] = useState<Tuser>(null)
