@@ -1,0 +1,81 @@
+.footer-container {
+    background-color: var(--clr11);
+    color: var(--clr1);
+
+    .about-us {
+        padding-inline: 1em;
+        text-align: justify;
+        font-size: .7em;
+    }
+
+    .news-letter-txt {
+        padding: 2em;
+        font-size: .9em;
+
+    }
+
+    .input-email-letter {
+        border: 1px solid rgba(0, 0, 0, .12);
+        display: inline-block;
+        width: auto;
+        min-width: 18em;
+        padding: 1em .5em;
+        line-height: 1.2rem;
+    }
+    
+    .news-letter-btn {
+        background-color: var(--clr13);
+        line-height: 1.2rem;
+        letter-spacing: 1.5px;
+        min-width: 6em;
+        padding: 1em .5em;
+      color:  var(--clr5);
+      border: none;
+
+    }
+
+
+    .yaya-yoga-txt {
+        margin-bottom: 1em;
+        text-decoration: overline;
+    }
+
+    .footer-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .footer-links {
+        padding-inline: .5em;
+        padding-block: 2em;
+        .footer-link {
+            font-size: .8em;
+            color: var(--clr1);
+            text-decoration: none;
+            padding-block: .5em;
+        }
+        .link {
+            font-size: .8em;
+            color: var(--clr13);
+            text-decoration: none;
+            padding-block: .5em;
+            text-decoration: underline;
+        }
+
+        svg {
+            margin-bottom: -2px;
+            margin-left: 5px;
+        }
+    }
+
+    .footer-link:hover {
+        text-decoration: underline;
+    }
+
+    .footer-copyRight {
+        margin-top: 20px;
+        font-size: 14px;
+        direction: ltr;
+        padding-block: 2em;
+    }
+}

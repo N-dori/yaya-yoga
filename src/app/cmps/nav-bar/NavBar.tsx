@@ -86,7 +86,7 @@ export default function NavBar({ }: Props) {
 
           </div>
           <div className='logo-container pointer' onClick={handelLogoClicked}>
-            <Image className='logo' alt={'logo'} width={200} height={90} src={'/logo.png'} />
+            <Image className='logo'  alt={'logo'} width={200} height={90} src={'/logo.png'} />
           </div>
           <div className='main-menu-btn flex-jc-ac gap05'>
             {isShown ?

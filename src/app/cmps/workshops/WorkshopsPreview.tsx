@@ -232,7 +232,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
 
       <article className='workshop-card-container flex-col gap05 clean ' >
 
-        <h2 className='workshop-title tac'>{currWorkshop.title}</h2>
+        <h2 className='workshop-title mb-1 tac'>{currWorkshop.title}</h2>
         <h4 className='sub-title'>{currWorkshop.subTitle}</h4>
 
         <section>

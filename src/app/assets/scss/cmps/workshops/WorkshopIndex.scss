@@ -1,7 +1,9 @@
 .workshops-page-container {
     padding-block: 1em;
     text-decoration: none;
-
+    .title {
+        text-decoration: overline;
+    }
     .workshop-link{
         color: var(--clr5);
     }
@@ -38,9 +40,7 @@
 .workshop-details-container {
     padding:2em 0em ;
 
-    .title {
-        text-decoration: overline;
-    }
+ 
 
     .workshop-title {
         background: #c2ac973d;
@@ -62,7 +62,7 @@
     // text-decoration: underline;
 }
 .location{
-    font-size: .8em;
+    font-size: .7em;
 }
 .edit-desc-wrapper{
 

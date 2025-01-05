@@ -74,6 +74,10 @@
     justify-content: space-between;
     align-items: center;
 }
+.flex-warp{
+    display: flex;
+    flex-wrap: wrap;
+}
 .flex-col{
     display: flex;
     flex-direction: column;

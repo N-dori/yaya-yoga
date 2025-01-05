@@ -6,6 +6,7 @@ import { AuthProvider } from "./Providers";
 import NavBar from "./cmps/nav-bar/NavBar";
 import StoreProvider from "./StoreProvider";
 import { UserMsg2 } from "./cmps/UserMsg2";
+import Footer from "./cmps/Footer";
 const varelaRound = Varela_Round ({ weight:'400',subsets: ["hebrew"] });
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({
           <NavBar />
           {children}
         </AuthProvider>
+        <Footer/>
                       <UserMsg2/>
       </body>
     </html>
