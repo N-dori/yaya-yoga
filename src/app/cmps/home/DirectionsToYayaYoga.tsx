@@ -1,4 +1,5 @@
 'use client'
+import LocationSvg from '@/app/assets/svgs/LocationSvg';
 import { GoogleMap, InfoWindowF, MarkerF, useJsApiLoader } from '@react-google-maps/api'
 import Link from 'next/link';
 import React, { useCallback, useState } from 'react'
@@ -80,6 +81,6 @@ export default function DirectionsToYayaYoga({ }: DirectionsToYayaYogaProps) {
 
             <div className='bold mt-1 flex-ac'>הוראות הגעה:</div>
             <div className='flex-ac'>עולים במדרגות מימין לבית מרקחת, ממשיכים לפי השילוט לאורך המסדרון אחרי "דרך המשי", אל הסטודיו.  אנחנו שם!</div>
-            <div className='waize-txt flex-ac'>״אשטנגה יוגה פרדס חנה - יאיא יוגה״ בוויז</div>
+            <div className='waize-txt flex-ac'> <LocationSvg/> ״אשטנגה יוגה פרדס חנה - יאיא יוגה״ בוויז</div>
         </main>)
 }

@@ -7,6 +7,7 @@ import LocationSvg from '../assets/svgs/LocationSvg'
 import Image from 'next/image'
 import CerditCardSvg from '../assets/svgs/CerditCardSvg'
 import { YogaSvg } from '../assets/svgs/YogaSvg'
+import NewsLetter from './NewsLetter'
 
 type Props = {}
 
@@ -14,20 +15,13 @@ export default function Footer({ }: Props) {
   return (
     <footer className="footer-container full">
       <div className="footer-wrapper">
-        <div className="footer-section">
-          <h4 className='tac news-letter-txt'>השארו בקשר לחדשות ועידכונים </h4>
-
-          <section className='flex-warp flex-jc gap1'>
-            <input type='email' placeholder='כתובת מייל' className='input-email-letter' />
-            <button type='button' className='news-letter-btn'>הרשם</button>
-          </section>
-
-        </div>
+        <NewsLetter/>
+    
         <div className="footer-links flex-warp  flex-jc ">
 
           <a className='footer-link' href='mailto:yshwartz@gmail.com'><MailSvg />yshwartz@gmail.com</a>
           <a href='/' className='footer-link flex'><LocationSvg />בית פעם- סטודיו קדם, רחוב הדקלים 92, פרדס חנה-כרכור </a>
-          < a className='footer-link' href='tel:052-437-7820 '><PhoneSvg />052-437-7820</a>
+          <a className='footer-link' href='tel:052-437-7820 '><PhoneSvg />052-437-7820</a>
 
         </div>
 
