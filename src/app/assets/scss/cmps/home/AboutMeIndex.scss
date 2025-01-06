@@ -8,14 +8,26 @@
     padding: 1em;
     letter-spacing: .6px;
     background: rgba(194, 172, 151, 0.2392156863);       
-
+    @include for-940px {
+        padding: 6em;
+  
+         }
     .title {
         padding-block: 1em;
         color: var(--clr13);
         border-radius: 4px;
         margin-bottom: 1em;
+        @include for-940px {
+       text-align: start;
+        }
     }
-
+    .my-image-and-desc{
+        @include for-940px {
+            flex-direction: row;
+        gap: 2em;
+      
+        }
+    }
     .me-image {
         border-radius: 4px;
 
@@ -31,7 +43,7 @@
 
     .teachers-container {
         color: var(--clr13);
-
+   
         .meet-the-yogis-title {
             padding-block: 2em;
             font-size: 1.5em;

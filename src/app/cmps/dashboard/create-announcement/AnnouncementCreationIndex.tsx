@@ -256,7 +256,11 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
         reader.readAsDataURL(file);
     }
 
-    const handelTimeChange = (activityTime: Date, startEnd: string) => {
+    const handelTimeChange = (activityTime: Date|null, startEnd: string) => {
+        if (!activityTime ) {
+            setHours({start:null,end:null})
+            return;
+        }
         if (!date) {
             let txt = 'יש לבחור תאריך לפני שעה'
             setErrorMsg(txt)
@@ -351,7 +355,7 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
 
 
-    const AnnouncementCreationFormProps = {
+    const announcementCreationFormProps = {
         announcements, setAnnouncements,
         title, setTitle,
         titleInError, setTitleInError,
@@ -389,9 +393,9 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
         !currAnnuncement ?
 
-            <AnnouncementCreationForm {...AnnouncementCreationFormProps} />
+            <AnnouncementCreationForm {...announcementCreationFormProps} />
             :
-            <EditAnnouncementFrom {...AnnouncementCreationFormProps} />
+            <EditAnnouncementFrom {...announcementCreationFormProps} />
 
     )
 }

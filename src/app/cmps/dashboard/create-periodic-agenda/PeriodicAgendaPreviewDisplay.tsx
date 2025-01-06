@@ -3,7 +3,7 @@ import BackSvg from '@/app/assets/svgs/BackSvg'
 import { Tmembership, TperiodicAgenda, Tuser } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import DaysOfActivities from './DaysOfActivities'
-import { LesssonsInfoList } from './LesssonsInfoList'
+import { LesssonsInfoList } from './LessonsInfoList'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'

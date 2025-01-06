@@ -1,14 +1,14 @@
 import React from 'react'
 import WeeklySchedule from '../cmps/weekly-schedule/WeeklySchedule'
 import { TperiodicAgenda } from '../types/types'
-import { getPreiodicAgenda } from '../utils/util'
+import { getPeriodicAgenda } from '../utils/util'
 
 type Props = {}
 
 
 export default async function page({}: Props) {
 
-  const res= await getPreiodicAgenda()
+  const res= await getPeriodicAgenda()
   let periodicAgenda:TperiodicAgenda
   
   if(res){

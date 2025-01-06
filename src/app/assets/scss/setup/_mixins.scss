@@ -2,59 +2,59 @@
 
 /* Breakpoint mixins */
 @mixin for-1030px {
-    @media (max-width: calc($for-1030px)) {
+    @media (min-width: calc($for-1030px)) {
         @content;
     }
 }
 
 @mixin for-narrow-layout {
-    @media (max-width: calc($narrow-breakpoint )) {
+    @media (min-width: calc($narrow-breakpoint )) {
         @content;
     }
 }
 @mixin for-tablet-breakpoint {
-    @media (max-width: calc($tablet-breakpoint)) {
+    @media (min-width: calc($tablet-breakpoint)) {
         @content;
     }
 }
 
 @mixin for-940px {
-    @media (max-width: calc($for-940px )) {
+    @media (min-width: calc($for-940px )) {
         @content;
     }
 }
 @mixin for-633px {
-    @media (max-width: calc($for-633px )) {
+    @media (min-width: calc($for-633px )) {
         @content;
     }
 }
 @mixin for-530px {
-    @media (max-width: calc($for-530px )) {
+    @media (min-width: calc($for-530px )) {
         @content;
     }
 }
 @mixin for-mobile-layout {
-    @media (max-width: calc($mobile-breakpoint + 10px)) {
+    @media (min-width: calc($mobile-breakpoint + 10px)) {
         @content;
     }
 }
 @mixin for-430px {
-    @media (max-width: calc($for-430px + 10px)) {
+    @media (min-width: calc($for-430px + 10px)) {
         @content;
     }
 }
 @mixin for-370px  {
-    @media (max-width: calc($for-370px  + 10px)) {
+    @media (min-width: calc($for-370px  + 10px)) {
         @content;
     }
 }
 @mixin for-325px  {
-    @media (max-width: calc($for-325px  + 10px)) {
+    @media (min-width: calc($for-325px  + 10px)) {
         @content;
     }
 }
 @mixin for-270px   {
-    @media (max-width: calc($for-270px )) {
+    @media (min-width: calc($for-270px )) {
         @content;
     }
 }

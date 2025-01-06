@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
 import PeriodDates from './PeriodDates'
 import { Tactivity, TperiodicAgenda, TuserMsgProps, Tworkshop } from '@/app/types/types'
-import { createNewWorkShop, getDateType, getPreiodicAgenda, getUrl, makeId, stripTime } from '@/app/utils/util'
+import { createNewWorkShop, getDateType, getPeriodicAgenda, getUrl, makeId, stripTime } from '@/app/utils/util'
 import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
 import { callUserMsg, hideUserMsg, } from '@/app/store/features/msgSlice'
@@ -477,7 +477,7 @@ export default function PeriodicAgendaCreation() {
 
     const handelEditMode = async () => {
         setIsEditCurrPeriodicAgenda(true)
-        const res = await getPreiodicAgenda()
+        const res = await getPeriodicAgenda()
         if(res){
             const currPeriodicAgenda :TperiodicAgenda = res.periodicAgenda
 

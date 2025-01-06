@@ -3,7 +3,6 @@ import { Tactivity } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import DaysOfActivitiesPreview from '../dashboard/create-periodic-agenda/DaysOfActivitiesPreview'
 import { stripTime } from '@/app/utils/util'
-import { LesssonsInfoList } from '../dashboard/create-periodic-agenda/LesssonsInfoList'
 
 type DatesOfActivitiesProps = {
     activities: Tactivity[],

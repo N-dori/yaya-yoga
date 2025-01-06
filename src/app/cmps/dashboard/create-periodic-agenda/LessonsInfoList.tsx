@@ -1,9 +1,9 @@
-import { Tactivity, TperiodicAgenda } from '@/app/types/types'
+import { Tactivity } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import { LessonInfoPreview } from './LessonInfoPreview'
 import { stripTime } from '@/app/utils/util'
 
-type LesssonsInfoListProps = {
+type LessonsInfoListProps = {
   activities: Tactivity[] | undefined
   currDate: Date
   periodicAgendaId?: string
@@ -15,18 +15,18 @@ type LesssonsInfoListProps = {
   setActivities?:(activities:Tactivity[])=>void
 }
 
-export function LesssonsInfoList({ onBooking, periodicAgendaId, handelLessonCancelation, hadelExistSearchMode, isOnSearchMode
-  , isOnWeeklyScheduleMode, currDate, activities,setActivities }: LesssonsInfoListProps) {
+export function LessonsInfoList({ onBooking, periodicAgendaId, handelLessonCancelation, hadelExistSearchMode, isOnSearchMode
+  , isOnWeeklyScheduleMode, currDate, activities,setActivities }: LessonsInfoListProps) {
   const [activitiesOfTheDay, setActivitiesOfTheDay] = useState<Tactivity[]>()
   const [day, setDay] = useState<number>()
-  const [mounth, setMounth] = useState<number>()
+  const [month, setMonth] = useState<number>()
   const [year, setYear] = useState<number>()
 
   useEffect(() => {
 
     
     setDay(new Date(currDate).getDate())
-    setMounth(new Date(currDate).getMonth() + 1)
+    setMonth(new Date(currDate).getMonth() + 1)
     setYear(new Date(currDate).getFullYear())
     getActivitiesOfTheDay()
 
@@ -78,7 +78,7 @@ export function LesssonsInfoList({ onBooking, periodicAgendaId, handelLessonCanc
       {isOnSearchMode &&
         <div className='flex-col mt-1 mb-1'>
           <p className='pointer' onClick={hadelExistSearchMode}>X</p>
-          <p>תוצאות חיפוש בעבור תאריך {`${day}/${mounth}/${year}`}</p>
+          <p>תוצאות חיפוש בעבור תאריך {`${day}/${month}/${year}`}</p>
         </div>}
       {activitiesOfTheDay?.length ? activitiesOfTheDay.map(activity =>
         <LessonInfoPreview key={activity.id}

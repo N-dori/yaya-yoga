@@ -15,28 +15,30 @@ const desc = `
  `
 export default function AboutMeIndex({ }: AboutMeIndexProps) {
   return (
-    <section className="about-me-container flex-col gap05">
+    <section className="about-me-container ">
      <section className="teachers-container">
                 <h3 className="meet-the-yogis-title">באו לפגוש את היוגים</h3>
                   <p className='txt'>אנחנו מקבלים תלמידים  בכל הרמות . השיעורים בסטודיו משלבים את מסגננות ההאטה יוגה, אשטנגה, וינאסה. שיעורים ממוקדים רעננים ומאתגרים. </p>
               </section>
       <h3 className='title tac'>נעים להכיר </h3>
+    <section className='my-image-and-desc flex-col'>
 
-      <div className='flex-jc-ac'>
+      {/* <div className='flex-jc-ac'> */}
 
         <Image className='me-image'
-          style={{ width: '100%' }}
+          // style={{ width: '100%' }}
           quality={90} src={'/2.jpg'}
           sizes="100vw"
-          width={0}
+          width={300}
           height={300}
           alt={'image of myself'} />
-      </div>
+      {/* </div> */}
       
       <section className='content'>
       <ParagraphsIndex desc={desc} />
 
       </section>
+    </section>
     </section>
   )
 }

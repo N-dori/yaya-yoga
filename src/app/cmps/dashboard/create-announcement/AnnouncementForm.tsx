@@ -1,6 +1,6 @@
 import { clockSvg } from '@/app/assets/svgs/ClockSvg'
 import { Tannouncement, TselectedHoursRange, Tworkshop } from '@/app/types/types'
-import { makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
+import { getDateType, makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
 import { he } from 'date-fns/locale'
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
@@ -65,7 +65,7 @@ export default function AnnouncementForm(props: AnnouncementFormProps) {
             props.setTitle(props.currAnnuncement.title)
             props.setSubTitle(props.currAnnuncement.subTitle)
             props.setDate(props.currAnnuncement.date)
-            props.setHours(props.currAnnuncement.hours)
+            props.setHours({start:getDateType(props.currAnnuncement.hours.start),end:getDateType(props.currAnnuncement.hours.end)})
             props.setImgPreview(props.currAnnuncement.img)
             props.setDesc(props.currAnnuncement.desc)
             props.setPrice(props.currAnnuncement.price)

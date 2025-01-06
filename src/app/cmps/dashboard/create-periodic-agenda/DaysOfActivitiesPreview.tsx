@@ -104,6 +104,7 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
     <section className={`${isDateHasPassed?'date-passed ':' '}date-info flex-jc-ac flex-col`}
       style={isClicked ? { ...isClickedStylesProps } : {}}
       onClick={handelDayClicked}>
+        <div className='top-line'></div>
       <li className='day clean'>{hbDay}</li>
       <li className='number clean'>{dayNum}</li>
       <li className='month clean'>{hbMonth}</li>

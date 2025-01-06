@@ -8,7 +8,10 @@ type thisMountListProps = {
 
 export default function BillboardList({announcements}: thisMountListProps) {
   return (
-    announcements?.map(announcement => 
-    <BillboardPreview key={announcement.id} announcement={announcement}/> )
-  )
-}
+    <section className='billboard-warpper flex-col flex-jc-ac gap3'>
+      {
+        announcements?.map(announcement => 
+        <BillboardPreview key={announcement.id} announcement={announcement}/> )
+      }
+
+     </section>)}

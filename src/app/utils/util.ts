@@ -256,7 +256,7 @@ export const getFullUserByEmail = async (email: String) => {
 
   return user
 }
-export const getPreiodicAgenda = async () => {
+export const getPeriodicAgenda = async () => {
 
   const url = getUrl('periodicAgenda/getPeriodicAgenda')
   const res = await fetch(url, {
