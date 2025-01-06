@@ -370,7 +370,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
     return (
         <li className='actitity-card-container flex-col clean'
             style={activity.classOrWorkshop === 'סדנא' ? { border: '1px solid var(--clr10)' } : {}}>
-            <article className='p-1'>
+            <article >
                 {<span>    {activity.classOrWorkshop} </span>}
                 <LessonInfoHoursRange {...LessonInfoHoursRangeProps} />
                 {activity.isCanceled && <span > השיעור בוטל</span>}
@@ -379,7 +379,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
                     <div className='activity-info grid' style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} >
                         <Image className='activity-teacher-img gc1'
-                            alt={'teacher-img'} width={30} height={30} src={'/hero.jpg'} />
+                            alt={'teacher-img'} width={45} height={45} src={'/hero.jpg'} />
                         <div className=' flex-col gc2'>
                             <span className='activity-name gc2'> {activity.name} </span>
                             <span className='activity-teacher-name gc2'>עם {activity.teacher} </span>

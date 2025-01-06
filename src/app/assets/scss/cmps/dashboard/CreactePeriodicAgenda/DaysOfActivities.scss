@@ -51,7 +51,7 @@
 }
 
 .actitity-card-container {
-    border: .3px solid var(--clr2);
+    // border: .3px solid var(--clr2);
     border-radius: 8px;
     // padding: 1em;
 }
@@ -72,7 +72,7 @@
 
     .activity-info {
         grid-template-columns: minmax(50px, 50px) 1.2fr .8fr;
-
+        column-gap: .2em;
         .activity-teacher-img {
             border-radius: 50%;
             align-self: self-start;

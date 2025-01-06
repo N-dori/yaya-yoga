@@ -3,7 +3,7 @@ import BackSvg from '@/app/assets/svgs/BackSvg'
 import { Tmembership, TperiodicAgenda, Tuser } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import DaysOfActivities from './DaysOfActivities'
-import { LesssonsInfoList } from './LessonsInfoList'
+import { LessonsInfoList } from './LessonsInfoList'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
@@ -219,7 +219,7 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
 
       </div>
       <DaysOfActivities {...DaysOfActivitiesProps} />
-      <LesssonsInfoList {...LesssonsListProps} />
+      <LessonsInfoList {...LesssonsListProps} />
     </main>
   )
 }
