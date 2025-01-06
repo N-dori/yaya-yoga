@@ -15,7 +15,7 @@ type DaysOfActivitiesProps = {
 
 }
 
-export default function DaysOfActivities({ setIsOnCancelMode, isOnCancelMode, isOnSearchMode, setCurrDate, activities, currDate }: DaysOfActivitiesProps) {
+export default function DaysOfActivitiesIndex({ setIsOnCancelMode, isOnCancelMode, isOnSearchMode, setCurrDate, activities, currDate }: DaysOfActivitiesProps) {
 
     const PAGE = 3
     const [startIndex, setStartIndex] = useState<number>(0)

@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId, 
-    pushPractionerToActivity, removeUserMembership, sendEmail } from '@/app/utils/util'
+import {
+    getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId,
+    pushPractionerToActivity, removeUserMembership, sendEmail
+} from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { usePathname, useRouter } from 'next/navigation'
@@ -259,7 +261,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         }
 
     }
-    
+
     let alertBoxProps = {
         isAlertBoxShown, setIsAlertBoxShown,
         userMsg, setUserMsg,
@@ -391,11 +393,18 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
                                 type='button' className='check-in-button '
                                 onClick={() => handelClick()}>{activity.isCanceled ? 'שחזר ' : 'בטל '}
                             </button> :
-                                <button disabled={isActivityHasPassed || activity.isCanceled} type='button' className='btn flex-jc-ac'
-                                    style={isActivityHasPassed || activity.isCanceled ? { color: `var(--clr3)` } : {}}
-                                    onClick={activity.classOrWorkshop === 'סדנא' ? () => handelWorkshop(activity) : () => handelSignInToClass()}>
-                                    {isLoading ? <Spinner /> : activity.classOrWorkshop === 'סדנא' ? 'לפרטים' : ` הרשמה`}
-                                </button>}
+
+                                <div className='flex-col'>
+
+                                    <button disabled={isActivityHasPassed || activity.isCanceled} type='button' className='btn flex-jc-ac'
+                                        style={isActivityHasPassed || activity.isCanceled ? { color: `var(--clr3)` } : {}}
+                                        onClick={activity.classOrWorkshop === 'סדנא' ? () => handelWorkshop(activity) : () => handelSignInToClass()}>
+                                        {isLoading ? <Spinner /> : activity.classOrWorkshop === 'סדנא' ? 'לפרטים' : ` הרשמה`}
+                                    </button>
+                                    <small className='activity-has-passed'>{isActivityHasPassed && 'חלון הזמנת שיעור עבר'}</small>
+                                </div>
+
+                            }
                         </div>
                     </div>
 

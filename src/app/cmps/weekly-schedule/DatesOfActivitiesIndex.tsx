@@ -3,6 +3,7 @@ import { Tactivity } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import DaysOfActivitiesPreview from '../dashboard/create-periodic-agenda/DaysOfActivitiesPreview'
 import { stripTime } from '@/app/utils/util'
+import DatesOfActivitiesList from './DatesOfActivitiesList'
 
 type DatesOfActivitiesProps = {
     activities: Tactivity[],
@@ -11,18 +12,19 @@ type DatesOfActivitiesProps = {
     isOnCancelMode: boolean,
     setIsOnCancelMode: (b: boolean) => void
 }
-export default function DatesOfActivities({ activities, setCurrDate, currDate, }: DatesOfActivitiesProps) {
+export default function DatesOfActivitiesIndex({ activities, setCurrDate, currDate, }: DatesOfActivitiesProps) {
     const PAGE = 3
     const [startIndex, setStartIndex] = useState<number>(0)
     const [endIndex, setEndIndex] = useState<number>(PAGE)
     const [threeDays, setThreeDays] = useState<Tactivity[] | undefined[]>()
-    // in some cases , there more than one activity on a spcific date
-    // we want to keep a quniue list of dates 
+    const [sevenDays, setSevenDays] = useState<Tactivity[] | undefined[]>()
+    // in some cases , there more than one activity on a specific date
+    // we want to keep a quine list of dates 
     const [uniqueDates, setUniqueDates] = useState<Tactivity[]>([])
 
     useEffect(() => {
         if (activities?.length) {
-            getThreeDays()
+            getDates()
         }
 
     }, [activities.length, currDate])
@@ -70,10 +72,12 @@ export default function DatesOfActivities({ activities, setCurrDate, currDate, }
             return sortRes
         }
     }
-    const getThreeDays = () => {
+
+    const getDates = () => {
         let sortRes = sortDates(activities)
         let sortedThreeDays: Tactivity[]
         let uniqueDates = getUniqueDates(sortRes)
+        setSevenDays(uniqueDates)
         let todayIndex = findDateIndex(currDate, uniqueDates)
         console.log('todayIndex',todayIndex);
         
@@ -102,6 +106,7 @@ export default function DatesOfActivities({ activities, setCurrDate, currDate, }
         setEndIndex(endIndex)
         setThreeDays(sortedThreeDays)
     }
+   
 
     const datesForwordSvgProps = {
         PAGE,
@@ -123,19 +128,22 @@ export default function DatesOfActivities({ activities, setCurrDate, currDate, }
         totalLength: uniqueDates.length,
         setCurrDate, currDate,
     }
-
+ const threeDatesOfActivitiesListProps = {
+    setCurrDate,currDate,activities:threeDays
+ }
+ const sevenDatesOfActivitiesListProps = {
+    setCurrDate,currDate,activities:sevenDays
+ }
 
     return (
         <section className='days-activities-container flex-jc-ac'>
             <DatesBackForwordSvg  {...datesBackwordSvgProps} />
-            <ul className='days-container flex-jc-ac gap1'>
-                {threeDays ?
-                    threeDays.map((activityDay: Tactivity, i: number) =>
-                        <DaysOfActivitiesPreview key={activityDay?.id || i} activityDay={activityDay} setCurrDate={setCurrDate} currDate={currDate} />)
-
-
-                    : <div> Loading...</div>}
-            </ul>
+                <div className='three-days w100'>
+                <DatesOfActivitiesList {...threeDatesOfActivitiesListProps}/>
+                </div>
+                <div className='seven-days w100'>
+                <DatesOfActivitiesList {...sevenDatesOfActivitiesListProps}/>
+                </div>
 
             <DatesBackForwordSvg {...datesForwordSvgProps} />
         </section>)

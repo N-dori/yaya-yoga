@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react'
 import { LessonsInfoList } from '../dashboard/create-periodic-agenda/LessonsInfoList'
 import 'react-datepicker/dist/react-datepicker.css'
 import { isBothTheSameDate, stripTime } from '@/app/utils/util'
-import DatesOfActivities from './DatesOfActivities'
 import PlansLogin from '../booking/PlansLogin'
 import { useSession } from 'next-auth/react'
 import ExistingUserLoginBtn from '../booking/ExistingUserLoginBtn'
+import DatesOfActivitiesIndex from './DatesOfActivitiesIndex'
 
 
 type WeeklyScheduleProps = {
@@ -146,16 +146,16 @@ export default function WeeklySchedule({periodicAgendaId,periodicAgenda }: Weekl
     <main className='preview-display-container flex-col gap05'>
       {!isOnBookingMode && <h3 className='instructions mt-1'>כדי להרשם לשיעור יש ללחוץ על כפתור  "הרשמה" </h3>}
    <section className='preview-display-wrapper'>
-      <div className='flex-sb gap1'>
-      <h2 className='schedule-headline '>לוח זמנים שבועי</h2>
-        {!session&& <ExistingUserLoginBtn/>}
+      <div className={`${session? 'tac':'flex-sb gap1'}`}>
+      <h2 className={`schedule-headline `}>לוח זמנים שבועי</h2>
+        {(!session&&!isOnBookingMode)&& <ExistingUserLoginBtn/>}
     </div>
       <h3 className='tac yaya-yoga-txt overline pb-1'>YAYA-YOGA</h3>
       <h6 className='studio-address mb-05'>בית פעם- סטודיו קדם, רחוב הדקלים 92, פרדס חנה-כרכור </h6>
       <h6 className='studio-phone mb-1'>052-437-7820</h6>
       {!isOnBookingMode ?
         <>
-          <DatesOfActivities {...DatesOfActivitiesProps} />
+          <DatesOfActivitiesIndex {...DatesOfActivitiesProps} />
           {/* <DaysOfActivities {...DaysOfActivitiesProps} /> */}
           <LessonsInfoList {...LessonsListProps} />
         </>
