@@ -6,8 +6,8 @@ type DaysOfActivitiesPreviewProps = {
   activityDay: Tactivity | undefined
   setCurrDate: (date: Date) => void
   currDate: Date
-  hebrewDays:string[],
-  hebrewMonths:string[],
+  hebrewDays?:string[],
+  hebrewMonths?:string[],
 }
 
 export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, currDate,hebrewDays, hebrewMonths}: DaysOfActivitiesPreviewProps) {

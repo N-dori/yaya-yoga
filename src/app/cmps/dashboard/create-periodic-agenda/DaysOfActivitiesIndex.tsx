@@ -199,7 +199,8 @@ export default function DaysOfActivitiesIndex({ setIsOnCancelMode, isOnCancelMod
             <ul className='days-container flex-jc-ac gap1'>
                 {threeDays ?
                     threeDays.map((activityDay:Tactivity, i:number) =>
-                        <DaysOfActivitiesPreview key={activityDay?.id || i} activityDay={activityDay} setCurrDate={setCurrDate} currDate={currDate} />)
+                        <DaysOfActivitiesPreview key={activityDay?.id || i} 
+                    activityDay={activityDay} setCurrDate={setCurrDate} currDate={currDate} />)
                     : <div> Loading...</div>}
             </ul>
             <DaysBackForwordSvg {...DaysBackSvgProps} />
