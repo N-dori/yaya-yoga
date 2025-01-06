@@ -1,32 +1,24 @@
 import { Tactivity } from '@/app/types/types'
 import { getDateType, stripTime } from '@/app/utils/util'
 import React, { useEffect, useState } from 'react'
-import { newDate } from 'react-datepicker/dist/date_utils'
 
 type DaysOfActivitiesPreviewProps = {
   activityDay: Tactivity | undefined
   setCurrDate: (date: Date) => void
   currDate: Date
+  hebrewDays:string[],
+  hebrewMonths:string[],
 }
 
-export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, currDate }: DaysOfActivitiesPreviewProps) {
+export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, currDate,hebrewDays, hebrewMonths}: DaysOfActivitiesPreviewProps) {
   const [hbDay, setHbDay] = useState<string>()
   const [dayNum, setDayNum] = useState<number>()
   const [hbMonth, setHbMonth] = useState<string>()
   const [isClicked, setIsClicked] = useState<boolean>(false)
   const [isDateHasPassed, setIsDateHasPassed] = useState<boolean>(false)
 
-  const hebrewMonths = [
-    "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
-    "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"
-  ]
-
-  const hebrewDays = [
-    "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת",
-  ]
 
   useEffect(() => {
-    console.log('cuurDate #$%#', currDate);
     
     if (activityDay) {
       if(activityDay.date){

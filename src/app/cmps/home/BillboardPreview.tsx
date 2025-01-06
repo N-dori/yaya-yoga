@@ -1,6 +1,6 @@
 ''
 import { Tannouncement } from '@/app/types/types'
-import { getFormatedTime } from '@/app/utils/util'
+import { getFormattedTime } from '@/app/utils/util'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -40,7 +40,7 @@ export default function announcementPreview({ announcement }: ThisMounthPreviewP
                     }
                     {
                         announcement?.hours?.start &&
-                        <h5 className='announcement-date'>{getFormatedTime(announcement.hours.start) + '-' + getFormatedTime(announcement.hours.end)}</h5>
+                        <h5 className='announcement-date'>{getFormattedTime(announcement.hours.start) + '-' + getFormattedTime(announcement.hours.end)}</h5>
                     }
                 </div>
             </section>

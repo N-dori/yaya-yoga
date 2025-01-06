@@ -1,6 +1,6 @@
 'use client'
 import { Tmembership, Tworkshop } from '@/app/types/types'
-import { createNewMembership, deleteActivity, deleteAnnouncemnt, deleteWorkshop, getFormatedDate, getFormatedTime, getPlan, makeId, pushPractionerToActivity, scrollUp, updateUserWithNewWorkshopAtDatabase, updateWorkshop } from '@/app/utils/util'
+import { createNewMembership, deleteActivity, deleteAnnouncemnt, deleteWorkshop, getFormattedDate, getFormattedTime, getPlan, makeId, pushPractionerToActivity, scrollUp, updateUserWithNewWorkshopAtDatabase, updateWorkshop } from '@/app/utils/util'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -249,7 +249,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
                 <>
 
                   <span key={workshop._id} className=' no-under-line pointer'
-                    onClick={() => handelChangeWorkshop(workshop._id)}> {getFormatedDate(workshop.date) + ' - '}
+                    onClick={() => handelChangeWorkshop(workshop._id)}> {getFormattedDate(workshop.date) + ' - '}
                   <span className='no-under-line' >{workshop.subTitle }</span>
                   </span>
                 </>
@@ -259,8 +259,8 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
           }
           {isDetailsMode &&
             <div className='flex-sb'>
-              <p className='date bold'>{getFormatedDate(currWorkshop.date)}</p>
-              <p className='hours bold'>{getFormatedTime(currWorkshop.activityStartTime)} - {getFormatedTime(currWorkshop.activityEndTime)}</p>
+              <p className='date bold'>{getFormattedDate(currWorkshop.date)}</p>
+              <p className='hours bold'>{getFormattedTime(currWorkshop.activityStartTime)} - {getFormattedTime(currWorkshop.activityEndTime)}</p>
             </div>}
 
 
@@ -273,7 +273,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
         </section>
         <p className='price bold'>מחיר: {currWorkshop.price} ש"ח</p>
         <p className='location bold'><LocationSvg/>{currWorkshop.activityLocation} </p>
-        <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormatedDate(currWorkshop.lastDateForRegistration)}</span></span>
+        <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormattedDate(currWorkshop.lastDateForRegistration)}</span></span>
 
 
 

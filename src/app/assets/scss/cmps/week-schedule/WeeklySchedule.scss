@@ -17,7 +17,9 @@
     }
     .lessons-container
     {
-        
+        @include for-1030px{
+            gap: 2em;
+        } 
     }
 
 }

@@ -370,20 +370,20 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         isWorkshop: activity.classOrWorkshop === 'סדנא' ? true : false
     }
     return (
-        <li className='actitity-card-container flex-col clean'
+        <article className='activity-card-container grid clean'
             style={activity.classOrWorkshop === 'סדנא' ? { border: '1px solid var(--clr10)' } : {}}>
-            <article >
-                {<span>    {activity.classOrWorkshop} </span>}
+       
                 <LessonInfoHoursRange {...LessonInfoHoursRangeProps} />
+             
                 {activity.isCanceled && <span > השיעור בוטל</span>}
 
                 <section className='activity-info-container'>
 
                     <div className='activity-info grid' style={activity.isCanceled ? { textDecoration: ' line-through' } : {}} >
                         <Image className='activity-teacher-img gc1'
-                            alt={'teacher-img'} width={45} height={45} src={'/hero.jpg'} />
+                            alt={'teacher-img'} width={50} height={50} src={'/hero.jpg'} />
                         <div className=' flex-col gc2'>
-                            <span className='activity-name gc2'> {activity.name} </span>
+                            <span className='activity-name gc2'>   {<span>    {activity.classOrWorkshop} </span>} {activity.name} </span>
                             <span className='activity-teacher-name gc2'>עם {activity.teacher} </span>
                             <span className='activity-location gc2'> בית פעם - סטודיו קדם  </span>
 
@@ -410,7 +410,6 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
                 </section>
 
-            </article>
             {
 
                 activity?.practitioners?.length > 0 &&
@@ -419,6 +418,6 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
             }
             <AlertBox {...alertBoxProps} />
 
-        </li>
+        </article>
     )
 }

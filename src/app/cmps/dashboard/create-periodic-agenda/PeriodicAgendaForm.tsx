@@ -5,7 +5,7 @@ import { StartEndTimePickers } from './StartEndTimePickers'
 import { he } from 'date-fns/locale';
 import CheckSvg from '@/app/assets/svgs/CheckSvg'
 import RepeatingActivityRadioBtns from './RepeatingActivityRadioBtns'
-import { getFormatedDate } from '@/app/utils/util';
+import { getFormattedDate } from '@/app/utils/util';
 import { TperiodicAgenda } from '@/app/types/types';
 
 type PeriodicAgendaFromProps = {
@@ -105,7 +105,7 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
         <main className='periodic-agenda-form-container'>
             <div className='range-dates flex-jc-ac flex-col gap1 '>
                 <h4 >  <span className='circle mb-1'> שלב 2</span> {props.isEditCurrPeriodicAgenda?'עריכת פעילויות לתקופה':'יצירת פעילויות לתקופה'} </h4>
-                <h4>{getFormatedDate(props.periodicAgenda.date.start) + " עד " + getFormatedDate(props.periodicAgenda.date.end)}</h4>
+                <h4>{getFormattedDate(props.periodicAgenda.date.start) + " עד " + getFormattedDate(props.periodicAgenda.date.end)}</h4>
                {!props.isEditCurrPeriodicAgenda?
                <section className='flex-jc-ac flex-col gap1'>
                 

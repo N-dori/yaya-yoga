@@ -15,10 +15,10 @@ export const stripTime = (date: Date | string): Date => {
   return strippedDate;
 };
 
-export const getFormatedDate = (date: string | Date) => {
+export const getFormattedDate = (date: string | Date) => {
   return new Date(date).toLocaleDateString('he-IL')
 }
-export const getFormatedTime = (date: string | Date) => {
+export const getFormattedTime = (date: string | Date) => {
   let fullTime = new Date(date).toLocaleTimeString('he-IL').split(':')
   let hours = fullTime[0]
   let minutes = fullTime[1]

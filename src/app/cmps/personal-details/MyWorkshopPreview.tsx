@@ -1,17 +1,17 @@
 'use client'
 import { Tmembership } from '@/app/types/types'
-import { getDateType, getFormatedDate } from '@/app/utils/util'
+import {  getFormattedDate } from '@/app/utils/util'
 import React from 'react'
 
-type MyActivtiesPreviewProps = {
+type MyActivitiesPreviewProps = {
     myWorkshop:Tmembership
 
 }
 
-export default function MyWorkShopPreview({ myWorkshop}: MyActivtiesPreviewProps) {
+export default function MyWorkShopPreview({ myWorkshop}: MyActivitiesPreviewProps) {
     
 const getExpiryDate =() => {
-    return getFormatedDate(myWorkshop.end)
+    return getFormattedDate(myWorkshop.end)
 }
     return (
         <li className='my-membership-card flex-col gap05'>

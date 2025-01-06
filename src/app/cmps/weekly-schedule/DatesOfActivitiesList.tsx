@@ -7,19 +7,24 @@ type DatesOfActivitiesProps = {
     activities: Tactivity[],
     setCurrDate: (date: Date) => void,
     currDate: Date,
+    hebrewDays:string[],
+    hebrewMonths:string[],
 }
-export default function DatesOfActivitiesList({ activities, setCurrDate, currDate, }: DatesOfActivitiesProps) {
+export default function DatesOfActivitiesList(props: DatesOfActivitiesProps) {
 
-    
+    const daysOfActivitiesPreviewProps={
+        ...props
+    }
 
 
     return (
 
 
             <ul className='days-container flex-jc-ac gap1'>
-                {activities ?
-                    activities.map((activityDay: Tactivity, i: number) =>
-                        <DaysOfActivitiesPreview key={activityDay?.id || i} activityDay={activityDay} setCurrDate={setCurrDate} currDate={currDate} />)
+                {props.activities ?
+                    props.activities.map((activityDay: Tactivity, i: number) =>
+                        <DaysOfActivitiesPreview {...props}  activityDay={activityDay} key={activityDay?.id || i}
+                 />)
 
 
                     : <div> Loading...</div>}

@@ -1,7 +1,6 @@
 import DatesBackForwordSvg from '@/app/assets/svgs/DatesBackForwordSvg'
 import { Tactivity } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
-import DaysOfActivitiesPreview from '../dashboard/create-periodic-agenda/DaysOfActivitiesPreview'
 import { stripTime } from '@/app/utils/util'
 import DatesOfActivitiesList from './DatesOfActivitiesList'
 
@@ -12,7 +11,16 @@ type DatesOfActivitiesProps = {
     isOnCancelMode: boolean,
     setIsOnCancelMode: (b: boolean) => void
 }
+
 export default function DatesOfActivitiesIndex({ activities, setCurrDate, currDate, }: DatesOfActivitiesProps) {
+    const hebrewMonths = [
+        "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
+        "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"
+      ]
+    
+      const hebrewDays = [
+        "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת",
+      ]
     const PAGE = 3
     const [startIndex, setStartIndex] = useState<number>(0)
     const [endIndex, setEndIndex] = useState<number>(PAGE)
@@ -129,10 +137,10 @@ export default function DatesOfActivitiesIndex({ activities, setCurrDate, currDa
         setCurrDate, currDate,
     }
  const threeDatesOfActivitiesListProps = {
-    setCurrDate,currDate,activities:threeDays
+    hebrewDays,hebrewMonths,  setCurrDate,currDate,activities:threeDays
  }
  const sevenDatesOfActivitiesListProps = {
-    setCurrDate,currDate,activities:sevenDays
+    hebrewDays,hebrewMonths, setCurrDate,currDate,activities:sevenDays
  }
 
     return (
@@ -143,6 +151,7 @@ export default function DatesOfActivitiesIndex({ activities, setCurrDate, currDa
                 </div>
                 <div className='seven-days w100'>
                 <DatesOfActivitiesList {...sevenDatesOfActivitiesListProps}/>
+                <section className='explicit-date pb-1'>יום {hebrewDays[currDate.getDay()]}, {currDate.getDate()} {hebrewMonths[currDate.getMonth()]}</section>
                 </div>
 
             <DatesBackForwordSvg {...datesForwordSvgProps} />

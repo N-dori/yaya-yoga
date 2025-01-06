@@ -3,6 +3,9 @@
     margin-bottom: 1em;
     border-bottom: 2px solid #222;
     padding-bottom: 1em;
+    @include for-1030px{
+        padding-bottom: 0em;
+    }
 
     .three-days {
         @include for-1030px{
@@ -13,6 +16,10 @@
     display: none;
     @include for-1030px{
         display: block;
+    }
+    .explicit-date{
+        color: var(--clr5);
+        
     }
 }
     .days-container {
@@ -29,7 +36,6 @@
             outline: none;
             position: relative;
             flex-grow: 1;
-            min-width: 72px;
             text-align: center;
             border-radius: 8px;
             color: var(--clr5);
@@ -64,15 +70,31 @@
     }
 }
 
-.actitity-card-container {
-    // border: .3px solid var(--clr2);
-    border-radius: 8px;
-    // padding: 1em;
+.activity-card-container {
+    grid-template-rows: 1.3em 1fr;
+
+    @include for-1030px{
+        grid-template-rows:  1fr;
+        grid-template-columns: 7em 1fr;
+        border-bottom: .3px solid var(--clr3);
+    }
 }
 
 .hours-range {
-    align-items: end;
+    font-size: .9em;
+    grid-row: 1;
+    align-items: start;
     margin-bottom: .5em;
+    @include for-1030px{
+        justify-content: center;
+    }
+    .time-remainder{
+        display: none;
+        color: var(--clr3);
+        @include for-1030px{
+            display: block;
+        }
+    }
 }
 
 .hours-range>* {
@@ -83,14 +105,26 @@
 .activity-info-container {
     margin-bottom: .5em;
     align-items: baseline;
-
+    @include for-1030px{
+        grid-row:1 ;
+    }
     .activity-info {
+        grid-row:2 ;
         grid-template-columns: minmax(50px, 50px) 1.2fr .8fr;
         column-gap: .2em;
+        @include for-1030px{
+            grid-template-columns:  minmax(50px, 50px) 1.2fr .8fr;
+            align-items: center;
 
+        }
         .activity-teacher-img {
             border-radius: 50%;
             align-self: self-start;
+            @include for-1030px{
+
+                align-self: center;
+    
+            }
         }
     }
 

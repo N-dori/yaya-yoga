@@ -10,6 +10,10 @@
     padding: 1em;
     border-radius: 3px;
     column-gap: 1em;
+    @include for-1030px{
+        grid-column: 1/-1;
+        border:none;
+    }
     .practitioners-circle-list-container {
         
         overflow: hidden;            /* Clips content overflow */
@@ -24,7 +28,7 @@
         padding: 3px;
         margin-right: -5px;
         color: #fff;
-        box-shadow: 0 4px 8px rgba(100, 50, 0, 0.30);
+        // box-shadow: 0 4px 8px rgba(100, 50, 0, 0.30);
         background: #bdc3c7;  /* fallback for old browsers */
         background: -webkit-linear-gradient(to bottom, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
         background: linear-gradient(to bottom, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
