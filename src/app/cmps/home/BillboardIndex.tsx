@@ -30,7 +30,9 @@ const slides:Tannouncement[] = billboard?.announcements?.map(announcement => {
   return (
     billboard &&   
     <section className='billboard-container flex-col '>
+   
         <h2 className='headline tac'> ארועי החודש בסטודיו</h2>
+
        
      <EmblaCarousel slides={slides}/>
 

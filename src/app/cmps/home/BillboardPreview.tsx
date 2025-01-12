@@ -15,7 +15,9 @@ export default function BillboardPreview({ announcement }: ThisMounthPreviewProp
 
     return (
         <section className='embla__slide flex-col flex-ac '>
-            <section className='announcement-title-and-image flex-col flex-ac '>
+            <section className='announcement-border'>
+
+            <section className='announcement-title-and-image  '>
                 <h3 className='announcement-title underline mb-1'>{announcement.title}</h3>
                 <h5 className='announcement-subtitle mb-1'>{announcement.subTitle}</h5>
            
@@ -38,6 +40,7 @@ export default function BillboardPreview({ announcement }: ThisMounthPreviewProp
                 </div>
             </section>
             <ParagraphsIndex desc={announcement.desc} workshopId={announcement.workshopId} />
+                    </section>
 
 
 
