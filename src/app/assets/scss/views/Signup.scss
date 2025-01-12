@@ -1,11 +1,15 @@
 .signup-container {
     overflow: hidden;
+    color: var(--clr10);
     .signup-form {
         position: relative;
         width: 85%;
         padding: 2em 2em 5em 2em;
         direction: rtl;
         border-radius: 35px;
+        @include for-633px{
+            padding: 4em 4em 5em 4em;
+        }
     }
 
 
@@ -91,7 +95,7 @@
     }
 
     .circle2 {
-        top: 14em;
+        bottom: 20%;
         left: 15em;
 
     }

@@ -147,7 +147,7 @@ export const deleteActivity = async (activityId: String) => {
     body: JSON.stringify({ activityId })
   })
   if (res.ok) {
-    const msg = res.json()
+    const msg = await res.json()
     return msg
 
   }
@@ -367,7 +367,8 @@ export const getBillboard = async () => {
     return await res.json()
 
   } else {
-    throw new Error('faild to get billboard')
+    console.log('failed to get billboard')
+    return false
   }
 
 }
@@ -504,26 +505,7 @@ export const updateUserWithNewWorkshopAtDatabase = async (membershipId: string, 
     console.log('had a problem updating user with new membership', error)
   }
 }
-export const clearPractitionersFromActivityAtDataBase = async (activityId: string, periodicAgendaId: string) => {
-  try {
-    const url = getUrl('periodicAgenda/removeAllPractitionersFromActivity')
 
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ activityId, periodicAgendaId })
-    })
-    if (res.ok) {
-
-      return true
-
-    } else {
-      return false
-    }
-  } catch (error) {
-    console.log('had a problem updating user with new membership', error)
-  }
-}
 export const isBothTheSameDate = (date1: Date, date2: Date) => {
   return date1.getDate() === date2.getDate() &&
     date1.getMonth() === date2.getMonth() &&

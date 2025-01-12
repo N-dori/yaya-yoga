@@ -33,6 +33,8 @@ export default function DatesOfActivitiesIndex({ activities, setCurrDate, currDa
     useEffect(() => {
         if (activities?.length) {
             getDates()
+            // console.log('datesIndex : ',activities);
+            
         }
 
     }, [activities.length, currDate])

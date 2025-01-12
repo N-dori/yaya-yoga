@@ -236,7 +236,7 @@ export default function LogInSignup({ redirectTo, origin }: LogInSignupProps) {
 
 
     return (
-        <main className='signup-container flex-col flex-jc-ac full gap1'>
+        <main className='signup-container flex-col flex-jc-ac gc2 gap1'>
             {
                 path === '/signup' ?
                     <section className='flex-col gap2'>

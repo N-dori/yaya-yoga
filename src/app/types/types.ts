@@ -1,5 +1,6 @@
 export type Tactivity = {
-    id: string,
+    _id?:string
+    id?: string,
     date: Date | null | undefined,
     name?: string,
     hoursRange: { start: Date | null | undefined, end: Date | null | undefined },
@@ -9,7 +10,6 @@ export type Tactivity = {
     teacher: string,
     location: string,
     isCanceled: boolean,
-    reasonOfCancelation: string,
     practitioners: Tpractitioner[] | undefined,
 }
 
@@ -31,14 +31,14 @@ export type Tworkshop = {
     activityStartTime:Date,
     activityEndTime:Date,
     lastDateForRegistration ?:Date,
-    date:Date
+    date:Date|null
     price:number|string
     activityLocation:string
 }
 
 export type TperiodicAgenda = {
     _id?: string
-    date?: { start: string, end: string } | undefined,
+    date?: { start: string|Date, end: string|Date } | undefined,
     activities?: Tactivity[] | undefined,
 }
 
@@ -121,3 +121,7 @@ export type Tbillboard = {
     announcements: Tannouncement[]
 }
 
+export type AgendaDates = {
+    start: Date|string;
+    end: Date|string;
+};

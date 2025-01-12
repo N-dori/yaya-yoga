@@ -20,7 +20,7 @@ import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions
 type LessonInfoPreviewProps = {
     activity: Tactivity
     isOnWeeklyScheduleMode?: boolean
-    handelLessonCancelation: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
+    handelLessonCancellation: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
     periodicAgendaId?: string
     onBooking?: () => void
     setActivities: (activities: Tactivity[]) => void
@@ -28,7 +28,7 @@ type LessonInfoPreviewProps = {
 
 }
 
-export function LessonInfoPreview({ setActivities, activities, onBooking, periodicAgendaId, isOnWeeklyScheduleMode, activity, handelLessonCancelation }: LessonInfoPreviewProps) {
+export function LessonInfoPreview({ setActivities, activities, onBooking, periodicAgendaId, isOnWeeklyScheduleMode, activity, handelLessonCancellation }: LessonInfoPreviewProps) {
     const [isAlertBoxShown, setIsAlertBoxShown] = useState(false)
     const [userMsg, setUserMsg] = useState('')
     const [btnTxt, setBtnTxt] = useState('')
@@ -56,7 +56,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
     const handelClick = () => {
 
-        handelLessonCancelation(activity.id, activity.isCanceled, activity.date)
+        handelLessonCancellation(activity.id, activity.isCanceled, activity.date)
 
     }
 

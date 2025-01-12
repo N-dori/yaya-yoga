@@ -1,9 +1,7 @@
 'use client'
-import { Tmembership, Tworkshop } from '@/app/types/types'
+import {  Tworkshop } from '@/app/types/types'
 import { createNewMembership, deleteActivity, deleteAnnouncemnt, deleteWorkshop, getFormattedDate, getFormattedTime, getPlan, makeId, pushPractionerToActivity, scrollUp, updateUserWithNewWorkshopAtDatabase, updateWorkshop } from '@/app/utils/util'
 import { useSession } from 'next-auth/react'
-import Image from 'next/image'
-import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import EditWorkshopBtns from './EditWorkshopBtns'
 import { usePathname, useRouter } from 'next/navigation'
@@ -13,6 +11,7 @@ import Spinner from '../Spinner'
 import ParagraphsIndex from '../ParagraphsIndex'
 import { AlertBox } from '../AlertBox'
 import LocationSvg from '@/app/assets/svgs/LocationSvg'
+import DynamicImage from '../DynamicImage'
 
 type WorkshopsPreviewProps = {
   isDetailsMode: boolean
@@ -30,7 +29,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   const [currWorkshop, setCurrWorkshop] = useState<Tworkshop>(null)
   const [isLoading, setIsLoading] = useState<boolean>()
 
-  const [currWorkshops, setCurrWorshops] = useState<Tworkshop[]>([])
+  const [currWorkshops, setCurrWorkshops] = useState<Tworkshop[]>([])
 
   const [isAlertBoxShown, setIsAlertBoxShown] = useState(false)
   const [userMsg, setUserMsg] = useState('')
@@ -39,11 +38,10 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   const { data: session } = useSession()
   const path = usePathname()
   const dispatch = useDispatch()
-  const loginFormRef = useRef<HTMLElement>()
   const router = useRouter()
   useEffect(() => {
     setCurrWorkshop(workshop)
-    setCurrWorshops(workshops)
+    setCurrWorkshops(workshops)
     setIsAdmin(session?.user?.email === 'yshwartz@gmail.com' ||
       session?.user?.email === 'dori.nadav@gmail.com')
     // to make sure we in details page= [id]-so that  edit btn will not show up on the <workshopList/>    
@@ -102,8 +100,8 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
           }
         } else {
           const res = await deleteWorkshop(workshop._id)
-          await deleteActivity(workshop.activityId)
-          if (res) {
+         const deleteRes = await deleteActivity(workshop.activityId)
+          if (res&&deleteRes) {
             let txt = 'סדנא הוסרה בהצלחה'
             getUserMsg(txt, true)
           }
@@ -116,9 +114,9 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   }
 
   const updateClientSideWorkshops = (workshopId: string) => {
-    const index = currWorkshops.findIndex(worshop => worshop._id === workshopId)
+    const index = currWorkshops.findIndex(workshop => workshop._id === workshopId)
     currWorkshops.splice(index, 1, currWorkshop)
-    setCurrWorshops([...currWorkshops])
+    setCurrWorkshops([...currWorkshops])
 
   }
 
@@ -163,7 +161,6 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
     const membershipId: string = await createNewMembership(membership)
     if (membershipId) {
       //updating the user memberships array - pushing membership _id 
-      const wasMembershipJustPurchesed = true
       const periodicAgendaId = null
       const activityId = workshop.activityId
 
@@ -189,8 +186,8 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
 
   }
 
-  const getUserMsg = (txt: string, isSucsses: boolean) => {
-    dispatch(callUserMsg({ msg: txt, isSucsses }))
+  const getUserMsg = (txt: string, isSuccess: boolean) => {
+    dispatch(callUserMsg({ msg: txt, isSuccess }))
     scrollUp()
     setTimeout(() => {
       dispatch(hideUserMsg())
@@ -238,38 +235,35 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
         <section>
 
           {isDetailsMode &&
-            <section className='additional-workshps-dates bold flex-col gap05'>
+            <section className='additional-workshops-dates bold flex-col gap05'>
               {numberOfMeetings > 1 &&
-                <p className='underline pointer mb-1'>
-                  לסדנא {numberOfMeetings} חלקים, לצפייה בתאריכים נוספים
+                <p className=' mb-1'>
+                  לסדנא {numberOfMeetings} חלקים, לצפייה בתאריכים נוספים:
                 </p>
               }
 
               {workshops?.map(workshop =>
                 <>
 
-                  <span key={workshop._id} className=' no-under-line pointer'
+                  <span key={workshop._id} className='additional-workshop-date no-under-line pointer'
                     onClick={() => handelChangeWorkshop(workshop._id)}> {getFormattedDate(workshop.date) + ' - '}
-                  <span className='no-under-line' >{workshop.subTitle }</span>
+                  <span className='underline' >{workshop.subTitle }</span>
                   </span>
                 </>
               )
               }
             </section>
           }
+          <section className='img-container' onClick={goToDetailsPage}>
           {isDetailsMode &&
-            <div className='flex-sb'>
+            <div className='date-hours flex-sb w100'>
               <p className='date bold'>{getFormattedDate(currWorkshop.date)}</p>
               <p className='hours bold'>{getFormattedTime(currWorkshop.activityStartTime)} - {getFormattedTime(currWorkshop.activityEndTime)}</p>
             </div>}
-
-
-          <Image onClick={goToDetailsPage} className='work-shop-image pointer' src={currWorkshop.imgUrl} alt={'imageOfworkshop'}
-            style={{ width: '100%', height: 'auto' }}
-            sizes='100vw'
-            width={0}
-            height={0}
-          />
+          {!isDetailsMode &&  <div className='signup-to-workshop-btn'>לפרטים נוספים</div>}
+          <DynamicImage url={currWorkshop.imgUrl} alt={'imageOfworkshop'} imgClassName='work-shop-image pointer'/>
+          </section>
+     
         </section>
         <p className='price bold'>מחיר: {currWorkshop.price} ש"ח</p>
         <p className='location bold'><LocationSvg/>{currWorkshop.activityLocation} </p>
@@ -289,20 +283,13 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
           </section>
         }
 
-
-
-        {!isDetailsMode &&
-          <div className="blur-overlay flex-jc-ac">
-            <Link className="more" href={`workshops/${currWorkshop.id}`}>למידע נוסף</Link>
-          </div>
-        }
       </article>
 
       <div className='flex-jc-ac'>
         {
           (isOnDetailsPage) &&
 
-          <section className='flex-col gap05 mt-1'>
+          <section className='flex-col gap05 mt-1 w100'>
             {!isEditMode && <button type='button' className='btn flex-jc-ac'>{
               isLoading ? <Spinner /> : <span onClick={onRegisterToWorkshop}>לרכישה והרשמה</span>}</button>}
             <EditWorkshopBtns {...EditWorkshopBtnsProps} />

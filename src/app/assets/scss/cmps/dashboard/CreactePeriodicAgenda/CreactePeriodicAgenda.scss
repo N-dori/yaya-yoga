@@ -1,9 +1,10 @@
 .edit-or-create-new{
-    padding: 10em 1em 1em 1em;
+    padding: 10em 1em 10em 1em;
     row-gap: 2em;
 
 }
 .periodic-agenga-dates-container {
+    padding-bottom: 10em;
     .headline {
         margin-top: 8em;
     }
@@ -12,7 +13,7 @@
     font-size: 1.5em;
 }
 .create-periodic-agenda-container {
-
+    padding-bottom: 10em;
     .headline {
         margin-top: 1em;
     }
@@ -27,11 +28,26 @@
     }
 
     .form-input {
+        // position: relative;
         background-color: white;
         padding: .4em .9em .4em .9em;
         border: 1px solid #b3b3bd;
         color: #747474;
+       
     }
+    .form-input::placeholder{
+     
+        color: firebrick;
+        font-size: .6em;
+
+        transition: font-size;
+
+
+    }
+   
+
+    /* When the input has text, move the label */
+   
 
     .input-select-img {
         display: none;
@@ -110,4 +126,11 @@
 
 .date-picker-values {
     display: none;
+}
+.mandatory-felid{
+margin-bottom: -1em;
+    top: -1.2em;
+    font-size: .7em;
+    color: firebrick;
+    
 }

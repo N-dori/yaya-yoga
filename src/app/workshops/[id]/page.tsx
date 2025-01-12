@@ -35,7 +35,7 @@ export default async function page({ params }) {
     <main className='workshop-details-container  gc2'>
       {/* {!session?.user.email&&<section className='mt-1'><ExistingUserLoginBtn /></section> } */}
       <h1 className='title tac '>YAYA YOGA</h1>
-      <h2 className='mb-2 tac'>סדנאות</h2>
+      <h2 className='mb-1 tac'>סדנאות</h2>
       {workshop &&
         <WorkshopsPreview
           numberOfMeetings={workshops?.length}

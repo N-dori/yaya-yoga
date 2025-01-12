@@ -23,8 +23,8 @@ export async function POST(request) {
       // Create a new document
       newPeriodicAgenda = await PeriodicAgenda.create(periodicAgenda);
     }
-revalidatePath('/weekly_schedule')
-revalidatePath('/workshops')
+revalidatePath('/weekly_schedule','page')
+revalidatePath('/workshops','page')
     return NextResponse.json({ newPeriodicAgenda }, { status: 201 });
   } catch (err) {
     console.error('Error handling Periodic Agenda:', err);

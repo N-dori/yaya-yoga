@@ -10,14 +10,21 @@ type DaysOfActivitiesPreviewProps = {
   hebrewMonths?:string[],
 }
 
-export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, currDate,hebrewDays, hebrewMonths}: DaysOfActivitiesPreviewProps) {
+export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, currDate}: DaysOfActivitiesPreviewProps) {
   const [hbDay, setHbDay] = useState<string>()
   const [dayNum, setDayNum] = useState<number>()
   const [hbMonth, setHbMonth] = useState<string>()
   const [isClicked, setIsClicked] = useState<boolean>(false)
   const [isDateHasPassed, setIsDateHasPassed] = useState<boolean>(false)
 
-
+  const hebrewMonths = [
+    "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
+    "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"
+  ]
+  
+  const hebrewDays = [
+    "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת",
+  ]
   useEffect(() => {
     
     if (activityDay) {
@@ -75,12 +82,10 @@ export default function DaysOfActivitiesPreview({ setCurrDate, activityDay, curr
 
    const isDayPassed = (today:Date) => {
     if(today.getDay()!==6){
-      console.log('in if');
       
       setIsDateHasPassed( getDateType(activityDay.date).getDay()<today.getDay())
       
     }else{
-      console.log('in ekse');
       today.setDate(today.getDate() + 1)
       setIsDateHasPassed(  getDateType (activityDay.date).getDay()<today.getDay())
 

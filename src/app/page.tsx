@@ -17,7 +17,7 @@ export default async function Home() {
 
 
     <>
-        <main className="home-page-container flex-col full" >
+       <main className="home-page-container flex-col full" >
       <section className="hero-container flex-col full gap2">
 
         <Image className='hero' src={YogaImage}

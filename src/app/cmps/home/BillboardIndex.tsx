@@ -1,6 +1,7 @@
-import {  Tbillboard } from '@/app/types/types'
-import { getBillboard } from '@/app/utils/util'
+import {  Tannouncement, Tbillboard } from '@/app/types/types'
+import { getBillboard, makeId } from '@/app/utils/util'
 import BillboardList from './BillboardList'
+import EmblaCarousel from '../EmblaCarousel'
 
 type Props = {}
 
@@ -10,13 +11,31 @@ const res = await getBillboard()
 if(res){
   billboard = res?.billboard
 }
+const slides:Tannouncement[] = billboard?.announcements?.map(announcement => {
+  return {
+    id:makeId(),
+    img:announcement.img,
+    title:announcement.title,
+    subTitle:announcement.subTitle,
+    desc:announcement.desc,
+    date:announcement.date,
+    hours:announcement.hours,
+    price:announcement.price,
+    workshopId:announcement.workshopId
+    
+  }
+})
 
   
   return (
     billboard &&   
-    <section className='billboard-container  '>
+    <section className='billboard-container flex-col '>
         <h2 className='headline tac'> ארועי החודש בסטודיו</h2>
-   <BillboardList announcements={billboard.announcements}/>
-    </section>
+       
+     <EmblaCarousel slides={slides}/>
+
+    
+     </section>
+     
   )
 }

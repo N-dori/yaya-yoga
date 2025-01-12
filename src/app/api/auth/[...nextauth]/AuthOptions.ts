@@ -2,10 +2,9 @@ import connectMongoDB from "../../../libs/mongoDB";
 import User from "../../../models/user";
 import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GooglePovider from 'next-auth/providers/google'
+import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
-import { getFullUserByEmail } from "@/app/utils/util";
-import { Tuser } from "@/app/types/types";
+
 
 type Tcredentials = {
     email: string
@@ -45,7 +44,7 @@ export const authOptions: NextAuthOptions = {
             }
         }
     ),
-    GooglePovider(
+    GoogleProvider(
         {
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -60,13 +59,6 @@ export const authOptions: NextAuthOptions = {
 
                 try {
                     const { email ,name } = user 
-                    const userFound: Tuser = await getFullUserByEmail(email)
-                    if (userFound) {
-                        user.id =userFound._id
-                        if (userFound.password) {
-                            return false
-                        }
-                    }
 
                     return true
 
@@ -74,11 +66,11 @@ export const authOptions: NextAuthOptions = {
 
 
                 } catch (err) {
-                    console.log('had aproblem saving google user to data base', err);
+                    console.log('had problem saving google user to data base', err);
                     return false; // Sign-in failure
                 }
             }
-            //if user signed up not via google but localy
+            //if user signed up not via google but locally
             return true
         },
         async jwt({ token, user }) {

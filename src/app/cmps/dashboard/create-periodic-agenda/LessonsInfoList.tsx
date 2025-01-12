@@ -11,11 +11,11 @@ type LessonsInfoListProps = {
   isOnWeeklyScheduleMode?: boolean
   hadelExistSearchMode?: () => void
   onBooking?: () => void
-  handelLessonCancelation?: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
+  handelLessonCancellation?: (id: string, isCanceled: boolean, lastDate: Date | null | undefined) => void
   setActivities?:(activities:Tactivity[])=>void
 }
 
-export function LessonsInfoList({ onBooking, periodicAgendaId, handelLessonCancelation, hadelExistSearchMode, isOnSearchMode
+export function LessonsInfoList({ onBooking, periodicAgendaId, handelLessonCancellation, hadelExistSearchMode, isOnSearchMode
   , isOnWeeklyScheduleMode, currDate, activities,setActivities }: LessonsInfoListProps) {
   const [activitiesOfTheDay, setActivitiesOfTheDay] = useState<Tactivity[]>()
   const [day, setDay] = useState<number>()
@@ -81,11 +81,11 @@ export function LessonsInfoList({ onBooking, periodicAgendaId, handelLessonCance
           <p>תוצאות חיפוש בעבור תאריך {`${day}/${month}/${year}`}</p>
         </div>}
       {activitiesOfTheDay?.length ? activitiesOfTheDay.map(activity =>
-        <LessonInfoPreview key={activity.id}
+        <LessonInfoPreview key={activity._id}
           periodicAgendaId={periodicAgendaId}
           isOnWeeklyScheduleMode={isOnWeeklyScheduleMode}
           activity={activity}
-          handelLessonCancelation={handelLessonCancelation}
+          handelLessonCancellation={handelLessonCancellation}
           onBooking={onBooking} 
           activities={activities}
           setActivities={setActivities}

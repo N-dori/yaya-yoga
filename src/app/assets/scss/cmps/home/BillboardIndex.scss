@@ -5,52 +5,63 @@
     padding: 4em 1em 4em 1em;
     // border-radius: 8px;
     color: var(--clr1);
+
     @include for-940px {
-        padding: 6em 
-      }
+        padding: 6em
+    }
+
     .headline {
         padding: 1em;
-        border: 2px solid  var(--clr1);
+        border: 2px solid var(--clr1);
         margin-bottom: 2em;
 
     }
-// .billboard-warpper{
-//     @include for-940px {
-//         flex-direction: row;
-//     gap: 2em;
-//     }
-// }
-.announcement-wrapper {
-    @include for-940px {
+
+    // .billboard-warpper{
+    //     @include for-940px {
+    //         flex-direction: row;
+    //     gap: 2em;
+    //     }
+    // }
+    .announcement-wrapper {
+        @include for-633px {
             flex-direction: row;
-        gap: 2em;
-      
+            gap: 2em;
+
         }
+
         .announcement-title {
             font-size: 1.2em;
             text-decoration: underline;
         }
-        .announcement-subtitle{
+
+        .announcement-subtitle {
             letter-spacing: .9px;
         }
     }
-    .announcement-title-and-image{
+
+    .announcement-title-and-image {
         @include for-940px {
-      
-          min-width: 350px;
+
+            min-width: 350px;
         }
     }
 
-    .image-conatiner {
-        position: relative;
-        width: 100%;
 
-        .announcement-image {
-            object-fit: cover;
-            border-radius: 4px;
+    .announcement-image {
+        object-fit: cover;
+        border-radius: 4px;
 
+        @include for-633px {
+            width: 20em;
+            height: auto;
+        }
+        @include for-1030px {
+
+            width: auto;
         }
     }
+
 
     .announcement-date {
         margin-bottom: 1em;
@@ -60,11 +71,12 @@
     .desc-wrapper {
         position: relative;
         padding-block: 1em;
+
         @include for-940px {
-      
+            align-content: center;
             padding: 3em 0em 4em 0em;
-          }
-      
+        }
+
 
         .desc {
             text-align: justify;
@@ -80,7 +92,7 @@
 
 .blur-overlay {
     position: absolute;
-    bottom: 0;
+    bottom: -3em;
     left: 0;
     width: 100%;
     height: 50px;
@@ -91,8 +103,8 @@
     /* Adjust height of the blur */
     // background: linear-gradient(rgba(255, 255, 255, 0), var(--clr8), var(--clr7), var(--clr7));
     // background: linear-gradient(rgba(0, 0, 0, 0.795),var(--clr14),var(--clr14) );
-    background: linear-gradient(var(--clr14), rgba(0, 0, 0, 0.195) );
-// background-color: rgba(0, 0, 0, 0.251);
+    background: linear-gradient(var(--clr14), rgba(0, 0, 0, 0.195));
+    // background-color: rgba(0, 0, 0, 0.251);
 }
 
 .more {

@@ -1,18 +1,17 @@
 'use client'
 import BackSvg from '@/app/assets/svgs/BackSvg'
-import { Tmembership, TperiodicAgenda, Tuser } from '@/app/types/types'
+import { Tactivity, TperiodicAgenda, Tuser } from '@/app/types/types'
 import React, { useEffect, useState } from 'react'
 import DaysOfActivities from './DaysOfActivitiesIndex'
 import { LessonsInfoList } from './LessonsInfoList'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
-import { clearPractitionersFromActivityAtDataBase, getFullUserByEmail, getUrl, getUser, } from '@/app/utils/util'
+import { getFullUserByEmail } from '@/app/utils/util'
 import { useRouter } from 'next/navigation'
-import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
-import { useDispatch } from 'react-redux'
 import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
 import { refundPractitionerMembershipAtDatabase } from '@/app/actions/membershipActions'
+import { clearPractitionersFromActivityAtDataBase, updatePeriodicAgendaAfterCancelling } from '@/app/actions/periodicAgendaActions'
 
 
 type PreviewDisplayProps = {
@@ -21,6 +20,7 @@ type PreviewDisplayProps = {
   startPeriodicAgendaDate?: Date | null | undefined,
   endPeriodicAgendaDate?: Date | null | undefined,
   isWorkInProgress: boolean,
+  isEditCurrPeriodicAgenda: boolean,
   isPreviewDisplayShown?: boolean
   setIsPreviewDisplayShown?: (b: boolean) => void
   getUserMsg?: (userMsg: { msg: string, isSucsses: boolean }) => void
@@ -28,7 +28,8 @@ type PreviewDisplayProps = {
 
 }
 
-export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, getUserMsg, isPreviewDisplayShown, setPeriodicAgenda, isWorkInProgress, setIsPreviewDisplayShown,
+export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, getUserMsg, isEditCurrPeriodicAgenda,
+  setPeriodicAgenda, isWorkInProgress, setIsPreviewDisplayShown,
   periodicAgenda }: PreviewDisplayProps) {
 
   const [currDate, setCurrDate] = useState<Date>(new Date(periodicAgenda?.date?.start))
@@ -39,7 +40,6 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
   const [isOnCancelMode, setIsOnCancelMode] = useState<boolean>(false)
 
   const router = useRouter()
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -48,7 +48,7 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
 
   }, []);
 
-  const hadelExistSearchMode = () => {
+  const handelExistSearchMode = () => {
     setSelectedDate(null)
     setCurrDate(new Date())
     setIsOnSearchMode(!isOnSearchMode)
@@ -69,94 +69,51 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
 
   }
 
-  const handelLessonCancelation = (activityId: string, currCencelationState: boolean, lastDate: Date | null | undefined) => {
-    //isWorkInProgress = context is we in the middle of creating periodicAgenga or on edit mode. 
-    if (isWorkInProgress) {
-      if (periodicAgenda) {
-        if (periodicAgenda.activities) {
-          const activityIndex = periodicAgenda.activities.findIndex(activity => activity.id === activityId);
+  const handelLessonCancellation = (activityId: string, currCancellationState: boolean, lastDate: Date | null | undefined) => {
+    updatePeriodicAgendaAtDataBaseAndClientSide(activityId, currCancellationState, lastDate)
+  }
 
-          if (activityIndex !== -1) {
-            // Create a new array with the updated activity
-            const updatedActivities = [...periodicAgenda.activities];
-            const updatedActivity = { ...updatedActivities[activityIndex], isCanceled: currCencelationState ? false : true };
-            updatedActivities[activityIndex] = updatedActivity;
-
-            // Create a new periodicAgenda object with the updated activities
-            const updatedPeriodicAgenda: TperiodicAgenda = {
-              ...periodicAgenda,
-              activities: updatedActivities
-            };
-
-            // Set the new state
-            if (setPeriodicAgenda) setPeriodicAgenda(updatedPeriodicAgenda);
-            getUserMsg({ isSucsses: true, msg: currCencelationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
-            setTimeout(() => {
-              setCurrDate(new Date(lastDate))
-            }, 0.05)
-          }
-        }
-      }
-    } else {
-      console.log('handel cancelation with mongo ');
-      updatePeriocidAgendaAtDataBaseAndClientSide(activityId, currCencelationState, lastDate)
+  const removeAndRefundPractitioners = async (activity: Tactivity, activityId: string) => {
+    const isPractitionersFound = activity?.practitioners?.length ? true : false
+    if (isPractitionersFound) {
+      const promises = activity?.practitioners.map(practitioner =>
+        refundPractitionerMembership(practitioner.membershipId, practitioner.email)
+      )
+      await Promise.all(promises)
+      await clearPractitionersFromActivityAtDataBase(activityId, periodicAgenda._id)
     }
   }
 
-  const updatePeriocidAgendaAtDataBaseAndClientSide = async (activityId: string, currCencelationState: boolean, lastDate: Date | null | undefined) => {
+  const updatePeriodicAgendaAtDataBaseAndClientSide = async (activityId: string, currCancellationState: boolean, lastDate: Date | null | undefined) => {
     try {
       const activity = periodicAgenda.activities.find(activity => activity.id === activityId)
-      const isConfirm = confirm(`האם אתה בטוח שברצונך לבטל שיעור ${activity.name} שחל בתאריך ${new Date(activity.date).toLocaleDateString('he-IL')}? במידה וישנם מתרגלים רשומים המערכת תזכה את המנוי שלהם בהתאם ותסיר אותם מהשיעור!`)
+      const cancelTxt = `האם אתה בטוח שברצונך לבטל שיעור ${activity.name} שחל בתאריך ${new Date(activity.date).toLocaleDateString('he-IL')}? במידה וישנם מתרגלים רשומים המערכת תזכה את המנוי שלהם בהתאם ותסיר אותם מהשיעור!`
+      const restoreTxt = `האם אתה בטוח שברצונך לשחזר שיעור ${activity.name} שחל בתאריך ${new Date(activity.date).toLocaleDateString('he-IL')}`
+      const isConfirm = confirm(currCancellationState ? restoreTxt : cancelTxt)
       if (!isConfirm) return
+      await removeAndRefundPractitioners(activity, activityId)
 
-      const isPractiotionnersFound = activity?.practitioners?.length? true : false
-      if(isPractiotionnersFound){
-        const promises = activity?.practitioners.map(practitioner=> 
-          refundPractitionerMembership(practitioner.membershipId, practitioner.email)
-        )
-        await Promise.all(promises)
-        await clearPractitionersFromActivityAtDataBase(activityId,periodicAgenda._id)
-      }
+      const updatedPeriodicAgenda = await updatePeriodicAgendaAfterCancelling(periodicAgenda?._id, activityId, currCancellationState)
 
-
-      setIsOnCancelMode(!isOnCancelMode)
-      const url = getUrl('periodicAgenda/updatePeriodicAgendaAfterCanceling')
-      const res = await fetch(url, {
-        method: 'PUT',
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ periodicAgendaId: periodicAgenda?._id, activityId, currCencelationState })
-      })
-      if (res.ok) {
-        const updatedPeriodicAgenda = await res.json()
-        // callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
-
-        if (setCurrPeriodicAgenda) {
-          setCurrPeriodicAgenda({ ...updatedPeriodicAgenda })
-          setTimeout(() => {
-            if (lastDate) setCurrDate(new Date(lastDate))
-          }, 1000)
-          setTimeout(() => {
-            if (setIsOnCancelMode) setIsOnCancelMode(!isOnCancelMode)
-
-            dispatch(callUserMsg({ isSucsses: true, msg: currCencelationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' }))
-            setTimeout(() => {
-              dispatch(hideUserMsg())
-            }, 3500);
-          }, 1005)
-        }
+      if (updatedPeriodicAgenda) {
+        setPeriodicAgenda(updatedPeriodicAgenda);
+        getUserMsg({ isSucsses: true, msg: currCancellationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
+        setTimeout(() => {
+          setCurrDate(new Date(lastDate))
+        }, 0.05)
       } else {
-        throw new Error('faild to update periodic Agenda')
+        throw new Error('failed to update periodic Agenda')
       }
 
     } catch (err) {
       console.log(err);
     }
   }
-  const refundPractitionerMembership = async (membershipId: string,userEmail:string) => {
-    
+  const refundPractitionerMembership = async (membershipId: string, userEmail: string) => {
+
     const wasRefunded = await refundPractitionerMembershipAtDatabase(membershipId)
     if (wasRefunded) {
-        console.log('practitioner after refund', wasRefunded);
+      console.log('practitioner after refund', wasRefunded);
     }
     const user: Tuser = await getFullUserByEmail(userEmail)
     // here we check if after refund user stil have memebershipId under user.memberships?
@@ -164,13 +121,13 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
     //if yes do nothing if no add it back to user.memberships[]
     console.log('do User Own Membership', doUserOwnMembership);
     if (!doUserOwnMembership) {
-        const wasMembershipJustPurchesed= false
-        const [isSucsses,updatedUser] = await updateUserWithNewMembershipAtDatabase(membershipId, user._id, wasMembershipJustPurchesed)
-        if (isSucsses) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
+      const wasMembershipJustPurchesed = false
+      const [isSucsses, updatedUser] = await updateUserWithNewMembershipAtDatabase(membershipId, user._id, wasMembershipJustPurchesed)
+      if (isSucsses) console.log('user.memberships was updated whith the refunded membership?', updatedUser);
 
     }
 
-}
+  }
   const DaysOfActivitiesProps = {
     activities: periodicAgenda?.activities,
     setCurrDate,
@@ -181,19 +138,19 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
     setIsOnCancelMode,
   }
 
-  const LesssonsListProps = {
+  const LessonsListProps = {
     activities: periodicAgenda?.activities,
     currDate,
     isOnSearchMode,
-    hadelExistSearchMode,
+    handelExistSearchMode,
     isWorkInProgress,
-    handelLessonCancelation,
+    handelLessonCancellation,
 
 
   }
   const returnToDashboard = () => {
     router.replace('/')
-    router.replace('/dashboard')
+    router.push('/dashboard')
   }
   return (
     <main className='preview-display-container '>
@@ -205,7 +162,6 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
       <h6 className='studio-phone mb-1'>052-437-7820</h6>
       <div onClick={() => setIsOnSearchMode(true)}>
         <DatePicker
-
           selected={selectedDate}
           onChange={(currDate: Date | null) => handelDateChange(currDate)}
           dateFormat={'dd/MM/yyyy'}
@@ -214,12 +170,11 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
           placeholderText="חפש פעילות לפי תאריך"
           showIcon
           locale={he}
-
         />
 
       </div>
       <DaysOfActivities {...DaysOfActivitiesProps} />
-      <LessonsInfoList {...LesssonsListProps} />
+      <LessonsInfoList {...LessonsListProps} />
     </main>
   )
 }

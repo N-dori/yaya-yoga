@@ -22,6 +22,7 @@
         }
     }
     .my-image-and-desc{
+        align-items: center;
         @include for-940px {
             flex-direction: row;
         gap: 2em;

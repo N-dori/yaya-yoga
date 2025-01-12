@@ -21,7 +21,7 @@ export default function WeeklySchedule({periodicAgendaId,periodicAgenda }: Weekl
     const { data: session } = useSession()
   
   var today = new Date()
-  // if(today.getDay() === 6 )today.setDate(new Date().getDate()+1 )
+  // change today date to Sunday if today is Saturday and either no activities are scheduled or it's past 5:00 PM.
   const checkIfAnyThingScheduleOnSaturday = (activities: Tactivity[], givenDate: Date) => {
     if (givenDate.getDay() === 6) {
       // if today is Saturday and there is nothing scheduled! 
@@ -42,6 +42,7 @@ export default function WeeklySchedule({periodicAgendaId,periodicAgenda }: Weekl
     }
     return givenDate
   }
+
   today = checkIfAnyThingScheduleOnSaturday(periodicAgenda?.activities, today)//if not moving to next day
   const [currDate, setCurrDate] = useState<Date>(today)
   const [isOnBookingMode, setIsOnBookingMode] = useState<boolean>(false)
@@ -58,11 +59,8 @@ export default function WeeklySchedule({periodicAgendaId,periodicAgenda }: Weekl
   }, [])
   useEffect(() => {
     getWeeklyActivities(periodicAgenda?.activities)
-    console.log('activities', activities);
 
   }, [isOnCancelMode, currDate])
-
-
 
 
   const onBooking = () => {
@@ -75,7 +73,6 @@ export default function WeeklySchedule({periodicAgendaId,periodicAgenda }: Weekl
       let currentDate = new Date()
 
       currentDate = checkIfAnyThingScheduleOnSaturday(activities, currentDate)
-      // console.log('after currentDate is :',new Date(currentDate).toLocaleDateString('he-IL'))
 
       if (currentDate.getDay() === 0) {
         const activitiesOfTheWeek = createWeeklyActivities(activities, currentDate)
@@ -156,7 +153,6 @@ export default function WeeklySchedule({periodicAgendaId,periodicAgenda }: Weekl
       {!isOnBookingMode ?
         <>
           <DatesOfActivitiesIndex {...DatesOfActivitiesProps} />
-          {/* <DaysOfActivities {...DaysOfActivitiesProps} /> */}
           <LessonsInfoList {...LessonsListProps} />
         </>
         :

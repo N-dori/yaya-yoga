@@ -10,16 +10,20 @@ export default function Dashboard({}: Props) {
   const getGreeting = () => {
       const today = new Date();
       const hours = today.getHours();
-      if(hours>20||hours===+'00'||(hours<5))return `לילה טוב `
-      if(hours<12)return `בוקר טוב🔅`
-      if(hours>12&&hours<16)return `צהריים טובים `
-      if(hours>16&&hours<20)return `אחר צהריים טובים `
+      const fiveAm =today.setHours(5,0,0,0)
+      const twelvePm =today.setHours(12,0,0,0)
+      const fourPm = today.setHours(16,0,0,0)
+      const sevenPm = today.setHours(19,0,0,0)
+      if(fiveAm>=hours && hours<=twelvePm)return `בוקר טוב🔅`
+      if(twelvePm>=hours && hours<=fourPm)return `צהריים טובים `
+      if(fourPm>hours && hours <=sevenPm)return `אחר צהריים טובים `
+      if(sevenPm>=hours )return `לילה טוב`
  
     
     }
     
   return (
-    <main className='gc2 p-1'>
+    <main className='dashboard-container gc2 '>
         <DateTime/>
         <h1 className='tac mt-1'>  היי יאיר {getGreeting()}</h1>
         <DashboardMenu/>

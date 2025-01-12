@@ -11,30 +11,23 @@ type ThisMounthPreviewProps = {
     announcement: Tannouncement
 }
 
-export default function announcementPreview({ announcement }: ThisMounthPreviewProps) {
+export default function BillboardPreview({ announcement }: ThisMounthPreviewProps) {
 
     return (
-        <section className='announcement-wrapper flex-col '>
-            <section className='announcement-title-and-image '>
-                <h3 className='announcement-title'>{announcement.title}</h3>
+        <section className='embla__slide flex-col flex-ac '>
+            <section className='announcement-title-and-image flex-col flex-ac '>
+                <h3 className='announcement-title underline mb-1'>{announcement.title}</h3>
                 <h5 className='announcement-subtitle mb-1'>{announcement.subTitle}</h5>
-                {/* {(announcement.price != 0)
-                && <p className='announcement-price '> מחיר : {announcement.price} ש"ח</p>
-            } */}
-                {/* <div className='image-conatiner flex-ac-jc'>
-                <Image className='announcement-image'
-                    style={{ width: '100%', height: '100%' }}
-                    quality={90} src={announcement.img}
-                    sizes="100vw"
-                    width={0}
-                    height={0}
-                    alt={'this mounth event image'} /> */}
+           
+                    <section className='announcement-image w100'>
                 <DynamicImage imgClassName={'announcement-image'} alt={'announcement-image'} url={announcement.img} />
+
+                    </section>
                 {/* </div> */}
 
 
 
-                <div className='flex-sb'>
+                <div className='flex-sb mt-1'>
                     {announcement?.date &&
                         <h5 className='announcement-date'>{new Date(announcement.date).toLocaleDateString('he-IL')}</h5>
                     }

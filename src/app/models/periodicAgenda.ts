@@ -92,9 +92,6 @@ const activitySchema = new Schema({
     isCanceled: {
         type: Boolean
     },
-    reasonOfCancelation: {
-        type: String
-    },
     practitioners: [
         practitionerSchema 
     ],
