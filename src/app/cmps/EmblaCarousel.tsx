@@ -25,7 +25,8 @@ type embleProps = {
     slides: Tannouncement[]
 }
 export default function EmblaCarousel({ slides }: embleProps) {
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true ,  direction: 'rtl'}, [Autoplay({delay:10000})])
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true ,  direction: 'rtl'},
+         [Autoplay({delay:5000})])
 
     useEffect(() => {
         if (emblaApi) {

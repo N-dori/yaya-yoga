@@ -8,7 +8,7 @@
     display: flex;
     will-change: transform; /* Optimizes performance for transforms */
     // flex-direction: row-reverse;
-    gap:3em;
+    gap:3.5em;
   }
   
   .embla__slide {
@@ -22,6 +22,6 @@
 //   .embla__slide:nth-child(2){
 //     margin-inline-start: -1em;
 //   }
-//   .embla__slide:nth-child(1){
-//     margin-inline-start: -1em;
-//   }
+  .embla__container:nth-child(1){
+    margin-inline-start: 1em;
+  }
