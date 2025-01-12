@@ -65,7 +65,7 @@
 }
 
 @mixin for-normal-layout {
-    @media (max-width: calc($normal-breakpoint)) {
+    @media (min-width: calc($normal-breakpoint)) {
         @content;
     }
 }

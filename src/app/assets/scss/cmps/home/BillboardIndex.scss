@@ -2,7 +2,7 @@
     margin-top: 1em;
     padding-inline: 1em;
     background-color: var(--clr11);
-    padding: 4em 1em 4em 1em;
+    padding: 2em 1em 2em 1em;
     // border-radius: 8px;
     color: var(--clr1);
 
@@ -24,22 +24,57 @@
     }
   
 
-
+    .embla {
+        overflow: hidden; /* Prevents extra slides from showing */
+        width: 100%; /* Or a specific width, like 600px */
+    
+      }
+      
+      .embla__container {
+        display: flex;
+        will-change: transform; /* Optimizes performance for transforms */
+        // flex-direction: row-reverse;
+        gap:3.5em;
+        @include for-1030px{
+            gap:3.5em;
+        }
+        @include for-normal-layout{
+            gap:8em;
+        }
+    
+      }
+      
+      .embla__slide {
+        flex: 0 0 100%; /* Each slide takes 100% of the embla container width */
+        // max-width: 100%;
+        // padding: 1em 2em 1em 1em;
+    
+      }
+  
+      .embla__container:nth-child(1){
+        margin-inline-start: 1em;
+        @include for-1030px{
+            margin-inline-start:11em;
+        }
+        @include for-normal-layout{
+            margin-inline-start:10em;
+        }
+      }
+    
 
       
     .announcement-border{
-        border: 3px solid var(--clr1);
-        padding: 1em;
-        border-radius:4px;
-        // box-shadow: 1px 1px 1px 1px;
-    }
-    .announcement-wrapper {
+        border: 2px solid var(--clr13);
+        padding: 2em 1em 2em 1em;
+        border-radius:16px;
         @include for-633px {
             flex-direction: row;
-            gap: 2em;
-
-        }
-
+            gap:1em;
+            align-items: start;
+          
+          }
+    }
+ 
         .announcement-title {
             font-size: 1.2em;
             text-decoration: underline;
@@ -47,14 +82,20 @@
 
         .announcement-subtitle {
             letter-spacing: .9px;
+            @include for-1030px {
+                font-size: 1em;
+                width: auto;
+            }
         }
-    }
+    
 
     .announcement-title-and-image {
         @include for-940px {
 
             min-width: 350px;
+         
         }
+   
     }
 
 
@@ -69,6 +110,9 @@
         @include for-1030px {
 
             width: auto;
+        }
+        @include for-normal-layout{
+            width: 351px;
         }
     }
 
@@ -94,8 +138,15 @@
             border-radius: 8px;
             line-height: 22px;
             letter-spacing: .6px;
-
-
+            @include for-633px {
+                    padding-right: 1em;
+                    margin-top: 3.5em;
+              }
+              @include for-1030px {
+                font-size: 1em;
+                width: auto;
+                margin-top: 1.2em;
+            }
         }
     }
 }
@@ -106,15 +157,9 @@
     left: 0;
     width: 100%;
     height: 50px;
-    // background: linear-gradient(rgba(255, 255, 255, 0),   #edc797);
-    // background: linear-gradient(rgba(255, 255, 255, 0), var(--clr7), var(--clr7), var(--clr7));
     padding: 1em;
     border-radius: 0px 0px 0px 0px;
-    /* Adjust height of the blur */
-    // background: linear-gradient(rgba(255, 255, 255, 0), var(--clr8), var(--clr7), var(--clr7));
-    // background: linear-gradient(rgba(0, 0, 0, 0.795),var(--clr14),var(--clr14) );
     background: linear-gradient(var(--clr14), rgba(0, 0, 0, 0.195));
-    // background-color: rgba(0, 0, 0, 0.251);
 }
 
 .more {

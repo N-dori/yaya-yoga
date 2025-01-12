@@ -14,8 +14,8 @@ type ThisMounthPreviewProps = {
 export default function BillboardPreview({ announcement }: ThisMounthPreviewProps) {
 
     return (
-        <section className='embla__slide flex-col flex-ac '>
-            <section className='announcement-border'>
+        <section className='embla__slide  '>
+            <section className='announcement-border flex-col flex-ac'>
 
             <section className='announcement-title-and-image  '>
                 <h3 className='announcement-title underline mb-1'>{announcement.title}</h3>
