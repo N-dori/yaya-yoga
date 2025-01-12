@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import ParagraphsIndex from '../ParagraphsIndex'
+import DynamicImage from '../DynamicImage'
 
 type AboutMeIndexProps = {}
 const desc = `
@@ -23,17 +24,7 @@ export default function AboutMeIndex({ }: AboutMeIndexProps) {
       <h3 className='title tac'>נעים להכיר </h3>
     <section className='my-image-and-desc flex-col'>
 
-      {/* <div className='flex-jc-ac'> */}
-
-        <Image className='me-image'
-          // style={{ width: '100%' }}
-          quality={90} src={'/2.jpg'}
-          sizes="100vw"
-          width={300}
-          height={300}
-          alt={'image of myself'} />
-      {/* </div> */}
-      
+        <DynamicImage imgClassName='me-image' url={'/2.jpg'} alt='image of myself'/>
       <section className='content'>
       <ParagraphsIndex desc={desc} />
 

@@ -20,17 +20,32 @@
         @include for-940px {
        text-align: start;
         }
+        @include for-1030px {
+            font-size: 1.4em;
+            width: auto;
+            // margin-top: 1em;
+        }
     }
     .my-image-and-desc{
         align-items: center;
         @include for-940px {
             flex-direction: row;
-        gap: 2em;
+            gap: 2em;
+            // width: 370px;
       
+        }
+        @include for-1030px {
+            align-items: start;
+            font-size: 1.2em;
+            width: auto;
+            // max-height: 500px;
+            // margin-top: 1em;
         }
     }
     .me-image {
-        border-radius: 4px;
+        
+        border-radius: 16px;
+    
 
     }
 
@@ -40,6 +55,13 @@
         color: var(--clr13);
         padding: .5em;
         line-height: 22px;
+        @include for-1030px {
+            align-items: start;
+            font-size: 1em;
+            width: auto;
+            padding: 0em;
+            // margin-top: 1em;
+        }
     }
 
     .teachers-container {
@@ -48,11 +70,17 @@
         .meet-the-yogis-title {
             padding-block: 2em;
             font-size: 1.5em;
+            
         }
 
         .txt {
             line-height: 22px;
             padding-bottom: 2em;
+            @include for-1030px {
+                font-size: 1.2em;
+                width: auto;
+                // margin-top: 1em;
+            }
 
         }
     }

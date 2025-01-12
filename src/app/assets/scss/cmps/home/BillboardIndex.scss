@@ -6,9 +6,9 @@
     // border-radius: 8px;
     color: var(--clr1);
 
-    @include for-940px {
-        padding: 6em
-    }
+    // @include for-940px {
+    //     padding: 0em
+    // }
 
     .headline {
         position: relative;
@@ -27,7 +27,10 @@
     .embla {
         overflow: hidden; /* Prevents extra slides from showing */
         width: 100%; /* Or a specific width, like 600px */
-    
+        // @include for-1030px{
+        // display: grid;
+        // grid-template-columns: 1em minmax(10em,auto) 1em;
+        // }
       }
       
       .embla__container {
@@ -35,8 +38,15 @@
         will-change: transform; /* Optimizes performance for transforms */
         // flex-direction: row-reverse;
         gap:3.5em;
+        @include for-940px {
+
+            gap:6.5em;
+            
+        }
         @include for-1030px{
-            gap:3.5em;
+
+                grid-column: 2;
+            gap:5.5em;
         }
         @include for-normal-layout{
             gap:8em;
@@ -46,18 +56,24 @@
       
       .embla__slide {
         flex: 0 0 100%; /* Each slide takes 100% of the embla container width */
-        // max-width: 100%;
-        // padding: 1em 2em 1em 1em;
-    
+        @include for-940px {
+
+            flex: 0 0 90%;
+            
+        }
+        @include for-1030px{
+            flex: 0 0 95%;
+                // gap:3em;
+        }
       }
+      
   
       .embla__container:nth-child(1){
         margin-inline-start: 1em;
-        @include for-1030px{
-            margin-inline-start:11em;
-        }
-        @include for-normal-layout{
-            margin-inline-start:10em;
+        @include for-940px {
+
+            margin-inline-start: 1em;
+            
         }
       }
     
@@ -93,12 +109,12 @@
         @include for-940px {
 
             min-width: 350px;
-         
+            
         }
-   
+        
     }
-
-
+    
+    
     .announcement-image {
         object-fit: cover;
         border-radius: 4px;
@@ -107,13 +123,10 @@
             width: 20em;
             height: auto;
         }
-        @include for-1030px {
-
-            width: auto;
-        }
+     
         @include for-normal-layout{
-            width: 351px;
-        }
+            min-width: 550px;
+           }
     }
 
 
@@ -129,8 +142,11 @@
         @include for-940px {
             align-content: center;
             padding: 3em 0em 4em 0em;
+            // max-width: 400px;
         }
-
+        @include for-normal-layout{
+         max-width: 800px;
+        }
 
         .desc {
             text-align: justify;
