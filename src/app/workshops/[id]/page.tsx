@@ -9,29 +9,16 @@ import React from 'react'
 
 
 export default async function page({ params }) {
-  let workshopsAfterToday: Tworkshop[]
-  const allWorkshops: Tworkshop[] = await getWorkshops()
-  const session = await getServerSession()
+  const allWorkshops: Tworkshop[] = await getWorkshops();
+  const workshop = allWorkshops?.find(workshop => workshop.id === params.id);
+console.log('workshop',workshop);
 
-  // console.log('allWorkshops: ', allWorkshops);
-  const workshop: Tworkshop = allWorkshops?.find(workshop => workshop.id === params.id)
-  // console.log('workshop by id: ', workshop);
-  if (workshop) {
+if (!workshop) return null;
 
-    const workshopsWithSameTitle: Tworkshop[] = allWorkshops.filter(currWorkshop => currWorkshop.title.trim() === workshop.title.trim())
-    console.log('workshopsWithSameTitle', workshopsWithSameTitle);
-    
-    // workshopsAfterToday = workshopsWithSameTitle.filter(currWorkshop =>
-    //                                 isAfterToday(currWorkshop.date))
-    workshopsAfterToday = workshopsWithSameTitle
-  }
-  const workshops = workshopsAfterToday?.sort((a: Tworkshop, b: Tworkshop) => {
-    if (!a.date || !b.date) return 0;
-    if (new Date(a.date).getTime() > new Date(b.date).getTime()) return 1
-    if (new Date(a.date).getTime() < new Date(b.date).getTime()) return -1
-    return 0
-  });
-  console.log('workshops after sort ', workshops);
+const workshopsWithSameTitle = allWorkshops.filter(currWorkshop => currWorkshop.title.trim() === workshop.title.trim());
+const workshops = workshopsWithSameTitle.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+console.log('workshops',workshops);
+ 
   return (
     <main className='workshop-details-container  gc2'>
       {/* {!session?.user.email&&<section className='mt-1'><ExistingUserLoginBtn /></section> } */}
