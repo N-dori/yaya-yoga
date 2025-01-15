@@ -339,6 +339,7 @@ export const getWorkshops = async () => {
     const res = await fetch(url, {
       method: 'GET',
       headers: { "Content-type": "application/json" },
+      cache:'no-store'
     })
     if (res.ok) {
       const workshops = await res.json()

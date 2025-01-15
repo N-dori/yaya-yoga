@@ -26,7 +26,7 @@ console.log('workshops',workshops);
       {workshop &&
         <WorkshopsPreview
           numberOfMeetings={workshops?.length}
-          workshop={workshop}
+          workshop={workshops[0]}
           workshops={workshops}
           isDetailsMode={true} />}
 
