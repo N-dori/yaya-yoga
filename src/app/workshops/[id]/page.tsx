@@ -3,7 +3,7 @@ import { AlertBox } from '@/app/cmps/AlertBox'
 import ExistingUserLoginBtn from '@/app/cmps/booking/ExistingUserLoginBtn'
 import WorkshopsPreview from '@/app/cmps/workshops/WorkshopsPreview'
 import { Tworkshop } from '@/app/types/types'
-import { getWorkshops, isAfterToday } from '@/app/utils/util'
+import { getWorkshops } from '@/app/utils/util'
 import { getServerSession } from 'next-auth'
 import React from 'react'
 
