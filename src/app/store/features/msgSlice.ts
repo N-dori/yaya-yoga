@@ -29,7 +29,7 @@ export const msgSlice = createSlice({
         state.isMsgShown = true;
         state.userMsg = action.payload.msg
         state.bgColor = action.payload.isSucsses? 
-        `radial-gradient( rgba(26,245,31,1)92%, rgba(9,121,17,1) 100%)` :
+        `linear-gradient( #decdbc, var(--clr9));` :
          `radial-gradient(circle, rgba(235, 108, 108, 0.95) 95%, rgb(187, 87, 76) 100%)`
       },
     

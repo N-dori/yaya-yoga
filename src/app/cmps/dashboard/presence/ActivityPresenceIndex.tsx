@@ -37,7 +37,7 @@ export default function ActivityPresenceIndex({periodicAgenda}: ActivityPresence
     removePractitionerFromClientSideActivities
    }
     return (
-        <main className='presence-list-container'>
+        <main className='presence-list-container flex-col flex-jc'>
                         <h1 className='healine tac'>דף נוכחות  </h1>
 
             <DatePicker
@@ -49,8 +49,8 @@ export default function ActivityPresenceIndex({periodicAgenda}: ActivityPresence
             placeholderText="הצג דף נוכחות לפי תאריך"
             showIcon
             locale={he}
-        
-        />
+            
+            />
             <ActivityPresenceList {...ActivityPresenceListProps}/>
 
         </main>

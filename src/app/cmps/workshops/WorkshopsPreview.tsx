@@ -42,8 +42,9 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   useEffect(() => {
     setCurrWorkshop(workshop)
     setCurrWorkshops(workshops)
-    setIsAdmin(session?.user?.email === 'yshwartz@gmail.com' ||
-      session?.user?.email === 'dori.nadav@gmail.com')
+    // setIsAdmin(session?.user?.email === 'yshwartz@gmail.com' ||
+    //   session?.user?.email === 'dori.nadav@gmail.com')
+    setIsAdmin(true)
     // to make sure we in details page= [id]-so that  edit btn will not show up on the <workshopList/>    
     path[path.length - 1] !== 's' ? setIsOnDetailsPage(true) : ''
 

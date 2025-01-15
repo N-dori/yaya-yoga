@@ -75,12 +75,15 @@ export function LessonsInfoList({ onBooking, periodicAgendaId, handelLessonCance
 
   return (
     <ul className='lessons-container flex-col gap1'>
+
       {isOnSearchMode &&
         <div className='flex-col mt-1 mb-1'>
           <p className='pointer' onClick={hadelExistSearchMode}>X</p>
           <p>תוצאות חיפוש בעבור תאריך {`${day}/${month}/${year}`}</p>
         </div>}
-      {activitiesOfTheDay?.length ? activitiesOfTheDay.map(activity =>
+
+      {activitiesOfTheDay?.length ?
+         activitiesOfTheDay.map(activity =>
         <LessonInfoPreview key={activity._id}
           periodicAgendaId={periodicAgendaId}
           isOnWeeklyScheduleMode={isOnWeeklyScheduleMode}

@@ -194,7 +194,7 @@ export default function DaysOfActivitiesIndex({ setIsOnCancelMode, isOnCancelMod
     }
 
     return (
-        !isOnSearchMode && <section className='days-activities-container flex-jc-ac'>
+        !isOnSearchMode && <section className='days-activities-container flex-jc-ac mb-1'>
             <DaysBackForwordSvg  {...DaysForwordSvgProps} />
             <ul className='days-container flex-jc-ac gap1'>
                 {threeDays ?

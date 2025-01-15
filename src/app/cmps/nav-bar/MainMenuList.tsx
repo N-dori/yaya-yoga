@@ -19,14 +19,14 @@ type Props = {
 export default function MainMenuList({isShown ,setIsShown}: Props) {
   const router = useRouter()
   const { data: session } = useSession()
-  const [isAdmin,setIsAdmin] = useState(null)
+  const [isAdmin,setIsAdmin] = useState(true)
   useEffect(() => {
-    setAdmin()
+    // setAdmin()
     
   }, [session?.user?.email])
- const setAdmin = () => {
-  setIsAdmin(session?.user?.email ==='yshwartz@gmail.com'||session?.user?.email==='dori.nadav@gmail.com')
- } 
+//  const setAdmin = () => {
+//   setIsAdmin(session?.user?.email ==='yshwartz@gmail.com'||session?.user?.email==='dori.nadav@gmail.com')
+//  } 
 
   const handelClick = (route:string) => {
     setIsShown(!isShown)

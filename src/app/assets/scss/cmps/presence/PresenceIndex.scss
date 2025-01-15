@@ -1,10 +1,13 @@
 .presence-container {
     .presence-list-container {
         padding-top: 2em;
+
         .healine {
             margin-block: 1em;
         }
-
+        .react-datepicker-wrapper{
+            padding: 0em 2em 0em 0em;
+        }
         .title-date {
             margin-block: 1em;
             font-size: 1.1em;
@@ -18,7 +21,7 @@
             padding: 1em;
 
         }
-
+        
         .presence-table {
             grid-template-columns:  minmax(4em, 10em) 1fr ;
             gap: .5em;
@@ -37,7 +40,8 @@
         }
     }
     .presence-list-wapper{
-        padding-top: 2em;
+        padding: 2em 2em 4em 2em;
+      
     }
 
 }
