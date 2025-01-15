@@ -235,7 +235,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
 
         <section>
 
-          {isDetailsMode &&
+          {(isDetailsMode && workshops?.length>1) &&
             <section className='additional-workshops-dates bold flex-col gap05'>
               {numberOfMeetings > 1 &&
                 <p className=' mb-1'>
@@ -243,14 +243,14 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
                 </p>
               }
 
-              {workshops?.map(workshop =>
-                <>
-
-                  <span key={workshop._id} className='additional-workshop-date no-under-line pointer'
+              {
+                
+                workshops?.map(workshop =>
+                  <span key={workshop.id} className='additional-workshop-date no-under-line pointer'
                     onClick={() => handelChangeWorkshop(workshop._id)}> {getFormattedDate(workshop.date) + ' - '}
                   <span className='underline' >{workshop.subTitle }</span>
                   </span>
-                </>
+             
               )
               }
             </section>

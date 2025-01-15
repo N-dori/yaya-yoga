@@ -18,9 +18,9 @@ export default async function page({ params }) {
   // console.log('workshop by id: ', workshop);
   if (workshop) {
 
-    const workshopsWithSameTitle: Tworkshop[] = allWorkshops.filter(currWorkshop => currWorkshop.title === workshop.title)
+    const workshopsWithSameTitle: Tworkshop[] = allWorkshops.filter(currWorkshop => currWorkshop.title.trim() === workshop.title.trim())
     console.log('workshopsWithSameTitle', workshopsWithSameTitle);
-
+    
     // workshopsAfterToday = workshopsWithSameTitle.filter(currWorkshop =>
     //                                 isAfterToday(currWorkshop.date))
     workshopsAfterToday = workshopsWithSameTitle
@@ -31,6 +31,7 @@ export default async function page({ params }) {
     if (new Date(a.date).getTime() < new Date(b.date).getTime()) return -1
     return 0
   });
+  console.log('workshops after sort ', workshops);
   return (
     <main className='workshop-details-container  gc2'>
       {/* {!session?.user.email&&<section className='mt-1'><ExistingUserLoginBtn /></section> } */}
