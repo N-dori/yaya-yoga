@@ -1,9 +1,8 @@
 'use client'
 import { Tmembership, Tuser } from '@/app/types/types'
-import { getMembership } from '@/app/utils/util'
-import Link from 'next/link'
+import { getMembership } from '@/app/actions/membershipActions'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import MyMembershipsList from '../../personal-details/MyMembershipsList'
 
 type UsersPreviewProps = {
