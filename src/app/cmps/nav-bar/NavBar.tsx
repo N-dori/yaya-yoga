@@ -12,6 +12,7 @@ type Props = {}
 export default function NavBar({ }: Props) {
   const [isShown, setIsShown] = useState(false)
   const [isHomePage, setIsHomePage] = useState(true)
+  const [isDashboard, setIsDashboard] = useState(false)
   const [firstLetter, setfirstLetter] = useState("")
   const { data: session } = useSession()
   const router = useRouter();
@@ -24,6 +25,15 @@ export default function NavBar({ }: Props) {
       setIsHomePage(true)
       :
       setIsHomePage(false)
+  }, [path]);
+  useEffect(() => {
+    console.log('path',path);
+    
+    path === '/dashboard/create_periodic_agenda'
+      ?
+      setIsDashboard(true)
+      :
+      setIsDashboard(false)
   }, [path]);
 
   useEffect(() => {
@@ -72,7 +82,7 @@ export default function NavBar({ }: Props) {
     <>
 
       <nav className='nav-bar-conatiner flex-ac  full'
-        style={isHomePage ? { position: 'fixed', width: '100%' } : {}}>
+        style={isHomePage ? { position: 'fixed', width: '100%' } : {display:isDashboard&&'none'}}>
         <section className='nav-bar-warpper flex-sb' >
 
           <div className='user-area-container flex-col'>
