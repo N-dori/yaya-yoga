@@ -2,7 +2,7 @@ import React from 'react'
 
 type Props = {}
 
-export default function CircleDeroration({}: Props) {
+export default function CircleDecoration({}: Props) {
   return (
     <>
     <svg className="circle-dcor circle1"

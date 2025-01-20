@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import CircleDeroration from './CircleDeroration'
+import CircleDecoration from './CircleDecoration'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -31,7 +31,6 @@ export default function LogInSignup({ redirectTo, origin }: LogInSignupProps) {
     const [passward2error, setPassward2Error] = useState("")
     const [isLoading, setIsLoading] = useState<{ btn1: boolean, btn2: boolean }>({ btn1: false, btn2: false })
 
-    const [isItGoogleSignup, setIsItGoogleSignup] = useState<boolean>(false)
     const path = usePathname()
 
     const router = useRouter()
@@ -40,11 +39,11 @@ export default function LogInSignup({ redirectTo, origin }: LogInSignupProps) {
     useEffect(() => {
         checkIfNewUser()
 
-    }, [session?.user?.email, isItGoogleSignup])
+    }, [session?.user?.email])
 
 
     const checkIfNewUser = async () => {
-        // is best prctice status === "authenticated" tells us if session is ready we dont want the function to run premturely
+        // is best practice status === "authenticated" tells us if session is ready we don't want the function to run prematurely
         if (status === "authenticated") {
 
             const userFound: Tuser = await getFullUserByEmail(session.user.email)
@@ -73,9 +72,9 @@ export default function LogInSignup({ redirectTo, origin }: LogInSignupProps) {
 
     }
 
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
+    const getUserMsg = (txt: string, isSuccess: boolean) => {
 
-        dispatch(callUserMsg({ msg: txt, isSucsses: false }))
+        dispatch(callUserMsg({ msg: txt, isSuccess }))
 
         setTimeout(() => {
             dispatch(hideUserMsg())
@@ -320,7 +319,7 @@ export default function LogInSignup({ redirectTo, origin }: LogInSignupProps) {
                     }
                 </button>
 
-                <CircleDeroration />
+                <CircleDecoration />
             </form>
 
         </main>

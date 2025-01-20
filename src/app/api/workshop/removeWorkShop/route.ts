@@ -7,14 +7,14 @@ export async function DELETE(request) {
     try {
         const { workshopId } = await request.json();
     
-
+        await connectMongoDB()
        
         const updatedWorkshop = await Workshop.deleteOne(
             { _id: workshopId },   
         )
         console.log('updatedWorkshop',updatedWorkshop);
         
-        revalidatePath('/workshops')
+        revalidatePath('/workshops','layout')
 
         return NextResponse.json({ message: 'workshop was deleted' }, { status: 200 });
         

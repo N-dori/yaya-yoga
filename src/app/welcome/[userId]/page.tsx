@@ -1,7 +1,7 @@
 import React from 'react'
 import { authOptions } from '../../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
-import { getUser } from '../../utils/util';
+import { getUser } from '../../actions/userActions';
 import Link from 'next/link';
 import { Tuser } from '@/app/types/types';
 import SendEmailOnlyOnce from '@/app/cmps/SendEmailOnlyOnce';

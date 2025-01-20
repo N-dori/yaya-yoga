@@ -1,7 +1,7 @@
 import {  Tannouncement, Tbillboard } from '@/app/types/types'
-import { getBillboard, makeId } from '@/app/utils/util'
-import BillboardList from './BillboardList'
+import { makeId } from '@/app/utils/util'
 import EmblaCarousel from '../EmblaCarousel'
+import { getBillboard } from '@/app/actions/billboardActions'
 
 type Props = {}
 

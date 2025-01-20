@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { createDaysRange, createMonthsRange, createYearsRange, getUrl, getUser, scrollUp } from '@/app/utils/util';
-import { Tuser, TuserQuestionnaire } from '@/app/types/types';
+import { createDaysRange, createMonthsRange, createYearsRange,  scrollUp } from '@/app/utils/util';
+import { TuserQuestionnaire } from '@/app/types/types';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice';
-import { createUserQuestionnaire, getQuestionnair, updateQuestionnair, updateUserWithHisQuestionnairId } from '@/app/actions/userActions';
+import { createUserQuestionnaire, getQuestionnaire, updateQuestionnaire, updateUserWithHisQuestionnaireId } from '@/app/actions/userActions';
 import Spinner from '../Spinner';
 
 const years: number[] = createYearsRange()
@@ -65,23 +65,25 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
         }
 
     }, [])
+ 
+    
 
     const setData = async (_id: string) => {
         // here we slice the U that was attched to user _id
-        const questionnair: TuserQuestionnaire | null = await getQuestionnair(_id.slice(1))
+        const questionnaire: TuserQuestionnaire | null = await getQuestionnaire(_id.slice(1))
 
-        if (questionnair) {
-            setFirstName(questionnair.firstName)
-            setLastName(questionnair.lastName)
-            setIsraeliId(questionnair.israelid)
-            setGender(questionnair.gender)
-            setDayBirth(questionnair.dayBirth)
-            setMonthBirth(questionnair.monthBirth)
-            setYearBirth(questionnair.yearBirth)
-            setOccupation(questionnair.occupation)
-            setPhone(questionnair.phone)
-            setAddress(questionnair.address)
-            setComments(questionnair.comments)
+        if (questionnaire) {
+            setFirstName(questionnaire.firstName)
+            setLastName(questionnaire.lastName)
+            setIsraeliId(questionnaire.israelid)
+            setGender(questionnaire.gender)
+            setDayBirth(questionnaire.dayBirth)
+            setMonthBirth(questionnaire.monthBirth)
+            setYearBirth(questionnaire.yearBirth)
+            setOccupation(questionnaire.occupation)
+            setPhone(questionnaire.phone)
+            setAddress(questionnaire.address)
+            setComments(questionnaire.comments)
         }
     }
 
@@ -119,21 +121,19 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
             }
 
             if (!onEditMode) {
-                //crearing a new user questoinnaire object  
-                const userQeustionnaire: TuserQuestionnaire = await createUserQuestionnaire(data)
+                //creating a new user questionnaire object  
+                const userQuestionnaire: TuserQuestionnaire = await createUserQuestionnaire(data)
 
-                if (userQeustionnaire) {
-                    //updating currrent user with new questoinnaire id
-                    const userQuestionnaireId = userQeustionnaire._id
-                    // const userId = _id
-                    const userUpdated = await updateUserWithHisQuestionnairId(userId, userQuestionnaireId)
+                if (userQuestionnaire) {
+                    //updating current user with new questionnaire id
+                    const userQuestionnaireId = userQuestionnaire._id
+                    const userUpdated = await updateUserWithHisQuestionnaireId(userId, userQuestionnaireId)
                     if (userUpdated) {
                         let txt = 'שאלון פרטים אישיים נקלט בהצלחה!'
                         getUserMsg(txt, true)
                     }
                     setIsLoading(false)
                     router.replace('/')
-                    console.log('User qeustionnaire was posted successfuly ');
                 } else {
                     let txt = 'השליחה נכשלה!'
                     getUserMsg(txt, false)
@@ -144,7 +144,8 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
             } else {
                 // calling the updated user questionnier 
                 // const user: Tuser = await getUser(userId)
-                const userUpdated = await updateQuestionnair(questionnaireId, data)
+
+                const userUpdated = await updateQuestionnaire(questionnaireId, data)
                 if (userUpdated) {
                     let txt = 'השאלון שלך עודכן בהצלחה'
                     getUserMsg(txt, true)
@@ -164,9 +165,9 @@ export default function UserQuestionnaire({ _id }: UserQuestionnaireProps) {
         }
     }
 
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
+    const getUserMsg = (txt: string, isSuccess: boolean) => {
         scrollUp()
-        dispatch(callUserMsg({ msg: txt, isSucsses }))
+        dispatch(callUserMsg({ msg: txt, isSuccess }))
         setTimeout(() => {
             dispatch(hideUserMsg())
         }, 3500);

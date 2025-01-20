@@ -1,6 +1,6 @@
 import React from 'react'
 import WorkshopsIndex from '../cmps/workshops/WorkshopsIndex'
-import { getWorkshops } from '../utils/util'
+import { getWorkshops } from '../actions/workshopActions'
 import { Tworkshop } from '../types/types'
 
 type Props = {}

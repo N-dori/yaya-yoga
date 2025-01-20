@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react'
 import AnnouncementCreationForm from './AnnouncementCreationForm'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
-import { clearBillboard, deleteAnnouncemnt, getUrl, getWorkshops, makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
+import { getUrl, makeId, scrollUp, uploadBillboardImage } from '@/app/utils/util'
 import EditAnnouncementFrom from './EditAnnouncementFrom'
+import { clearBillboard, deleteAnnouncement } from '@/app/actions/billboardActions'
+import { getWorkshops } from '@/app/actions/workshopActions'
 
 type AnnouncementCreationIndexProps = {
     billboard: Tbillboard
@@ -69,12 +71,11 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
         if (workshopFound) {
             data.workshopId = workshopFound.id
         }
-        console.log('data', data);
         return data
     }
 
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
-        dispatch(callUserMsg({ msg: txt, isSucsses }))
+    const getUserMsg = (txt: string, isSuccess: boolean) => {
+        dispatch(callUserMsg({ msg: txt, isSuccess }))
         setTimeout(() => {
             dispatch(hideUserMsg())
         }, 3500);
@@ -336,13 +337,13 @@ export default function AnnouncementCreationIndex({ billboard }: AnnouncementCre
 
             }
 
-             await deleteAnnouncemnt(announcement.workshopId)
+             await deleteAnnouncement(announcement.workshopId)
             
-            removeClientSideAnnuncement(id)
+            removeClientSideAnnouncement(id)
 
         }
     }
-    const removeClientSideAnnuncement = (id: string) => {
+    const removeClientSideAnnouncement = (id: string) => {
 
         const announcement = announcements.find(announcement => announcement.id === id)
         const index = announcements.findIndex(announcement => announcement.id === id)

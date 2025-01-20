@@ -18,10 +18,10 @@ type PeriodicAgendaFromProps = {
     imgPreview: string, setImgPreview: (imgPreview: string) => void
 
     isActivityRepeating: boolean
-    repeationNumber: number
+    repetitionNumber: number
     handelDateChange: (date: Date | null | undefined) => void
     setIsActivityRepeating: (isRepeating: boolean) => void
-    setRrepeationNumber: (num: number) => void
+    setRepetitionNumber: (num: number) => void
 
     setIsPreviewDisplayShown: (b: boolean) => void
     createNewPeriodicAgenda: () => void
@@ -47,8 +47,8 @@ export default function PeriodicAgendaFrom(props: PeriodicAgendaFromProps) {
     const RepeatingActivityRadioBtnsProps = {
         isActivityRepeating: props.isActivityRepeating,
         setIsActivityRepeating: props.setIsActivityRepeating,
-        setRrepeationNumber: props.setRrepeationNumber,
-        repeationNumber: props.repeationNumber,
+        setRepetitionNumber: props.setRepetitionNumber,
+        repetitionNumber: props.repetitionNumber,
         removeSaturdays: props.removeSaturdays
     }
 

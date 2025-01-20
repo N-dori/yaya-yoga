@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { getLastUserId } from '../utils/util'
+import { getLastUserId } from '../actions/userActions'
 
 type Props = {}
 

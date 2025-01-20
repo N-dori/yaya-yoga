@@ -4,6 +4,6 @@ type Props = {}
 
 export default function Spinner({}: Props) {
   return (
-    <section className='spinner'></section>
+    <span className='spinner'></span>
   )
 }

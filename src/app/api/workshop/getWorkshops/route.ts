@@ -5,12 +5,9 @@ import Workshop from '../../../models/workshop';
 export async function GET () {
 
  try {
-    // const { } = await request.json();
    await connectMongoDB()
     const workshops = await Workshop.find({})
-  
-    console.log('in route : workshop', workshops);
-    
+      
   return NextResponse.json(workshops, {status: 200 } )
     
  }catch ( err ) {

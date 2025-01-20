@@ -1,4 +1,4 @@
-import HeathDeclerationForm from '@/app/cmps/user/HeathDeclerationForm'
+import HeathDeclarationForm from '@/app/cmps/user/HeathDeclarationForm'
 import React from 'react'
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 export default function page({params}: Props) {
   return (
 
-    <HeathDeclerationForm userId={params.userId}/>
+    <HeathDeclarationForm userId={params.userId}/>
   
   )
 }

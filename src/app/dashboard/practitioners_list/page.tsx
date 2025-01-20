@@ -1,6 +1,6 @@
 import UsersIndex from '@/app/cmps/dashboard/users-list/UsersIndex'
 import { Tuser } from '@/app/types/types'
-import { getUsers } from '@/app/utils/util'
+import { getUsers } from '@/app/actions/userActions'
 import React from 'react'
 
 type Props = {}

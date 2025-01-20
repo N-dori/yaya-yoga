@@ -3,18 +3,15 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import {
-    getFullUserByEmail, getMembership, getUrl, isBothTheSameDate, makeId,
-    pushPractionerToActivity, removeUserMembership, sendEmail
-} from '@/app/utils/util'
+import { getFullUserByEmail, getUrl, isBothTheSameDate, makeId, sendEmail} from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { usePathname, useRouter } from 'next/navigation'
 import { AlertBox } from '../../AlertBox'
 import Spinner from '../../Spinner'
 import PractitionersIndex from '../../weekly-schedule/PractitionersIndex'
-import { removePractitionerFromActivityFromDatabase } from '@/app/actions/periodicAgendaActions'
-import { refundPractitionerMembershipAtDatabase } from '@/app/actions/membershipActions'
+import { pushPractitionerToActivity, removePractitionerFromActivityFromDatabase } from '@/app/actions/periodicAgendaActions'
+import { refundPractitionerMembershipAtDatabase, removeUserMembership ,getMembership } from '@/app/actions/membershipActions'
 import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
 
 type LessonInfoPreviewProps = {
@@ -205,7 +202,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         const activityId = activity.id
         const email = session?.user?.email
         const name = session?.user?.name
-        const res = await pushPractionerToActivity(id, periodicAgendaId,
+        const res = await pushPractitionerToActivity(id, periodicAgendaId,
             activityId,
             membershipId,
             email,

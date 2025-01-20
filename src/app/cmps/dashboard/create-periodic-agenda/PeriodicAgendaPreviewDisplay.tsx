@@ -23,7 +23,7 @@ type PreviewDisplayProps = {
   isEditCurrPeriodicAgenda: boolean,
   isPreviewDisplayShown?: boolean
   setIsPreviewDisplayShown?: (b: boolean) => void
-  getUserMsg?: (userMsg: { msg: string, isSucsses: boolean }) => void
+  getUserMsg?: (userMsg: { msg: string, isSuccess: boolean }) => void
   setCurrPeriodicAgenda?: (periodicAgenda: TperiodicAgenda) => void
 
 }
@@ -97,7 +97,7 @@ export default function PeriodicAgendaPreviewDisplay({ setCurrPeriodicAgenda, ge
 
       if (updatedPeriodicAgenda) {
         setPeriodicAgenda(updatedPeriodicAgenda);
-        getUserMsg({ isSucsses: true, msg: currCancellationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
+        getUserMsg({ isSuccess: true, msg: currCancellationState ? 'שיעור שוחזר בהצלחה' : 'שיעור בוטל בהצלחה' })
         setTimeout(() => {
           setCurrDate(new Date(lastDate))
         }, 0.05)

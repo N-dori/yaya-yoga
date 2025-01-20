@@ -6,13 +6,13 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
-import { S3Upload, updateUserHealthDeclaration } from '@/app/actions/healthDeclerationActions'
+import { S3Upload, updateUserHealthDeclaration } from '@/app/actions/healthDeclarationActions'
 
 type HeathDeclerationFormProps = {
     userId: string
 }
 
-export default function HeathDeclerationForm({ userId }: HeathDeclerationFormProps) {
+export default function HeathDeclarationForm({ userId }: HeathDeclerationFormProps) {
 
     const medicalHistory = ['לחץ דם', 'סוכרת', 'כאבי ראש, סחרחורות, חולשה', 'אסטמה או בעיות נשימה', 'בעיות בשיווי המשקל', 'בעיות צוואר, עורף וכתפיים', 'בעיות במפרקים', 'בעיות בעמוד השדרה פריצות דיסק, עקמת ', 'בעיות עיכול', 'בעיות אוזניים', 'בעיות אוזניים', 'גלאוקומה או בעיות עיניים אחרות', 'מחלה כרונית כלשהי פעילה או רדומה', 'ניתוחים כירורגיים', 'מעשן?', 'בריחת סידן/אוסטאופורוזיס', 'אחר']
     const [selectedRadioBtn, setSelectedRadioBtn] = useState<string>('לא')
@@ -79,16 +79,14 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
             if (!res) {
                 scrollUp()
                 let txt = `הייתה בעיה עם שליחת הטופס נסה שוב מאוחר יותר`
-                dispatch(callUserMsg({ msg: txt, isSucsses: false }))
+                dispatch(callUserMsg({ msg: txt, isSuccess: false }))
             } else {
                    // here I attach the link to the pdf on the user
                 const userUpdated =await  updateUserHealthDeclaration(userId)
                 if (userUpdated) {
                     scrollUp()
                     let txt = `טופס הצהרת בריאות נשלח ונקלט בהצלחה!`
-                    dispatch(callUserMsg({ msg: txt, isSucsses: true }))
-
-                    console.log('user health Declaration created successfuly');
+                    dispatch(callUserMsg({ msg: txt, isSuccess: true }))
                 }
             }
             setTimeout(() => {
@@ -97,7 +95,7 @@ export default function HeathDeclerationForm({ userId }: HeathDeclerationFormPro
             }, 3500);
 
         } catch (err) {
-            console.log('had an error uploding file', err);
+            console.log('had an error uploading file', err);
 
         }
     }

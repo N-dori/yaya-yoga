@@ -17,10 +17,11 @@ type AlertBoxProps = {
   removePractitionerFromActivity?: (membershipId:string) => void
   currMembershipId?:string|null
   userId?:string
+  onBookingWorkshop?:()=>void
 
 }
 
-export function AlertBox({removePractitionerFromActivity,currMembershipId,userId,navigatTo,handelChargeUser,setBtnTxt, setUserMsg, setIsAlertBoxShown, isAlertBoxShown, userMsg, btnTxt }: AlertBoxProps) {
+export function AlertBox({removePractitionerFromActivity,onBookingWorkshop,currMembershipId,userId,navigatTo,handelChargeUser,setBtnTxt, setUserMsg, setIsAlertBoxShown, isAlertBoxShown, userMsg, btnTxt }: AlertBoxProps) {
 
 
   const styles: any = {
@@ -66,6 +67,9 @@ export function AlertBox({removePractitionerFromActivity,currMembershipId,userId
   }
   if(btnTxt=== 'קח אותי'){
     navigatTo(`/login`) 
+  }
+  if(btnTxt=== 'לתשלום לסדנא'){
+   onBookingWorkshop()
   }
   hideBox()
  }

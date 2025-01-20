@@ -1,5 +1,8 @@
 import React from 'react'
 import Spinner from '../Spinner'
+import TrashSvg from '@/app/assets/svgs/TrashSvg'
+import { PencilSvg } from '@/app/assets/svgs/PencilSvg'
+import SaveSvg from '@/app/assets/svgs/SaveSvg'
 
 type EditWorkshopBtnsProps = {
     isAdmin:boolean
@@ -17,10 +20,16 @@ export default function EditWorkshopBtns({isAdmin, isOnDetailsPage,setIsEditMode
   return (
     
         (isAdmin)&&
-        <section className='flex-sb gap05 mb-1'>
-            <button type='button' className='btn flex-jc-ac' onClick={()=>setIsEditMode(true)}>{isEditMode?
-            <span  onClick={onSaveChanges}> {isLoading?<Spinner/>:'שמירת שינויים'} </span>:'עריכת סדנא'}</button>
-            <button type='button' onClick={onRemoveWorkshop} className='btn flex-jc-ac'>מחיקת סדנא</button>
+        <section className='flex gap1 mb-1'>
+            <section className='flex-jc-ac' onClick={()=>setIsEditMode(true)}>
+        {isEditMode?
+            <p title='שמירת שינויים' className='pointer' onClick={onSaveChanges}> 
+            {isLoading?<Spinner/>:<SaveSvg/>} </p>
+                :
+            <p title='עריכה' className='pointer'><PencilSvg/></p>}
+            </section>
+
+            <p title='מחיקת סדנא' onClick={onRemoveWorkshop} className='pointer'><TrashSvg/></p>
 
         </section>
          )

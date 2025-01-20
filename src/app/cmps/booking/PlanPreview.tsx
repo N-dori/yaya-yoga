@@ -4,12 +4,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { Tmembership } from '@/app/types/types';
-import { createNewMembership, getPlan } from '@/app/utils/util';
 import { useDispatch } from 'react-redux';
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice';
 import LoginForm from '../auth/LoginForm';
 import { setUser } from '@/app/store/features/userSlice';
 import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions';
+import { createNewMembership, getPlan } from '@/app/actions/membershipActions';
 type PlanPreviewProps = {
   planId: string,
   planType: string,
@@ -33,8 +33,8 @@ export default function PlanPreview(props: PlanPreviewProps) {
 
   }
 
-  const getUserMsg = (txt: string, isSucsses: boolean) => {
-    dispatch(callUserMsg({ msg: txt, isSucsses }))
+  const getUserMsg = (txt: string, isSuccess: boolean) => {
+    dispatch(callUserMsg({ msg: txt, isSuccess }))
     setTimeout(() => {
       dispatch(hideUserMsg())
     }, 3500);
@@ -43,12 +43,12 @@ export default function PlanPreview(props: PlanPreviewProps) {
   const updateUserMembership = async (membership: Tmembership, userId: string) => {
     try {
       const wasMembershipJustPurchesed = true
-    const [isSucsses,updatedUser]= await updateUserWithNewMembershipAtDatabase( membership._id, userId, wasMembershipJustPurchesed)
-     if(isSucsses){
+    const [isSuccess,updatedUser]= await updateUserWithNewMembershipAtDatabase( membership._id, userId, wasMembershipJustPurchesed)
+     if(isSuccess){
        dispatch(setUser(updatedUser))
-      return isSucsses
+      return isSuccess
     }
-    return isSucsses
+    return isSuccess
     } catch (error) {
       console.log('had a problem updating user with new membership', error)
     }
@@ -75,8 +75,8 @@ export default function PlanPreview(props: PlanPreviewProps) {
    
     if (newMembership) {
       //updating the user memberships array - pushing membership _id 
-      const isSucsses = await updateUserMembership(newMembership, userId)
-      if (isSucsses) {
+      const isSuccess = await updateUserMembership(newMembership, userId)
+      if (isSuccess) {
         let txt = '🙏 תודה על רכישתך'
         getUserMsg(txt, true)
         router.replace('/')

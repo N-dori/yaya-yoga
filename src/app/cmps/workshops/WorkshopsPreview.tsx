@@ -1,8 +1,8 @@
 'use client'
-import {  Tworkshop } from '@/app/types/types'
-import { createNewMembership, deleteActivity, deleteAnnouncemnt, deleteWorkshop, getFormattedDate, getFormattedTime, getPlan, makeId, pushPractionerToActivity, scrollUp, updateUserWithNewWorkshopAtDatabase, updateWorkshop } from '@/app/utils/util'
+import { Tworkshop } from '@/app/types/types'
+import {  getFormattedDate, getFormattedTime, makeId,  scrollUp } from '@/app/utils/util'
 import { useSession } from 'next-auth/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EditWorkshopBtns from './EditWorkshopBtns'
 import { usePathname, useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
@@ -12,6 +12,10 @@ import ParagraphsIndex from '../ParagraphsIndex'
 import { AlertBox } from '../AlertBox'
 import LocationSvg from '@/app/assets/svgs/LocationSvg'
 import DynamicImage from '../DynamicImage'
+import { deleteWorkshop, updateWorkshop,updateUserWithNewWorkshopAtDatabase } from '@/app/actions/workshopActions'
+import { deleteAnnouncement } from '@/app/actions/billboardActions'
+import { deleteActivity, pushPractitionerToActivity } from '@/app/actions/periodicAgendaActions'
+import { createNewMembership, getPlan } from '@/app/actions/membershipActions'
 
 type WorkshopsPreviewProps = {
   isDetailsMode: boolean
@@ -78,7 +82,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
       if (isOk) {
         const isConfirmed = confirm('האם ברצונך להסיר גם את המודעה בלוח המודעות הקשורה בסדנא?')
         if (isConfirmed) {
-          const announcement = await deleteAnnouncemnt(workshop.id)
+          const announcement = await deleteAnnouncement(workshop.id)
           console.log('announcement', announcement);
 
         }
@@ -101,13 +105,13 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
           }
         } else {
           const res = await deleteWorkshop(workshop._id)
-         const deleteRes = await deleteActivity(workshop.activityId)
-          if (res&&deleteRes) {
+          const deleteRes = await deleteActivity(workshop.activityId)
+          if (res && deleteRes) {
             let txt = 'סדנא הוסרה בהצלחה'
             getUserMsg(txt, true)
           }
         }
-
+        router.push('/')
       }
     } catch (error) {
       console.log('had a problem to delete workshop', error);
@@ -141,21 +145,30 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
   }
 
   const onRegisterToWorkshop = async () => {
-    //after user buy workshop
+    //ask user if to continue to payment
     const email = session?.user?.email
     const name = session?.user?.name
-    const id = makeId(8)
-    const paid = +workshop.price
     const workshopTitle = workshop.title
-    const expiryDate = workshop.date
     if (!email) {
       let userMsg = 'להשלמת התהליך יש צורך לבצע התחברות  '
       let btnTxt = 'קח אותי'
       getAlertBox(userMsg, btnTxt)
       return
     }
+    let userMsg = `היי ${name} שמחים על התעניינותך בסדנא ${workshopTitle} האם ברצונך להתקדם לתשלום?`
+    let btnTxt = 'לתשלום לסדנא'
+    getAlertBox(userMsg, btnTxt)
 
-    const [membership, userId] = await getPlan('סדנא', email, paid, workshopTitle, expiryDate)
+  }
+
+  const onBookingWorkshop = async ()=>{
+    const email = session?.user?.email
+    const name = session?.user?.name
+    const id = makeId(8)
+    const paid = +workshop.price
+    const workshopTitle = workshop.title
+    const expiryDate = workshop.date
+        const [membership, userId] = await getPlan('סדנא', email, paid, workshopTitle, expiryDate)
     if (!membership || !userId) {
       return
     }
@@ -165,7 +178,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
       const periodicAgendaId = null
       const activityId = workshop.activityId
 
-      const res = await pushPractionerToActivity(id, periodicAgendaId,
+      const res = await pushPractitionerToActivity(id, periodicAgendaId,
         activityId,
         membershipId,
         email,
@@ -179,12 +192,12 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
       }
 
     } else {
+
       let txt = 'הייתה בעיה נסו שוב מאוחר יותר'
+      console.log(txt);
       getUserMsg(txt, false)
 
     }
-
-
   }
 
   const getUserMsg = (txt: string, isSuccess: boolean) => {
@@ -213,7 +226,8 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
     isAlertBoxShown, setIsAlertBoxShown,
     userMsg, setUserMsg,
     btnTxt, setBtnTxt,
-    navigatTo
+    navigatTo,
+    onBookingWorkshop,
   }
 
   const goToDetailsPage = () => {
@@ -235,7 +249,7 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
 
         <section>
 
-          {(isDetailsMode && workshops?.length>1) &&
+          {(isDetailsMode && workshops?.length > 1) &&
             <section className='additional-workshops-dates bold flex-col gap05'>
               {numberOfMeetings > 1 &&
                 <p className=' mb-1'>
@@ -244,32 +258,39 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
               }
 
               {
-                
+
                 workshops?.map(workshop =>
                   <span key={workshop.id} className='additional-workshop-date no-under-line pointer'
                     onClick={() => handelChangeWorkshop(workshop._id)}> {getFormattedDate(workshop.date) + ' - '}
-                  <span className='underline' >{workshop.subTitle }</span>
+                    <span className='underline' >{workshop.subTitle}</span>
                   </span>
-             
-              )
+
+                )
               }
             </section>
           }
           <section className='img-container' onClick={goToDetailsPage}>
-          {isDetailsMode &&
-            <div className='date-hours flex-sb w100'>
-              <p className='date bold'>{getFormattedDate(currWorkshop.date)}</p>
-              <p className='hours bold'>{getFormattedTime(currWorkshop.activityStartTime)} - {getFormattedTime(currWorkshop.activityEndTime)}</p>
-            </div>}
-          {!isDetailsMode &&  <div className='signup-to-workshop-btn'>לפרטים נוספים</div>}
-          <DynamicImage url={currWorkshop.imgUrl} alt={'imageOfworkshop'} imgClassName='work-shop-image pointer'/>
+            {isDetailsMode &&
+              <div className='date-hours flex-sb w100'>
+                <p className='date bold'>{getFormattedDate(currWorkshop.date)}</p>
+                <p className='hours bold'>{getFormattedTime(currWorkshop.activityStartTime)} - {getFormattedTime(currWorkshop.activityEndTime)}</p>
+              </div>}
+            {!isDetailsMode && <div className='signup-to-workshop-btn'>לפרטים נוספים</div>}
+            <DynamicImage url={currWorkshop.imgUrl} alt={'imageOfworkshop'} imgClassName='work-shop-image pointer' />
           </section>
-     
-        </section>
-        <p className='price bold'>מחיר: {currWorkshop.price} ש"ח</p>
-        <p className='location bold'><LocationSvg/>{currWorkshop.activityLocation} </p>
-        <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormattedDate(currWorkshop.lastDateForRegistration)}</span></span>
 
+        </section>
+        {
+          (isOnDetailsPage) &&
+          <section className='flex-ac'>
+            <EditWorkshopBtns {...EditWorkshopBtnsProps} />
+
+          </section>
+
+        }
+        <p className='price bold'>מחיר: {currWorkshop.price} ש"ח</p>
+        <p className='location bold'><LocationSvg />{currWorkshop.activityLocation} </p>
+        <span className='last-date tac'> תאריך אחרון להרשמה <span className='bold'> {getFormattedDate(currWorkshop.lastDateForRegistration)}</span></span>
 
 
         {!isEditMode ? <section className='pb-1'>
@@ -283,24 +304,14 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
 
           </section>
         }
-
+        {(!isEditMode && isDetailsMode) &&
+          <button type='button' className='btn flex-jc-ac'>{
+            isLoading ? 
+            <Spinner /> : 
+            <span onClick={onRegisterToWorkshop}>לרכישה והרשמה</span>}</button>}
       </article>
 
-      <div className='flex-jc-ac'>
-        {
-          (isOnDetailsPage) &&
 
-          <section className='flex-col gap05 mt-1 w100'>
-            {!isEditMode && <button type='button' className='btn flex-jc-ac'>{
-              isLoading ? <Spinner /> : <span onClick={onRegisterToWorkshop}>לרכישה והרשמה</span>}</button>}
-            <EditWorkshopBtns {...EditWorkshopBtnsProps} />
-
-          </section>
-
-
-        }
-
-      </div>
       <AlertBox {...AlertBoxProps} />
 
     </section>

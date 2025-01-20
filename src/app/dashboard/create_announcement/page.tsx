@@ -1,6 +1,6 @@
 import AnnouncementCreationIndex from '@/app/cmps/dashboard/create-announcement/AnnouncementCreationIndex'
 import { Tbillboard } from '@/app/types/types'
-import { getBillboard } from '@/app/utils/util'
+import { getBillboard } from '@/app/actions/billboardActions'
 import React from 'react'
 
 type Props = {}

@@ -1,7 +1,7 @@
 import React from 'react'
 import WeeklySchedule from '../cmps/weekly-schedule/WeeklySchedule'
 import { TperiodicAgenda } from '../types/types'
-import { getPeriodicAgenda } from '../utils/util'
+import { getPeriodicAgenda } from '../actions/periodicAgendaActions'
 
 type Props = {}
 

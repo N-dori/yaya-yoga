@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import PeriodicAgendaPreviewDisplay from './PeriodicAgendaPreviewDisplay'
 import { Tactivity, TperiodicAgenda, TuserMsgProps, Tworkshop } from '@/app/types/types'
-import { createNewWorkShop, getDateType, getPeriodicAgenda, getUrl, makeId, stripTime } from '@/app/utils/util'
+import {getDateType, getUrl, makeId, stripTime } from '@/app/utils/util'
 import PeriodicAgendaForm from './PeriodicAgendaForm'
 import { useRouter } from 'next/navigation'
 import { callUserMsg, hideUserMsg, } from '@/app/store/features/msgSlice'
 import { useDispatch } from 'react-redux'
 import EditPeriodOrCreateNew from './EditPeriodOrCreateNew'
+import { createNewWorkShop } from '@/app/actions/workshopActions'
+import { getPeriodicAgenda } from '@/app/actions/periodicAgendaActions'
 
 export default function PeriodicAgendaCreation() {
     // this state contains all the info regarding the period-a quoter  
@@ -16,18 +18,18 @@ export default function PeriodicAgendaCreation() {
 
     const [isEditCurrPeriodicAgenda, setIsEditCurrPeriodicAgenda] = useState<boolean>(false)
 
-    //first 4 states realted to Dates of period
+    //first 4 states related to Dates of period
     const [startPeriodicAgendaDate, setStartPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [endPeriodicAgendaDate, setEndPeriodicAgendaDate] = useState<Date | null | undefined>(null)
     const [periodicAgendaDates, setPeriodicAgendaDates] = useState<{ start: string, end: string }>({ start: '', end: '' })
     const [isPeriodicAgendaDates, setIsPeriodicAgendaDates] = useState<boolean>(false)
-    // avtivities Repeations section
+    // activities Receptions section
     const [allDaysOfPeriod, setAllDaysOfPeriod] = useState<Date[]>()
     const [copyOfAllDaysOfPeriod, setCopyOfAllDaysOfPeriod] = useState<Date[]>([])
     const [periodLength, setPeriodLength] = useState<number>()
     const [datesCounter, setDatesCounter] = useState<number>(0)
     const [isActivityRepeating, setIsActivityRepeating] = useState<boolean>(false)
-    const [repeationNumber, setRrepeationNumber] = useState<number>(-1)
+    const [repetitionNumber, setRepetitionNumber] = useState<number>(-1)
 
     const [isWorkShop, setIsWorkShop] = useState<boolean>(false)
     
@@ -161,7 +163,7 @@ export default function PeriodicAgendaCreation() {
         if(activity.classOrWorkshop==='סדנא'){
             if(!workshop.title||!workshop.subTitle||!workshop.imgUrl ||!workshop.desc){
                 setError('יש למלא את כל השדות הסדנא שם תאריך ושעות פעילות')
-                getUserMsg({ msg: 'הוספת פעילות נכשלה', isSucsses: false })
+                getUserMsg({ msg: 'הוספת פעילות נכשלה', isSuccess: false })
                 setTimeout(() => { setError('') }, 5500);
                 return
             }
@@ -169,7 +171,7 @@ export default function PeriodicAgendaCreation() {
             if (!activity.date || !activity.hoursRange.start || !activity.hoursRange.end || !activity.name ) {
     
                 setError('יש למלא את כל השדות שם תאריך ושעות פעילות')
-                getUserMsg({ msg: 'הוספת פעילות נכשלה', isSucsses: false })
+                getUserMsg({ msg: 'הוספת פעילות נכשלה', isSuccess: false })
                 setTimeout(() => { setError('') }, 5500);
                 return
             }
@@ -183,7 +185,7 @@ export default function PeriodicAgendaCreation() {
             const day = activity.date.getDay()
             const allOccurrences = allDaysOfPeriod?.filter(date => date.getDay() === day) //all of sundays foe example
             const allOccurrences1 = copyOfAllDaysOfPeriod?.filter(date => date.getDay() === day)
-            if (repeationNumber < 0) {// in this case find the day of week and find all occurences and push them to activity 
+            if (repetitionNumber < 0) {// in this case find the day of week and find all occurences and push them to activity 
                 if (allOccurrences?.length) {//this state keep an array of all the dates of the period and later updateDateCounter function  will splice it until noting is left , to let user know in if all the days we wanted were added-displayed at the top of the page
                     updatePeriodicAgenda(allOccurrences, updatedPeriodicAgenda, null)
 
@@ -194,8 +196,8 @@ export default function PeriodicAgendaCreation() {
                 updateDateCounter(null, allOccurrences)
                 return
             }
-            if (repeationNumber > 0) {
-                // looping throgh all Occurences to understand if user selected the first sunday or secound sunday and so on -(for exp) 
+            if (repetitionNumber > 0) {
+                // looping through all occurrences to understand if user selected the first sunday or secound sunday and so on -(for exp) 
                 const indexOfStartDate = allOccurrences1.findIndex(date => stripTime(date).getTime() === stripTime(activity.date).getTime())
 
                 if (indexOfStartDate) {
@@ -208,17 +210,17 @@ export default function PeriodicAgendaCreation() {
                                 arrayOfTheSameDayOfWeekStartingFromSpecificDate.push(currDate)
                         }
                         )
-                        let nOfOccurrences = arrayOfTheSameDayOfWeekStartingFromSpecificDate.slice(0, repeationNumber)
+                        let nOfOccurrences = arrayOfTheSameDayOfWeekStartingFromSpecificDate.slice(0, repetitionNumber)
                         updatePeriodicAgenda(nOfOccurrences, updatedPeriodicAgenda, null)
                         return
                     }
                 }
-                let nOccurrences = allOccurrences?.slice(0, repeationNumber)
-                if (nOccurrences?.length) {//whene not all of the dates of period where pushed to periodic Agenda
+                let nOccurrences = allOccurrences?.slice(0, repetitionNumber)
+                if (nOccurrences?.length) {//when not all of the dates of period where pushed to periodic Agenda
                     updatePeriodicAgenda(nOccurrences, updatedPeriodicAgenda, null)
 
                 } else {//when all of the dates of the period got pushed into periodic Agenda
-                    const nOccurrences1 = allOccurrences1?.slice(0, repeationNumber)
+                    const nOccurrences1 = allOccurrences1?.slice(0, repetitionNumber)
                     updatePeriodicAgenda(nOccurrences1, updatedPeriodicAgenda, null)
                     return
                 }
@@ -230,8 +232,8 @@ export default function PeriodicAgendaCreation() {
         updateDateCounter(activity.date, null)
 
     }
-    const updatePeriodicAgenda = (dates: Date[] | null, updatedPeriodicAgenda: TperiodicAgenda, singelDate: Date | null) => {
-        if (singelDate) {
+    const updatePeriodicAgenda = (dates: Date[] | null, updatedPeriodicAgenda: TperiodicAgenda, singleDate: Date | null) => {
+        if (singleDate) {
             const activityId = makeId()
             const newActivity: Tactivity = workshop.title?{...activity,id:activityId,name:workshop.title,workshop:{...workshop,id:makeId(),activityId,date:activity.date,}}:undefined
             updatedPeriodicAgenda.activities?.push(newActivity?newActivity:{ ...activity ,id:activityId})
@@ -251,7 +253,7 @@ export default function PeriodicAgendaCreation() {
         resetDateTime()
         resetWorkShopState()
         console.log('calling user messege', periodicAgenda);
-        getUserMsg({ msg: singelDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה `, isSucsses: true })
+        getUserMsg({ msg: singleDate ? `פעילות נוספה בהצלחה ` : `${dates?.length} פעיליות נוספו בהצלחה `, isSuccess: true })
 
     }
 
@@ -329,7 +331,7 @@ export default function PeriodicAgendaCreation() {
             let withOutSaturdays: Date[] = allDaysOfPeriod.filter(currDate => stripTime(currDate).getDay() !== 6)
             setDatesCounter(datesCounter + numberOfSaturdays)
             setAllDaysOfPeriod([...withOutSaturdays])
-            getUserMsg({ msg: `${numberOfSaturdays} שבתות הוסרו בהצלחה  `, isSucsses: true })
+            getUserMsg({ msg: `${numberOfSaturdays} שבתות הוסרו בהצלחה  `, isSuccess: true })
 
         }
     }
@@ -379,8 +381,6 @@ export default function PeriodicAgendaCreation() {
                 return createNewWorkShop(workshop)
             })
             const res = Promise.all(promises)
-            console.log('workshops', res);
-
         }
 
     }
@@ -440,7 +440,7 @@ export default function PeriodicAgendaCreation() {
                 if (res.ok) {
                     const { newPeriodicAgenda } = await res.json()
                     // callUserMsg({ sucsses: true, msg: 'לוח זמנים פורסם בהצלחה' })
-                    getUserMsg({ msg: 'לוח זמנים פורסם בהצלחה', isSucsses: true })
+                    getUserMsg({ msg: 'לוח זמנים פורסם בהצלחה', isSuccess: true })
 
                     setTimeout(() => {
                         router.replace('/dashboard')
@@ -461,7 +461,7 @@ export default function PeriodicAgendaCreation() {
         console.log('userMsg', userMsg);
 
         window.scroll(0, 0)
-        dispatch(callUserMsg({ msg: userMsg.msg, isSucsses: userMsg.isSucsses }))
+        dispatch(callUserMsg({ msg: userMsg.msg, isSuccess: userMsg.isSuccess }))
         setTimeout(() => {
             dispatch(hideUserMsg())
         }, 3500);
@@ -516,10 +516,10 @@ export default function PeriodicAgendaCreation() {
         imgPreview, setImgPreview,
         setIsWorkShop, isWorkShop,
         isActivityRepeating,
-        repeationNumber,
+        repetitionNumber,
         handelDateChange,
         setIsActivityRepeating,
-        setRrepeationNumber,
+        setRepetitionNumber,
 
         setIsPreviewDisplayShown,
         createNewPeriodicAgenda,

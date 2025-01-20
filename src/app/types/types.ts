@@ -44,7 +44,7 @@ export type TperiodicAgenda = {
 
 
 export type TuserMsgProps = {
-    isSucsses: boolean
+    isSuccess: boolean
     msg: string
 }
 export type TuserQuestionnaire = {

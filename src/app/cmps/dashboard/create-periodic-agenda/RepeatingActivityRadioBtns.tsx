@@ -5,13 +5,13 @@ import React, { useEffect, useState } from 'react'
 type RepeatingActivityRadioBtnsProps = {
     setIsActivityRepeating: (isActivityRepeating: boolean) => void
     isActivityRepeating: boolean
-    repeationNumber: number
-    setRrepeationNumber: (repeationNumber: number) => void
+    repetitionNumber: number
+    setRepetitionNumber: (repetitionNumber: number) => void
     removeSaturdays: () => void
 }
 
 export default function RepeatingActivityRadioBtns({
-    removeSaturdays, setRrepeationNumber, isActivityRepeating, setIsActivityRepeating }: RepeatingActivityRadioBtnsProps) {
+    removeSaturdays, setRepetitionNumber, isActivityRepeating, setIsActivityRepeating }: RepeatingActivityRadioBtnsProps) {
     const [selectedRadioBtn, setSelectedRadioBtn] = useState<string>('חד-פעמית')
 
     const [opt, setOpt] = useState([
@@ -28,7 +28,7 @@ export default function RepeatingActivityRadioBtns({
         setSelectedRadioBtn(label)
     }
     const handelRepeationNumberChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-        setRrepeationNumber(+ev.target.value)
+        setRepetitionNumber(+ev.target.value)
 
     }
 

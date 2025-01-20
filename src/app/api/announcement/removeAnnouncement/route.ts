@@ -6,19 +6,19 @@ import { revalidatePath } from 'next/cache';
 export async function PUT(request) {
     try {
         const { id } = await request.json();
-    
-            const workshopId =id
-       const billboard =  await Billboard.findOne({})
-       if(billboard){
-           const _id= billboard._id
+        await connectMongoDB()
+        const workshopId = id
+        const billboard = await Billboard.findOne({})
+        if (billboard) {
+            const _id = billboard._id
 
-           const updatedBillboard = await Billboard.updateOne(
-               { _id }, 
-               {$pull:{'announcements':{workshopId}}}  
+            const updatedBillboard = await Billboard.updateOne(
+                { _id },
+                { $pull: { 'announcements': { workshopId } } }
             )
-            console.log('announcements',updatedBillboard);
-            
-            revalidatePath('/')
+            console.log('announcements', updatedBillboard);
+
+            revalidatePath('/','page')
         }
 
         return NextResponse.json({ message: 'billboard was deleted' }, { status: 200 });

@@ -1,10 +1,11 @@
 import React, { Suspense } from 'react'
 import { authOptions } from '../api/auth/[...nextauth]/AuthOptions';
 import { getServerSession } from 'next-auth';
-import { getDateType, getFullUserByEmail, getMembership, getPeriodicAgenda } from '../utils/util';
+import { getDateType, getFullUserByEmail, getMembership } from '../utils/util';
 import { Tactivity, Tmembership, TperiodicAgenda, Tuser } from '../types/types';
 import MyPersonalDetailsIndex from '../cmps/personal-details/MyPersonalDetailsIndex';
 import PersonalDetailsLoader from '../cmps/personal-details/PersonalDetailsLoader';
+import { getPeriodicAgenda } from '../actions/periodicAgendaActions';
 type Props = {}
 
 export default async function page({ }: Props) {

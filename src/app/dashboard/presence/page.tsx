@@ -1,6 +1,6 @@
 import ActivityPresenceIndex from '@/app/cmps/dashboard/presence/ActivityPresenceIndex'
 import { TperiodicAgenda } from '@/app/types/types'
-import { getPeriodicAgenda } from '@/app/utils/util'
+import { getPeriodicAgenda } from '@/app/actions/periodicAgendaActions'
 import React from 'react'
 
 type Props = {}
