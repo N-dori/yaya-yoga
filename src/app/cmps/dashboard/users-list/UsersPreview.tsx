@@ -64,7 +64,7 @@ export default function UsersPreview({ user }: UsersPreviewProps) {
           <article className='flex gap1'>
             <p className='bold'>שאלון אישי</p>
             <p>{user.userQuestionnaireId ? <span className='underline pointer'
-              onClick={() => router.replace(`/userQuestionnaire/${'U' + user.userQuestionnaireId}`)}>
+              onClick={() => router.replace(`/userQuestionnaire/${'U' + user.userQuestionnaireId}-${user._id}`)}>
               צפיה / עדכון פרטי המתרגל</span>
               :
               <span className='underline pointer'

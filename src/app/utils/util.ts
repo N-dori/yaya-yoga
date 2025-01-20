@@ -1,3 +1,4 @@
+import { FetchOptions } from "../types/types"
 
 export function makeId(length = 6) {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -6,6 +7,28 @@ export function makeId(length = 6) {
     txt += possible.charAt(Math.floor(Math.random() * possible.length))
   }
   return txt
+}
+
+export const genericFetch = async (url: string, options: FetchOptions = {}) => {
+  const defaultOptions: FetchOptions = {
+    method: 'GET',
+    headers: { "Content-type": "application/json" },
+    cache: 'no-store'
+  };
+
+  const finalOptions = { ...defaultOptions, ...options };
+
+  if (finalOptions.body && typeof finalOptions.body !== 'string') {
+    finalOptions.body = JSON.stringify(finalOptions.body);
+  }
+
+  const response = await fetch(url, finalOptions);
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
 }
 
 export const stripTime = (date: Date | string): Date => {
@@ -48,21 +71,6 @@ export const getUrl = (endPoint: string) => {
   return url;
 };
 
-export const getUserByEmail = async (email: String) => {
-  const url = getUrl('auth/userExists/')
-
-  const res = await fetch(url, {
-
-    method: 'POST',
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify({ email })
-  })
-  const miniUser = await res.json()
-  console.log(' my mini user in getUserBYEmail = ', miniUser);
-
-  return miniUser
-}
-
 export const getDateType = (givenDate: Date | string) => {
   return new Date(givenDate)
 }
@@ -92,22 +100,6 @@ export const uploadBillboardImage = async (formData: FormData) => {
   }
 }
 
-export const getFullUserByEmail = async (email: String) => {
-  const url = getUrl('user/getFullUserByEmail/')
-
-  const res = await fetch(url, {
-
-    method: 'POST',
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify({ email }),
-    cache: 'no-store'
-
-  },)
-  const user = await res.json()
-  // console.log(' my user in utils getFullUserByEmail = ', user);
-
-  return user
-}
 
 export const isBothTheSameDate = (date1: Date, date2: Date) => {
   return date1.getDate() === date2.getDate() &&

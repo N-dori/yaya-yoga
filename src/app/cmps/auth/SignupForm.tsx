@@ -1,6 +1,4 @@
 "use client"
-
-import { getFullUserByEmail, getUserByEmail } from "@/app/utils/util"
 import { signIn, useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -9,7 +7,7 @@ import { useEffect, useState } from "react"
 import CircleDeroration from "./CircleDecoration"
 import { useAppDispatch } from "@/app/libs/hooks"
 import { callUserMsg, hideUserMsg } from "@/app/store/features/msgSlice"
-import { createUser } from "@/app/actions/userActions"
+import { createUser, getUserByEmail ,getFullUserByEmail} from "@/app/actions/userActions"
 import { Tuser } from "@/app/types/types"
 
 type SignupFormProps = {
@@ -41,7 +39,7 @@ export default function SignupForm({redirectTo }: SignupFormProps) {
       
       if (userExists) {
         let txt = 'משתמש קיים במערכת'
-        dispatch(callUserMsg({ msg: txt, isSucsses: false }))
+        dispatch(callUserMsg({ msg: txt, isSuccess: false }))
      
         setTimeout(() => {
           dispatch(hideUserMsg())

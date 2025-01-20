@@ -16,6 +16,37 @@ export const getUser = async (_id: String) => {
   return user
 }
 
+export const getUserByEmail = async (email: String) => {
+  const url = getUrl('auth/userExists/')
+
+  const res = await fetch(url, {
+
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ email })
+  })
+  const miniUser = await res.json()
+  console.log(' my mini user in getUserBYEmail = ', miniUser);
+
+  return miniUser
+}
+
+export const getFullUserByEmail = async (email: String) => {
+  const url = getUrl('user/getFullUserByEmail/')
+
+  const res = await fetch(url, {
+
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify({ email }),
+    cache: 'no-store'
+
+  },)
+  const user = await res.json()
+  // console.log(' my user in utils getFullUserByEmail = ', user);
+
+  return user
+}
 
 export const getUsers = async () => {
   const url = getUrl('user/getUsers/')

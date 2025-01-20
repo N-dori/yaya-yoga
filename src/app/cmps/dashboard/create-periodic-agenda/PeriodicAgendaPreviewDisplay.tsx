@@ -7,9 +7,8 @@ import { LessonsInfoList } from './LessonsInfoList'
 import DatePicker from 'react-datepicker'
 import { he } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css'
-import { getFullUserByEmail } from '@/app/utils/util'
 import { useRouter } from 'next/navigation'
-import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
+import { updateUserWithNewMembershipAtDatabase,getFullUserByEmail } from '@/app/actions/userActions'
 import { refundPractitionerMembershipAtDatabase } from '@/app/actions/membershipActions'
 import { clearPractitionersFromActivityAtDataBase, updatePeriodicAgendaAfterCancelling } from '@/app/actions/periodicAgendaActions'
 

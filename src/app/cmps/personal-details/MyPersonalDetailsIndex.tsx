@@ -6,13 +6,12 @@ import MyUserHealthDecelrationCard from './MyUserHealthDecelrationCard'
 import { AlertBox } from '../AlertBox'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
-import { getFullUserByEmail } from '@/app/utils/util'
 import MyActivitiesIndex from './MyActivitiesIndex'
 import MyMembershipsIndex from './MyMembershipsIndex'
 import MyWorkshopsIndex from './MyWorkshopsIndex'
 import { removePractitionerFromActivityFromDatabase } from '@/app/actions/periodicAgendaActions'
 import { refundPractitionerMembershipAtDatabase } from '@/app/actions/membershipActions'
-import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
+import { getFullUserByEmail, updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
 
 type MyPersonalDetailsIndexProps = {
     userName: string

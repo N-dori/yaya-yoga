@@ -1,10 +1,9 @@
 'use client'
 import { refundPractitionerMembershipAtDatabase } from '@/app/actions/membershipActions'
 import { removePractitionerFromActivityFromDatabase } from '@/app/actions/periodicAgendaActions'
-import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
+import { getFullUserByEmail, updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { Tactivity, Tpractitioner, Tuser } from '@/app/types/types'
-import { getFullUserByEmail } from '@/app/utils/util'
 import { useSession } from 'next-auth/react'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
@@ -27,9 +26,9 @@ useEffect(() => {
   
 }, [])
 
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
+    const getUserMsg = (txt: string, isSuccess: boolean) => {
         window.scrollTo(0, 0)
-        dispatch(callUserMsg({ msg: txt, isSucsses }))
+        dispatch(callUserMsg({ msg: txt, isSuccess }))
         setTimeout(() => {
             dispatch(hideUserMsg())
         }, 3500);

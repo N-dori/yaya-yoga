@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import LessonInfoHoursRange from './LessonInfoHoursRange'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { getFullUserByEmail, getUrl, isBothTheSameDate, makeId, sendEmail} from '@/app/utils/util'
+import {  getUrl, isBothTheSameDate, makeId, sendEmail} from '@/app/utils/util'
 import { useDispatch } from 'react-redux'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
 import { usePathname, useRouter } from 'next/navigation'
@@ -12,7 +12,7 @@ import Spinner from '../../Spinner'
 import PractitionersIndex from '../../weekly-schedule/PractitionersIndex'
 import { pushPractitionerToActivity, removePractitionerFromActivityFromDatabase } from '@/app/actions/periodicAgendaActions'
 import { refundPractitionerMembershipAtDatabase, removeUserMembership ,getMembership } from '@/app/actions/membershipActions'
-import { updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
+import { getFullUserByEmail, updateUserWithNewMembershipAtDatabase } from '@/app/actions/userActions'
 
 type LessonInfoPreviewProps = {
     activity: Tactivity
@@ -57,9 +57,9 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
 
     }
 
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
+    const getUserMsg = (txt: string, isSuccess: boolean) => {
         window.scrollTo(0, 0)
-        dispatch(callUserMsg({ msg: txt, isSucsses }))
+        dispatch(callUserMsg({ msg: txt, isSuccess }))
         setTimeout(() => {
             dispatch(hideUserMsg())
         }, 3500);

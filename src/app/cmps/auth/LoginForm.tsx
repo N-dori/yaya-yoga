@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import CircleDeroration from './CircleDecoration'
 import { useAppDispatch } from '@/app/libs/hooks'
 import { callUserMsg, hideUserMsg } from '@/app/store/features/msgSlice'
-import { getFullUserByEmail, getUserByEmail } from '@/app/utils/util'
+import { getFullUserByEmail } from '@/app/actions/userActions'
 import { Tuser } from '@/app/types/types'
 type LoginFormProps = {
   redirectTo?: string

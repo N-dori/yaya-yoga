@@ -125,3 +125,10 @@ export type AgendaDates = {
     start: Date|string;
     end: Date|string;
 };
+
+export type FetchOptions = {
+    method?: string;
+    headers?: HeadersInit;
+    body?: any;
+    cache?: RequestCache;
+  }

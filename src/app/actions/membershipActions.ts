@@ -1,5 +1,6 @@
 import { Tmembership } from "../types/types"
-import { getUrl, getUserByEmail } from "../utils/util"
+import { getUserByEmail } from "../actions/userActions"
+import { getUrl } from "../utils/util"
 
 export const refundPractitionerMembershipAtDatabase = async (membershipId: string) => {
   const url = getUrl('membership/refundMembership')

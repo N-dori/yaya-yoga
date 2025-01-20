@@ -8,9 +8,9 @@ type Props = {}
 export default function NewsLetter({}: Props) {
     const [email, setEmail] = useState<string>('')
     const dispatch =useAppDispatch()
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
+    const getUserMsg = (txt: string, isSuccess: boolean) => {
 
-        dispatch(callUserMsg({ msg: txt, isSucsses}))
+        dispatch(callUserMsg({ msg: txt, isSuccess}))
 
         setTimeout(() => {
             dispatch(hideUserMsg())
