@@ -55,9 +55,9 @@ export default function MyPersonalDetailsIndex(props: MyPersonalDetailsIndexProp
 
     }
 
-    const getUserMsg = (txt: string, isSucsses: boolean) => {
+    const getUserMsg = (txt: string, isSuccess: boolean) => {
         window.scrollTo(0, 0)
-        dispatch(callUserMsg({ msg: txt, isSucsses }))
+        dispatch(callUserMsg({ msg: txt, isSuccess }))
         setTimeout(() => {
             dispatch(hideUserMsg())
         }, 3500);
