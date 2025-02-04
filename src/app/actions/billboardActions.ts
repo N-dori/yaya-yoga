@@ -43,6 +43,7 @@ export const getBillboard = async () => {
     method: 'POST',
     headers: { "Content-type": "application/json" },
     body: JSON.stringify({}),
+    cache: 'no-store'
   })
   if (res.ok) {
     return await res.json()

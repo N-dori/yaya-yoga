@@ -47,7 +47,6 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
     }, [activity.date, activity.isCanceled, activity.id, periodicAgendaId, currUser, currUser?.memberships?.length, path, currMembershipId])
     useEffect(() => {
         isActivityPassed()
-        console.log('activity.classOrWorkshop', activity.classOrWorkshop);
 
     }, [])
 
@@ -68,7 +67,6 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
     const isUserSignedInToClass = (user: Tuser) => {
         const lesson = activities.find(currActivity => currActivity.id === activity.id)
         const isUserFound = lesson.practitioners.some(practitioner => practitioner.email === user.email)
-        console.log('isUserFound', isUserFound);
 
         return isUserFound
     }
@@ -253,7 +251,7 @@ export function LessonInfoPreview({ setActivities, activities, onBooking, period
         if (!doUserOwnMembership) {
             const wasMembershipJustPurchesed = false
             const [isSucsses, updatedUser] = await updateUserWithNewMembershipAtDatabase(membershipId, user._id, wasMembershipJustPurchesed)
-            if (isSucsses) console.log('user.memberships was updated with the refunded membership?', updatedUser);
+            // if (isSucsses) console.log('user.memberships was updated with the refunded membership?', updatedUser);
 
         }
 
