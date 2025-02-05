@@ -7,7 +7,7 @@ export const getWorkshops = async () => {
   try {
     const res = await fetch(url, {
       method: 'GET',
-      headers: { "Content-type": "application/json" },
+      headers: { "Content-type": "application/json" ,"Cache-Control": "no-store"},
       cache:'no-store'
     })
     if (res.ok) {
