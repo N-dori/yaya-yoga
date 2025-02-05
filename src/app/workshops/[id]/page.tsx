@@ -1,4 +1,4 @@
-
+export const dynamic = 'force-dynamic'
 import WorkshopsPreview from '@/app/cmps/workshops/WorkshopsPreview'
 import { Tworkshop } from '@/app/types/types'
 import { getWorkshops } from '@/app/actions/workshopActions'

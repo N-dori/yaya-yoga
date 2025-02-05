@@ -168,11 +168,14 @@ export default function WorkshopsPreview({ workshop, isDetailsMode, numberOfMeet
     const paid = +workshop.price
     const workshopTitle = workshop.title
     const expiryDate = workshop.date
+    
         const [membership, userId] = await getPlan('סדנא', email, paid, workshopTitle, expiryDate)
     if (!membership || !userId) {
       return
     }
+
     const membershipId: string = await createNewMembership(membership)
+
     if (membershipId) {
       //updating the user memberships array - pushing membership _id 
       const periodicAgendaId = null

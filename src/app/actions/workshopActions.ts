@@ -28,8 +28,10 @@ export const getWorkshop = async (id: String) => {
   const res = await fetch(url, {
 
     method: 'POST',
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify({ id })
+    headers: { "Content-type": "application/json","Cache-Control": "no-store" },
+    body: JSON.stringify({ id }),
+    cache:'no-store'
+
   })
   if (res.ok) {
     const workshop = await res.json()
