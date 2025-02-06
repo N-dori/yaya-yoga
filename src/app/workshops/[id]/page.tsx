@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store';
 import WorkshopsPreview from '@/app/cmps/workshops/WorkshopsPreview'
 import { Tworkshop } from '@/app/types/types'
 import { getWorkshops } from '@/app/actions/workshopActions'

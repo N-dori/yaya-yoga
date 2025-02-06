@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store';
 import React from 'react'
 import WorkshopsIndex from '../cmps/workshops/WorkshopsIndex'
 import { getWorkshops } from '../actions/workshopActions'
