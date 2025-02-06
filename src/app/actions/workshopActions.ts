@@ -12,7 +12,7 @@ export const getWorkshops = async () => {
     })
     if (res.ok) {
       const workshops = await res.json()
-      console.log('workshops to get workshops',workshops);
+      // console.log('workshops to get workshops',workshops);
       return workshops
     }
   }

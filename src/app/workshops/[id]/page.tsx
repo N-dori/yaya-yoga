@@ -4,7 +4,8 @@ import WorkshopsPreview from '@/app/cmps/workshops/WorkshopsPreview'
 import { Tworkshop } from '@/app/types/types'
 import { getWorkshops } from '@/app/actions/workshopActions'
 import React from 'react'
-
+import { cookies } from 'next/headers';
+cookies()
 
 export default async function page({ params }) {
   const allWorkshops: Tworkshop[] = await getWorkshops();
