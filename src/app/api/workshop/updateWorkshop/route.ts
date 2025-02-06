@@ -1,6 +1,7 @@
 import Workshop from '@/app/models/workshop';
 import connectMongoDB from '../../../libs/mongoDB';
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 export async function PUT(request) {
     try {
@@ -18,7 +19,7 @@ export async function PUT(request) {
                 { new: true, upsert: true } // Options: Return the updated document; create if not found
               );
      
-    
+      revalidatePath('/workshops','page')
         return NextResponse.json(updatedWorkshop, { status: 200 });
 
     } catch (err) {
