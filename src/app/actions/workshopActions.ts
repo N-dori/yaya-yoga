@@ -3,7 +3,7 @@ import { getUrl } from "../utils/util"
 
 export const getWorkshops = async () => {
 
-  const url = `${getUrl('workshop/getWorkshops')}`; // Append timestamp to prevent caching
+  const url = `${getUrl('workshop/getWorkshops')}?timestamp=${Date.now()}`; // Append timestamp to prevent caching
   try {
     const res = await fetch(url, {
       method: 'GET',
