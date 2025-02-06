@@ -13,7 +13,7 @@ export async function POST (request) {
          await connectMongoDB ()
         
         const newWorkshop =  await Workshop.create({...workshop})
-        revalidatePath('/workshops')
+        revalidatePath('/workshops','page')
         return NextResponse.json({newWorkshop} , {status: 201 } )
     }catch(err){
         console.log('had problem to create a Workshop ',err);

@@ -14,7 +14,7 @@ export async function DELETE(request) {
         )
         console.log('updatedWorkshop',updatedWorkshop);
         
-        revalidatePath('/workshops','layout')
+        revalidatePath('/workshops','page')
 
         return NextResponse.json({ message: 'workshop was deleted' }, { status: 200 });
         
